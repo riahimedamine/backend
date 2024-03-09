@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * A DemandeConge.
@@ -30,15 +31,81 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
 
     @Column(name = "state")
     private String state;
-
     @Column(name = "notes")
     private String notes;
+    @Column(name = "telephone")
+    private Integer telephone;
+    @Column(name = "address")
+    private String address;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TypeConge.class)
     @JoinColumn(name = "type", referencedColumnName = "code")
     private TypeConge type;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", referencedColumnName = "login")
     private User user;
+
+    @Override
+    public String toString() {
+        return "DemandeConge{" +
+            "id=" + id +
+            ", dateDebut=" + dateDebut +
+            ", dateFin=" + dateFin +
+            ", state='" + state + '\'' +
+            ", notes='" + notes + '\'' +
+            ", telephone=" + telephone +
+            ", address='" + address + '\'' +
+            ", type=" + type +
+            ", user=" + user +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DemandeConge that = (DemandeConge) o;
+
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(dateDebut, that.dateDebut)) return false;
+        if (!Objects.equals(dateFin, that.dateFin)) return false;
+        if (!Objects.equals(state, that.state)) return false;
+        if (!Objects.equals(notes, that.notes)) return false;
+        if (!Objects.equals(telephone, that.telephone)) return false;
+        if (!Objects.equals(address, that.address)) return false;
+        if (!Objects.equals(type, that.type)) return false;
+        return Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (dateDebut != null ? dateDebut.hashCode() : 0);
+        result = 31 * result + (dateFin != null ? dateFin.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (notes != null ? notes.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
+    }
+
+    public Integer getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(Integer telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getState() {
         return state;
@@ -131,29 +198,4 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DemandeConge)) {
-            return false;
-        }
-        return getId() != null && getId().equals(((DemandeConge) o).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "DemandeConge{" +
-            "id=" + getId() +
-            ", dateDebut='" + getDateDebut() + "'" +
-            ", dateFin='" + getDateFin() + "'" +
-            "}";
-    }
 }

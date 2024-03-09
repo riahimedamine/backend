@@ -13,10 +13,7 @@ import java.util.List;
 @Repository
 public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long> {
     @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name}")
-    List<DemandeConge> findByUserIdIsCurrentUser();
-
-    @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name} and demandeConge.state = ?1")
-    List<DemandeConge> findByUserIdIsCurrentUserAndState(String state);
+    List<DemandeConge> findByUserIsCurrentUser();
 
     List<DemandeConge> findByState(String state);
 
