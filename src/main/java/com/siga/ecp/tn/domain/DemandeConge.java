@@ -126,7 +126,7 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         this.user = user;
     }
 
-    public DemandeConge userId(User user) {
+    public DemandeConge user(User user) {
         this.setUser(user);
         return this;
     }

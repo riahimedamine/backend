@@ -68,12 +68,7 @@ public class UserProfile implements Serializable {
         this.user = user;
     }
 
-    public User user(User user) {
-        this.setUser(user);
-        return this.user;
-    }
-
-    public UserProfile userId(User user) {
+    public UserProfile user(User user) {
         this.setUser(user);
         return this;
     }
@@ -110,9 +105,6 @@ public class UserProfile implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "UserProfile{" +
-            "id=" + getId() +
-            ", dateOfBirth='" + getDateOfBirth() + "'" +
-            "}";
+        return "UserProfile{" + "id=" + getId() + ", dateOfBirth='" + getDateOfBirth() + "'" + "}";
     }
 }
