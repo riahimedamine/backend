@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-
-    <!--
-        JHipster core tables.
-        The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
-    -->
+    <!-- JHipster core tables -->
     <changeSet id="00000000000001" author="jhipster">
         <createTable tableName="jhi_user">
             <column name="id" type="bigint" autoIncrement="true">
@@ -27,7 +21,7 @@
             </column>
             <column name="image_url" type="varchar(256)"/>
             <column name="activated" type="boolean" valueBoolean="false">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="lang_key" type="varchar(10)"/>
             <column name="activation_key" type="varchar(20)"/>
@@ -41,7 +35,16 @@
             </column>
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
+            <column name="validator_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="validator_id"
+                                 baseTableName="jhi_user"
+                                 constraintName="fk_user_validator"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
 
         <createTable tableName="jhi_authority">
             <column name="name" type="varchar(50)">
@@ -72,35 +75,141 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addNotNullConstraint   columnName="password_hash"
-                                columnDataType="varchar(60)"
-                                tableName="jhi_user"/>
+        <addNotNullConstraint columnName="password_hash"
+                              columnDataType="varchar(60)"
+                              tableName="jhi_user"/>
+    </changeSet>
+
+    <!-- TypeConge table -->
+    <changeSet id="00000000000002" author="yourName">
+        <createTable tableName="type_conge">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="int">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="lib_fr" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lib_ar" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <!-- DemandeConge and SoldeConge tables -->
+    <changeSet id="00000000000003" author="yourName">
+        <createTable tableName="demande_conge">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date_debut" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_fin" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="varchar(255)"/>
+            <column name="telephone" type="int"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="type" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <!-- Foreign key constraints -->
+        <addForeignKeyConstraint baseColumnNames="type"
+                                 baseTableName="demande_conge"
+                                 constraintName="fk_demande_conge_type"
+                                 referencedColumnNames="code"
+                                 referencedTableName="type_conge"/>
+
+        <addForeignKeyConstraint baseColumnNames="user"
+                                 baseTableName="demande_conge"
+                                 constraintName="fk_demande_conge_user"
+                                 referencedColumnNames="login"
+                                 referencedTableName="jhi_user"/>
+
+        <createTable tableName="solde_conge">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="solde" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="year" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <!-- Foreign key constraint -->
+        <addForeignKeyConstraint baseColumnNames="user"
+                                 baseTableName="solde_conge"
+                                 constraintName="fk_solde_conge_user"
+                                 referencedColumnNames="login"
+                                 referencedTableName="jhi_user"/>
+    </changeSet>
+
+    <!-- Data loading for jhi_user, jhi_authority, and jhi_user_authority -->
+    <changeSet id="00000000000004" author="jhipster">
         <loadData
-                  file="config/liquibase/data/user.csv"
-                  separator=";"
-                  tableName="jhi_user"
-                  usePreparedStatements="true">
+            file="config/liquibase/data/user.csv"
+            separator=";"
+            tableName="jhi_user"
+            usePreparedStatements="true">
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
         <loadData
-                  file="config/liquibase/data/authority.csv"
-                  separator=";"
-                  tableName="jhi_authority"
-                  usePreparedStatements="true">
+            file="config/liquibase/data/authority.csv"
+            separator=";"
+            tableName="jhi_authority"
+            usePreparedStatements="true">
             <column name="name" type="string"/>
         </loadData>
         <loadData
-                  file="config/liquibase/data/user_authority.csv"
-                  separator=";"
-                  tableName="jhi_user_authority"
-                  usePreparedStatements="true">
+            file="config/liquibase/data/user_authority.csv"
+            separator=";"
+            tableName="jhi_user_authority"
+            usePreparedStatements="true">
             <column name="user_id" type="numeric"/>
         </loadData>
     </changeSet>
 
-    <changeSet author="jhipster" id="00000000000002" context="test">
+    <!-- JHipster date/time wrapper table for testing -->
+    <changeSet author="jhipster" id="00000000000005" context="test">
         <createTable tableName="jhi_date_time_wrapper">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="jhi_date_time_wrapperPK"/>
