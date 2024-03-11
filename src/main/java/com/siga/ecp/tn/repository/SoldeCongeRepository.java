@@ -17,4 +17,6 @@ public interface SoldeCongeRepository extends JpaRepository<SoldeConge, Long> {
     List<SoldeConge> findByYear(Integer year);
 
     List<SoldeConge> findByUserLogin(String login);
+
+    void deleteByUserLogin(String login);
 }

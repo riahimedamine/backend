@@ -21,7 +21,7 @@ public class TypeConge extends AbstractAuditingEntity<Long> implements Serializa
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "code")
+    @Column(name = "code", unique = true)
     private Integer code;
 
     @Column(name = "lib_fr")

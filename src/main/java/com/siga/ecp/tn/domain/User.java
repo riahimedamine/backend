@@ -1,7 +1,6 @@
 package com.siga.ecp.tn.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.siga.ecp.tn.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -93,8 +92,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"userId", "validator", "leaveDemand"}, allowSetters = true)
+    @JoinColumn(name = "validator_id", referencedColumnName = "id")
     private User validator;
 
     public User getValidator() {
