@@ -2,6 +2,7 @@ package com.siga.ecp.tn.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "demande_conge")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 public class DemandeConge extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,8 +31,8 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     @Column(name = "date_fin")
     private Instant dateFin;
 
-    @Column(name = "state")
-    private String state;
+    @Column(name = "vld")
+    private Integer vld; //0 en cours //1 validé //2 refusé
     @Column(name = "notes")
     private String notes;
     @Column(name = "telephone")
@@ -50,7 +52,7 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
             "id=" + id +
             ", dateDebut=" + dateDebut +
             ", dateFin=" + dateFin +
-            ", state='" + state + '\'' +
+            ", vld='" + vld + '\'' +
             ", notes='" + notes + '\'' +
             ", telephone=" + telephone +
             ", address='" + address + '\'' +
@@ -69,7 +71,7 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         if (!Objects.equals(id, that.id)) return false;
         if (!Objects.equals(dateDebut, that.dateDebut)) return false;
         if (!Objects.equals(dateFin, that.dateFin)) return false;
-        if (!Objects.equals(state, that.state)) return false;
+        if (!Objects.equals(vld, that.vld)) return false;
         if (!Objects.equals(notes, that.notes)) return false;
         if (!Objects.equals(telephone, that.telephone)) return false;
         if (!Objects.equals(address, that.address)) return false;
@@ -82,7 +84,7 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (dateDebut != null ? dateDebut.hashCode() : 0);
         result = 31 * result + (dateFin != null ? dateFin.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (vld != null ? vld.hashCode() : 0);
         result = 31 * result + (notes != null ? notes.hashCode() : 0);
         result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
@@ -107,16 +109,16 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         this.address = address;
     }
 
-    public String getState() {
-        return state;
+    public Integer getVld() {
+        return vld;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setVld(Integer vld) {
+        this.vld = vld;
     }
 
-    public DemandeConge state(String state) {
-        this.setState(state);
+    public DemandeConge vld(Integer vld) {
+        this.setVld(vld);
         return this;
     }
 

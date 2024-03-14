@@ -15,13 +15,13 @@ public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long
     @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name}")
     List<DemandeConge> findByUserIsCurrentUser();
 
-    List<DemandeConge> findByState(String state);
+    List<DemandeConge> findByVld(Integer state);
 
     List<DemandeConge> findByUserId(Long id);
 
-    List<DemandeConge> findByUserIdAndState(Long id, String state);
+    List<DemandeConge> findByUserIdAndVld(Long id, Integer state);
 
     List<DemandeConge> findByUserLogin(String login);
 
-    List<DemandeConge> findByUserLoginAndState(String login, String state);
+    List<DemandeConge> findByUserLoginAndVld(String login, Integer state);
 }

@@ -2,17 +2,19 @@ package com.siga.ecp.tn.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A TypeConge.
+ * A SoldeConge.
  */
 @Entity
 @Table(name = "solde_conge")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Audited
 public class SoldeConge extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;
