@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
       <span class="logo-img"></span>
-      <span jhiTranslate="global.title" class="navbar-title">Backend</span>
+      <span jhiTranslate="global.title" class="navbar-title">tadha</span>
       <span class="navbar-version">{{ version }}</span>
     </a>
     <a
@@ -36,14 +36,19 @@
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="services-menu" data-cy="services">
             <span>
               <fa-icon icon="th-list"></fa-icon>
-              <span jhiTranslate="global.menu.entities.main">Entités</span>
+              <span jhiTranslate="global.menu.services.main">Services</span>
             </span>
           </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-            <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="services-menu">
+            <li>
+              <a class="dropdown-item" routerLink="service/conge-management" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.services.congesManagement">Gestion des congés</span>
+              </a>
+            </li>
           </ul>
         </li>
         <li
