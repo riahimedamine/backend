@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, Routes} from '@angular/router';
+import {Observable, of} from 'rxjs';
 
-import { IDemandeConge } from './conge-management.model';
-import { CongeManagementService } from './service/conge-management.service';
-import { CongeManagementComponent } from './list/conge-management.component';
-import { CongeManagementDetailComponent } from './detail/conge-management-detail.component';
-import { CongeManagementUpdateComponent } from './update/conge-management-update.component';
+import {IDemandeConge} from './conge-management.model';
+import {CongeManagementService} from './service/conge-management.service';
+import {CongeManagementComponent} from './list/conge-management.component';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class CongeManagementResolve implements Resolve<IDemandeConge | null> {
-  constructor(private service: CongeManagementService) {}
+  constructor(private service: CongeManagementService) {
+  }
 
   resolve(route: ActivatedRouteSnapshot): Observable<IDemandeConge | null> {
     const id = route.params['id'];
@@ -27,27 +26,6 @@ export const congeManagementRoute: Routes = [
     component: CongeManagementComponent,
     data: {
       defaultSort: 'id,asc',
-    },
-  },
-  {
-    path: ':id/view',
-    component: CongeManagementDetailComponent,
-    resolve: {
-      conge: CongeManagementResolve,
-    },
-  },
-  {
-    path: 'new',
-    component: CongeManagementUpdateComponent,
-    resolve: {
-      conge: CongeManagementResolve,
-    },
-  },
-  {
-    path: ':id/edit',
-    component: CongeManagementUpdateComponent,
-    resolve: {
-      conge: CongeManagementResolve,
     },
   },
 ];

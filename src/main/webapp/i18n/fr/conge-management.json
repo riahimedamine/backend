@@ -1,0 +1,31 @@
+{
+  "congeManagement": {
+    "home": {
+      "title": "Demandes Congés",
+      "refreshListLabel": "Actualiser la liste",
+      "createLabel": "Créer une nouvelle demande",
+      "createOrEditLabel": "Créer ou éditer une demande"
+    },
+    "created": "La demande {{ param }} a été créé.",
+    "updated": "La demande {{ param }} a été mis à jour.",
+    "deleted": "La demande {{ param }} a été supprimé.",
+    "delete": {
+      "question": "Etes-vous certain de vouloir supprimer la demande {{ id }} ?"
+    },
+    "detail": {
+      "title": "Détail de la demande"
+    },
+    "dateDebut": "Date de début",
+    "dateFin": "Date de fin",
+    "user": "Utilisateur",
+    "address": "Adresse",
+    "type": "Type",
+    "telephone": "Téléphone",
+    "notes": "Notes",
+    "vld": "Validé",
+    "createdBy": "Créé par",
+    "createdDate": "Créé le",
+    "lastModifiedBy": "Modifié par",
+    "lastModifiedDate": "Modifié le"
+  }
+}
