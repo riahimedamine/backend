@@ -1,7 +1,7 @@
 package com.siga.ecp.tn.web.rest;
 
-import com.siga.ecp.tn.domain.DemandeConge;
 import com.siga.ecp.tn.service.DemandeCongeService;
+import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,34 +22,34 @@ public class DemandeCongeController {
     }
 
     @GetMapping("")
-    public List<DemandeConge> getAllDemandeConges() {
+    public List<DemandeCongeDTO> getAllDemandeConges() {
         log.debug("REST request to get all DemandeConges");
         return demandeCongeService.findAll();
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public DemandeConge createDemandeConge(@RequestBody DemandeConge demandeConge) {
-        log.debug("REST request to save DemandeConge : {}", demandeConge);
-        return demandeCongeService.saveDemandeConge(demandeConge);
+    public DemandeCongeDTO createDemandeConge(@RequestBody DemandeCongeDTO demandeCongeDTO) {
+        log.debug("REST request to save DemandeConge : {}", demandeCongeDTO);
+        return demandeCongeService.saveDemandeConge(demandeCongeDTO);
     }
 
     @GetMapping("/{id}")
-    public Optional<DemandeConge> getDemandeConge(@PathVariable Long id) {
+    public Optional<DemandeCongeDTO> getDemandeConge(@PathVariable Long id) {
         log.debug("REST request to get DemandeConge : {}", id);
         return demandeCongeService.findDemandeConge(id);
     }
 
     @PutMapping("")
-    public DemandeConge updateDemandeConge(@RequestBody DemandeConge demandeConge) {
-        log.debug("REST request to update DemandeConge : {}", demandeConge);
-        return demandeCongeService.updateDemandeConge(demandeConge);
+    public DemandeCongeDTO updateDemandeConge(@RequestBody DemandeCongeDTO demandeCongeDTO) {
+        log.debug("REST request to update DemandeConge : {}", demandeCongeDTO);
+        return demandeCongeService.updateDemandeConge(demandeCongeDTO);
     }
 
     @PatchMapping("")
-    public Optional<DemandeConge> partialUpdateDemandeConge(@RequestBody DemandeConge demandeConge) {
-        log.debug("REST request to partially update DemandeConge : {}", demandeConge);
-        return demandeCongeService.partialUpdate(demandeConge);
+    public Optional<DemandeCongeDTO> partialUpdateDemandeConge(@RequestBody DemandeCongeDTO demandeCongeDTO) {
+        log.debug("REST request to partially update DemandeConge : {}", demandeCongeDTO);
+        return demandeCongeService.partialUpdate(demandeCongeDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -60,8 +60,14 @@ public class DemandeCongeController {
     }
 
     @GetMapping("/user/{login}")
-    public List<DemandeConge> getDemandeCongeByUser(@PathVariable String login) {
+    public List<DemandeCongeDTO> getDemandeCongeByUser(@PathVariable String login) {
         log.debug("REST request to get DemandeConge by user : {}", login);
         return demandeCongeService.findByUser(login);
+    }
+
+    @GetMapping("/current-user")
+    public List<DemandeCongeDTO> getDemandeCongeByCurrentUser() {
+        log.debug("REST request to get DemandeConge by current user");
+        return demandeCongeService.findByCurrentUser();
     }
 }

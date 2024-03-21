@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form (ngSubmit)="save()" [formGroup]="editForm" name="editForm" novalidate role="form">
+      <h2 id="myUserLabel" jhiTranslate="congeManagement.home.createOrEditLabel">Créer ou éditer une demande</h2>
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <div [hidden]="!editForm.value.id" class="mb-3">
+        <label jhiTranslate="global.field.id">ID</label>
+        <input class="form-control" formControlName="id" name="id" readonly type="text"/>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="congeManagement.dateDebut">Date Debut</label>
+        <input class="form-control" formControlName="dateDebut" name="dateDebut" type="date"/>
+
+        <div
+          *ngIf="editForm.get('dateDebut')!.invalid && (editForm.get('dateDebut')!.dirty || editForm.get('dateDebut')!.touched)">
+          <small *ngIf="editForm.get('dateDebut')?.errors?.required" class="form-text text-danger"
+                 jhiTranslate="entity.validation.required">
+            Ce champ est obligatoire.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="congeManagement.dateFin">Date Fin</label>
+        <input class="form-control" formControlName="dateFin" name="dateFin" type="date"/>
+
+        <div
+          *ngIf="editForm.get('dateFin')!.invalid && (editForm.get('dateFin')!.dirty || editForm.get('dateFin')!.touched)">
+          <small *ngIf="editForm.get('dateDebut')?.errors?.required" class="form-text text-danger"
+                 jhiTranslate="entity.validation.required">
+            Ce champ est obligatoire.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label jhiTranslate="congeManagement.notes">Nom</label>
+        <input class="form-control" formControlName="notes" name="notes" type="text"/>
+
+        <div *ngIf="editForm.get('notes')!.invalid && (editForm.get('notes')!.dirty || editForm.get('notes')!.touched)">
+          <small
+            *ngIf="editForm.get('notes')?.errors?.maxlength"
+            [translateValues]="{ max: 100 }"
+            class="form-text text-danger"
+            jhiTranslate="entity.validation.maxlength"
+          >
+            Ce champ doit faire moins de 100 caractères.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="congeManagement.telephone">telephone</label>
+        <input class="form-control no-arrow" formControlName="telephone" name="telephone" type="number"/>
+
+        <div
+          *ngIf="editForm.get('telephone')!.invalid && (editForm.get('telephone')!.dirty || editForm.get('telephone')!.touched)">
+
+          <small
+            *ngIf="editForm.get('telephone')?.errors?.minlength"
+            [translateValues]="{ min: 8 }"
+            class="form-text text-danger"
+            jhiTranslate="entity.validation.minlength"
+          >
+            Ce champ doit faire au minimum 8 caractères.
+          </small>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="congeManagement.address">address</label>
+        <input class="form-control" formControlName="address" name="address" type="address"/>
+
+        <div
+          *ngIf="editForm.get('address')!.invalid && (editForm.get('address')!.dirty || editForm.get('address')!.touched)">
+
+          <small
+            *ngIf="editForm.get('address')?.errors?.maxlength"
+            [translateValues]="{ max: 50 }"
+            class="form-text text-danger"
+            jhiTranslate="entity.validation.maxlength"
+          >
+            Ce champ doit faire moins de 50 caractères.
+          </small>
+
+        </div>
+      </div>
+
+      <button (click)="previousState()" class="btn btn-secondary" type="button">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+      </button>
+
+      <button [disabled]="editForm.invalid || isSaving" class="btn btn-primary" type="submit">
+        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+      </button>
+    </form>
+  </div>
+</div>

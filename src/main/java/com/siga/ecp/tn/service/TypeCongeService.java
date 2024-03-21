@@ -109,4 +109,8 @@ public class TypeCongeService {
         log.debug("Request to delete TypeConge : {}", id);
         typeCongeRepository.deleteById(id);
     }
+
+    public TypeConge findByCode(Integer code) {
+        return typeCongeRepository.findByCode(code);
+    }
 }

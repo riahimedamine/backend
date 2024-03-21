@@ -5,6 +5,7 @@ import {Observable, of} from 'rxjs';
 import {IDemandeConge} from './conge-management.model';
 import {CongeManagementService} from './service/conge-management.service';
 import {CongeManagementComponent} from './list/conge-management.component';
+import {CongeManagementUpdateComponent} from "./update/conge-management-update.component";
 
 @Injectable({providedIn: 'root'})
 export class CongeManagementResolve implements Resolve<IDemandeConge | null> {
@@ -28,4 +29,11 @@ export const congeManagementRoute: Routes = [
       defaultSort: 'id,asc',
     },
   },
+  {
+    path: 'new',
+    component: CongeManagementUpdateComponent,
+    resolve: {
+      user: CongeManagementResolve,
+    },
+  }
 ];

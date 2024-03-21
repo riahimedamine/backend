@@ -6,7 +6,7 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -26,10 +26,12 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     private Long id;
 
     @Column(name = "date_debut")
-    private Instant dateDebut;
+    @Temporal(TemporalType.DATE)
+    private Date dateDebut;
 
     @Column(name = "date_fin")
-    private Instant dateFin;
+    @Temporal(TemporalType.DATE)
+    private Date dateFin;
 
     @Column(name = "vld")
     private Integer vld; //0 en cours //1 validé //2 refusé
@@ -148,28 +150,28 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         return this;
     }
 
-    public Instant getDateDebut() {
+    public Date getDateDebut() {
         return this.dateDebut;
     }
 
-    public void setDateDebut(Instant dateDebut) {
+    public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
 
-    public DemandeConge dateDebut(Instant dateDebut) {
+    public DemandeConge dateDebut(Date dateDebut) {
         this.setDateDebut(dateDebut);
         return this;
     }
 
-    public Instant getDateFin() {
+    public Date getDateFin() {
         return this.dateFin;
     }
 
-    public void setDateFin(Instant dateFin) {
+    public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
 
-    public DemandeConge dateFin(Instant dateFin) {
+    public DemandeConge dateFin(Date dateFin) {
         this.setDateFin(dateFin);
         return this;
     }
