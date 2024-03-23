@@ -33,6 +33,15 @@ import { RouterModule } from '@angular/router';
         path: 'metrics',
         loadChildren: () => import('./metrics/metrics.module').then(m => m.MetricsModule),
       },
+
+      {
+        path: 'type-conge-management',
+        loadChildren: () => import('./type-conge-management/type-conge-management.module').then(m => m.TypeCongeManagementModule),
+        data: {
+          pageTitle: 'typeManagement.home.title',
+        },
+      },
+
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),
   ],

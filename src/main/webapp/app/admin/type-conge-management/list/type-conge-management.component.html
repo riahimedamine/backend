@@ -1,0 +1,96 @@
+<div>
+  <h2>
+    <span id="type-conges-management-page-heading" jhiTranslate="typeManagement.home.title" data-cy="userManagementPageHeading"
+      >Utilisateurs</span
+    >
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="typeManagement.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="typeManagement.home.createLabel">Créer un nouvel utilisateur</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" *ngIf="typeConges">
+    <table class="table table-striped" aria-describedby="type-conges-management-page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="code"><span jhiTranslate="typeManagement.code">Login</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="libFr"><span jhiTranslate="typeManagement.libFr">Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+          <th scope="col" jhiSortBy="libAr"><span jhiTranslate="typeManagement.libAr">Langue</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="isDeleted">
+            <span jhiTranslate="typeManagement.isDeleted">Langue</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+
+          <th scope="col"><span jhiTranslate="typeManagement.profiles">Droits</span></th>
+          <th scope="col" jhiSortBy="createdDate">
+            <span jhiTranslate="typeManagement.createdDate">Créé le</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedBy">
+            <span jhiTranslate="typeManagement.lastModifiedBy">Modifié par</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedDate">
+            <span jhiTranslate="typeManagement.lastModifiedDate">Modifié le</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="typeConges">
+        <tr *ngFor="let type of typeConges; trackBy: trackIdentity">
+          <td>
+            <a [routerLink]="['./', type.code, 'view']">{{ type.id }}</a>
+          </td>
+          <td>{{ type.code }}</td>
+          <td>{{ type.libFr }}</td>
+
+          <td>{{ type.libAr }}</td>
+          <td>{{ type.isDeleted }}</td>
+          <td>{{ type.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ type.lastModifiedBy }}</td>
+          <td>{{ type.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['./', type.code, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="button" (click)="deleteType(type)" class="btn btn-danger btn-sm">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="typeConges">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="transition()"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

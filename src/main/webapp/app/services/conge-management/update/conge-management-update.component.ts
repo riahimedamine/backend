@@ -1,38 +1,37 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {IDemandeConge} from '../conge-management.model';
-import {CongeManagementService} from '../service/conge-management.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { IDemandeConge } from '../conge-management.model';
+import { CongeManagementService } from '../service/conge-management.service';
 
 const demandeTemplate = {} as IDemandeConge;
 
 const newDemande: IDemandeConge = {
-  vld: 0
+  vld: 0,
 } as IDemandeConge;
 
 @Component({
-  selector: 'jhi-user-mgmt-update',
+  selector: 'jhi-conge-mgmt-update',
   templateUrl: './conge-management-update.component.html',
 })
 export class CongeManagementUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = new FormGroup({
-    id: new FormControl(demandeTemplate.id, {nonNullable: true}),
+    id: new FormControl(demandeTemplate.id, { nonNullable: true }),
 
-    dateDebut: new FormControl(demandeTemplate.dateDebut, {validators: [Validators.required], nonNullable: true}),
-    dateFin: new FormControl(demandeTemplate.dateFin, {validators: [Validators.required], nonNullable: true}),
-    type: new FormControl(demandeTemplate.type, {nonNullable: true}),
-    notes: new FormControl(demandeTemplate.notes, {validators: [Validators.maxLength(100)]}),
-    telephone: new FormControl(demandeTemplate.telephone, {validators: [Validators.minLength(8)]}),
-    address: new FormControl(demandeTemplate.address, {validators: [Validators.maxLength(50)]}),
+    dateDebut: new FormControl(demandeTemplate.dateDebut, { validators: [Validators.required], nonNullable: true }),
+    dateFin: new FormControl(demandeTemplate.dateFin, { validators: [Validators.required], nonNullable: true }),
+    type: new FormControl(demandeTemplate.type, { nonNullable: true }),
+    notes: new FormControl(demandeTemplate.notes, { validators: [Validators.maxLength(100)] }),
+    telephone: new FormControl(demandeTemplate.telephone, { validators: [Validators.minLength(8)] }),
+    address: new FormControl(demandeTemplate.address, { validators: [Validators.maxLength(50)] }),
   });
 
-  constructor(private congeService: CongeManagementService, private route: ActivatedRoute) {
-  }
+  constructor(private congeService: CongeManagementService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({user: conge}) => {
+    this.route.data.subscribe(({ conge }) => {
       if (conge) {
         this.editForm.reset(conge);
       } else {

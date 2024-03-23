@@ -10,7 +10,8 @@
         <span jhiTranslate="congeManagement.home.refreshListLabel">Actualiser la liste</span>
       </button>
       <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="congeManagement.home.createLabel">Créer une nouvelle demande</span>
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="congeManagement.home.createLabel">Créer une nouvelle demande</span>
       </button>
     </div>
   </h2>
@@ -23,34 +24,54 @@
     <table class="table table-striped" aria-describedby="conge-Management-page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="id">
+            <span jhiTranslate="global.field.id">ID</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col" jhiSortBy="dateDebut">
-            <span jhiTranslate="congeManagement.dateDebut">Date debut</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.dateDebut">Date debut</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="dateFin">
-            <span jhiTranslate="congeManagement.dateFin">Date fin</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.dateFin">Date fin</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
-          <th scope="col" jhiSortBy="user"><span jhiTranslate="congeManagement.user">User</span> <fa-icon icon="sort"></fa-icon></th>
-          <th jhiSortBy="type" scope="col"><span jhiTranslate="congeManagement.type">Type</span>
+          <th scope="col" jhiSortBy="user">
+            <span jhiTranslate="congeManagement.user">User</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="type" scope="col">
+            <span jhiTranslate="congeManagement.type">Type</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="createdDate">
-            <span jhiTranslate="congeManagement.createdDate">Créé le</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.createdDate">Créé le</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="address">
-            <span jhiTranslate="congeManagement.address">Address</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.address">Address</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="telephone">
-            <span jhiTranslate="congeManagement.telephone">Telephone</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.telephone">Telephone</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="notes"><span jhiTranslate="congeManagement.notes">Notes</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="vld"><span jhiTranslate="congeManagement.vld">Vld</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="notes">
+            <span jhiTranslate="congeManagement.notes">Notes</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="vld">
+            <span jhiTranslate="congeManagement.vld">Vld</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col" jhiSortBy="lastModifiedBy">
-            <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="lastModifiedDate">
-            <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
+            <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
@@ -71,7 +92,10 @@
           <td>{{ demande.telephone }}</td>
           <td>{{ demande.notes }}</td>
 
-          <td>{{ demande.vld }}</td>
+          <td *ngIf="demande.vld == 0">En attente</td>
+          <td *ngIf="demande.vld == 1">Validé</td>
+          <td *ngIf="demande.vld == 2">Non Validé</td>
+
           <td>{{ demande.lastModifiedBy }}</td>
           <td>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td class="text-end">
