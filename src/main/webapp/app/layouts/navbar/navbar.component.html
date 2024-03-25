@@ -102,7 +102,42 @@
                 <span jhiTranslate="global.menu.admin.apidocs">API</span>
               </a>
             </li>
+            <li>
+              <a class="dropdown-item" routerLink="admin/type-conge-management" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.type-conge-management">type congé</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="admin/solde-management" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="book" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.admin.solde-management">solde</span>
+              </a>
+            </li>
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+          </ul>
+        </li>
+        <li
+          *jhiHasAnyAuthority="'ROLE_RH'"
+          ngbDropdown
+          class="nav-item dropdown pointer"
+          display="dynamic"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="rh-menu" data-cy="rhMenu">
+            <span>
+              <fa-icon icon="users-cog"></fa-icon>
+              <span jhiTranslate="global.menu.rh.main">Administration</span>
+            </span>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="rh-menu">
+            <li>
+              <a class="dropdown-item" routerLink="rh/demande-conge" routerLinkActive="active" (click)="collapseNavbar()">
+                <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.rh.demandeConge">Gestion des utilisateurs</span>
+              </a>
+            </li>
           </ul>
         </li>
         <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" *ngIf="languages && languages.length > 1">

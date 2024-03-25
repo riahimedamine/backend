@@ -1,13 +1,12 @@
 package com.siga.ecp.tn.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.envers.Audited;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /**
  * A DemandeConge.
@@ -35,32 +34,51 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
 
     @Column(name = "vld")
     private Integer vld; //0 en cours //1 validé //2 refusé
+
     @Column(name = "notes")
     private String notes;
+
     @Column(name = "telephone")
     private Integer telephone;
+
     @Column(name = "address")
     private String address;
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TypeConge.class)
     @JoinColumn(name = "type", referencedColumnName = "code")
     private TypeConge type;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user", referencedColumnName = "login")
     private User user;
 
     @Override
     public String toString() {
-        return "DemandeConge{" +
-            "id=" + id +
-            ", dateDebut=" + dateDebut +
-            ", dateFin=" + dateFin +
-            ", vld='" + vld + '\'' +
-            ", notes='" + notes + '\'' +
-            ", telephone=" + telephone +
-            ", address='" + address + '\'' +
-            ", type=" + type +
-            ", user=" + user +
-            '}';
+        return (
+            "DemandeConge{" +
+            "id=" +
+            id +
+            ", dateDebut=" +
+            dateDebut +
+            ", dateFin=" +
+            dateFin +
+            ", vld='" +
+            vld +
+            '\'' +
+            ", notes='" +
+            notes +
+            '\'' +
+            ", telephone=" +
+            telephone +
+            ", address='" +
+            address +
+            '\'' +
+            ", type=" +
+            type +
+            ", user=" +
+            user +
+            '}'
+        );
     }
 
     @Override
@@ -201,5 +219,4 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         this.setUser(user);
         return this;
     }
-
 }

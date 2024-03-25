@@ -1,0 +1,91 @@
+<div>
+  <h2>
+    <span id="solde-management-page-heading" jhiTranslate="soldeManagement.home.title" data-cy="soldeManagementPageHeading"
+      >Utilisateurs</span
+    >
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="soldeManagement.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="soldeManagement.home.createLabel">Créer un nouvel utilisateur</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" *ngIf="soldes">
+    <table class="table table-striped" aria-describedby="solde-conges-management-page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="solde"><span jhiTranslate="soldeManagement.solde">Login</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="year"><span jhiTranslate="soldeManagement.year">Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"></th>
+          <th scope="col" jhiSortBy="user"><span jhiTranslate="soldeManagement.user">Langue</span> <fa-icon icon="sort"></fa-icon></th>
+
+          <th scope="col" jhiSortBy="createdDate">
+            <span jhiTranslate="soldeManagement.createdDate">Créé le</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedBy">
+            <span jhiTranslate="soldeManagement.lastModifiedBy">Modifié par</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastModifiedDate">
+            <span jhiTranslate="soldeManagement.lastModifiedDate">Modifié le</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="soldes">
+        <tr *ngFor="let solde of soldes; trackBy: trackIdentity">
+          <td>
+            <a [routerLink]="['./', solde.id, 'view']">{{ solde.id }}</a>
+          </td>
+          <td>{{ solde.solde }}</td>
+          <td>{{ solde.year }}</td>
+
+          <td>{{ solde.user }}</td>
+          <td>{{ solde.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td>{{ solde.lastModifiedBy }}</td>
+          <td>{{ solde.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button solde="submit" [routerLink]="['./', solde.id, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button solde="button" (click)="deleteType(solde)" class="btn btn-danger btn-sm">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="soldes">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="transition()"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

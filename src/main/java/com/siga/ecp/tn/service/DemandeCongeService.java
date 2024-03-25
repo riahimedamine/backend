@@ -1,16 +1,16 @@
 package com.siga.ecp.tn.service;
 
+import com.siga.ecp.tn.domain.DemandeConge;
 import com.siga.ecp.tn.repository.DemandeCongeRepository;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link com.siga.ecp.tn.domain.DemandeConge}.
@@ -38,7 +38,9 @@ public class DemandeCongeService {
      */
     public DemandeCongeDTO saveDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to save DemandeConge : {}", demandeCongeDTO);
-        return demandeCongeMapper.demandeCongeToDemandeCongeDTO(demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO)));
+        return demandeCongeMapper.demandeCongeToDemandeCongeDTO(
+            demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO))
+        );
     }
 
     /**
@@ -49,7 +51,9 @@ public class DemandeCongeService {
      */
     public DemandeCongeDTO updateDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to update DemandeConge : {}", demandeCongeDTO);
-        return demandeCongeMapper.demandeCongeToDemandeCongeDTO(demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO)));
+        return demandeCongeMapper.demandeCongeToDemandeCongeDTO(
+            demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO))
+        );
     }
 
     /**
@@ -61,16 +65,20 @@ public class DemandeCongeService {
     public Optional<DemandeCongeDTO> partialUpdate(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to partially update DemandeConge : {}", demandeCongeDTO);
 
-        return demandeCongeRepository.findById(demandeCongeDTO.getId()).map(existingDemandeConge -> {
-            if (demandeCongeDTO.getDateDebut() != null) {
-                existingDemandeConge.setDateDebut(demandeCongeDTO.getDateDebut());
-            }
-            if (demandeCongeDTO.getDateFin() != null) {
-                existingDemandeConge.setDateFin(demandeCongeDTO.getDateFin());
-            }
+        return demandeCongeRepository
+            .findById(demandeCongeDTO.getId())
+            .map(existingDemandeConge -> {
+                if (demandeCongeDTO.getDateDebut() != null) {
+                    existingDemandeConge.setDateDebut(demandeCongeDTO.getDateDebut());
+                }
+                if (demandeCongeDTO.getDateFin() != null) {
+                    existingDemandeConge.setDateFin(demandeCongeDTO.getDateFin());
+                }
 
-            return existingDemandeConge;
-        }).map(demandeCongeRepository::save).map(demandeCongeMapper::demandeCongeToDemandeCongeDTO);
+                return existingDemandeConge;
+            })
+            .map(demandeCongeRepository::save)
+            .map(demandeCongeMapper::demandeCongeToDemandeCongeDTO);
     }
 
     /**
@@ -118,5 +126,14 @@ public class DemandeCongeService {
     public List<DemandeCongeDTO> findByCurrentUser() {
         log.debug("Request to get DemandeConge by current user");
         return demandeCongeRepository.findByUserIsCurrentUser().stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+    }
+
+    public void validateDemandeConge(Long id, int vld) {
+        log.debug("Request to validate DemandeConge : {}", id);
+        DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
+        if (demandeConge != null) {
+            demandeConge.setVld(vld);
+            demandeCongeRepository.save(demandeConge);
+        }
     }
 }
