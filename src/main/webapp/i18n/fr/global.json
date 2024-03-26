@@ -10,6 +10,10 @@
         "congesManagement": "Gestion des congés",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
+      "rh": {
+        "main": "Ressources Humaines",
+        "demandeConge": "Demande de congés"
+      },
       "account": {
         "main": "Compte",
         "settings": "Profil",
@@ -22,6 +26,8 @@
       "admin": {
         "main": "Administration",
         "userManagement": "Gestion des utilisateurs",
+        "typeCongeManagement": "Gestion des types de congés",
+        "soldeManagement": "Gestion des soldes des congés",
         "tracker": "Suivi des utilisateurs",
         "metrics": "Métriques",
         "health": "Diagnostics",
@@ -99,7 +105,9 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "validate": "Valider",
+      "invalidate": "Invalider"
     },
     "detail": {
       "field": "Champs",

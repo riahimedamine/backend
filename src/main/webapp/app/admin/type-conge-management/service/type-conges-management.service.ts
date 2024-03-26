@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { Pagination } from 'app/core/request/request.model';
-import { ITypeConge } from '../type-conge-management.model';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {Pagination} from 'app/core/request/request.model';
+import {ITypeConge} from '../type-conge-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class TypeManagementService {
@@ -21,8 +21,8 @@ export class TypeManagementService {
     return this.http.put<ITypeConge>(this.resourceUrl, type);
   }
 
-  find(login: string): Observable<ITypeConge> {
-    return this.http.get<ITypeConge>(`${this.resourceUrl}/${login}`);
+  find(id: number): Observable<ITypeConge> {
+    return this.http.get<ITypeConge>(`${this.resourceUrl}/${id}`);
   }
 
   query(req?: Pagination): Observable<HttpResponse<ITypeConge[]>> {
@@ -30,11 +30,7 @@ export class TypeManagementService {
     return this.http.get<ITypeConge[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(code: number): Observable<{}> {
-    return this.http.delete(`${this.resourceUrl}/${code}`);
-  }
-
-  authorities(): Observable<string[]> {
-    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
+  delete(id: number): Observable<{}> {
+    return this.http.delete(`${this.resourceUrl}/${id}`);
   }
 }

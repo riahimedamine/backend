@@ -1,6 +1,7 @@
 package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.SoldeConge;
+import com.siga.ecp.tn.exception.SoldeNotFoundException;
 import com.siga.ecp.tn.exception.UserNotFoundException;
 import com.siga.ecp.tn.repository.SoldeCongeRepository;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
@@ -46,7 +47,7 @@ public class SoldeCongeService {
     /**
      * Update a soldeConge.
      *
-     * @param soldeConge the entity to save.
+     * @param soldeCongeDTO the entity to save.
      * @return the persisted entity.
      */
     public SoldeCongeDTO updateSolde(SoldeCongeDTO soldeCongeDTO) {
@@ -78,6 +79,8 @@ public class SoldeCongeService {
     @Transactional(readOnly = true)
     public SoldeConge findById(Long id) {
         log.debug("Request to get SoldeConge : {}", id);
+        if (soldeCongeRepository.findById(id).isEmpty())
+            throw new SoldeNotFoundException();
         return soldeCongeRepository.findById(id).get();
     }
 

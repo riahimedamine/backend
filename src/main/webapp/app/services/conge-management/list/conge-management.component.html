@@ -36,33 +36,20 @@
             <span jhiTranslate="congeManagement.dateFin">Date fin</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col"></th>
-          <th scope="col" jhiSortBy="user">
-            <span jhiTranslate="congeManagement.user">User</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
           <th jhiSortBy="type" scope="col">
             <span jhiTranslate="congeManagement.type">Type</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="createdDate">
-            <span jhiTranslate="congeManagement.createdDate">Créé le</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="address">
-            <span jhiTranslate="congeManagement.address">Address</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="telephone">
-            <span jhiTranslate="congeManagement.telephone">Telephone</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="notes">
-            <span jhiTranslate="congeManagement.notes">Notes</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="vld">
+          <th jhiSortBy="vld" scope="col">
             <span jhiTranslate="congeManagement.vld">Vld</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="createdBy" scope="col">
+            <span jhiTranslate="congeManagement.createdBy">Créé par</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th jhiSortBy="createdDate" scope="col">
+            <span jhiTranslate="congeManagement.createdDate">Créé le</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="lastModifiedBy">
@@ -84,18 +71,14 @@
           <td>{{ demande.dateDebut }}</td>
           <td>{{ demande.dateFin }}</td>
 
-          <td>{{ demande.user }}</td>
           <td>{{ demande.type }}</td>
 
+          <td *ngIf="demande.vld == 0" jhiTranslate="congeManagement.value.vld0">En attente</td>
+          <td *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</td>
+          <td *ngIf="demande.vld == 2" jhiTranslate="congeManagement.value.vld2">Non Validé</td>
+
+          <td>{{ demande.createdBy }}</td>
           <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ demande.address }}</td>
-          <td>{{ demande.telephone }}</td>
-          <td>{{ demande.notes }}</td>
-
-          <td *ngIf="demande.vld == 0">En attente</td>
-          <td *ngIf="demande.vld == 1">Validé</td>
-          <td *ngIf="demande.vld == 2">Non Validé</td>
-
           <td>{{ demande.lastModifiedBy }}</td>
           <td>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
           <td class="text-end">

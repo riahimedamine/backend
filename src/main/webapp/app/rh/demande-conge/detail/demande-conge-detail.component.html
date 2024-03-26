@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="demande">
+      <h2>
+        <span jhiTranslate="congeManagement.detail.title">Utilisateur</span> [<strong>{{ demande.id }}</strong>]
+      </h2>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="congeManagement.dateDebut">Prénom</span></dt>
+        <dd>{{ demande.dateDebut }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.dateFin">Nom</span></dt>
+        <dd>{{ demande.dateFin }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.vld">vld</span></dt>
+        <dd *ngIf="demande.vld == 0" jhiTranslate="congeManagement.value.vld0">En attente</dd>
+        <dd *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</dd>
+        <dd *ngIf="demande.vld == 2" jhiTranslate="congeManagement.value.vld2">Non validé</dd>
+
+        <dt><span jhiTranslate="congeManagement.notes">Langue</span></dt>
+        <dd>{{ demande.notes }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.type">Type</span></dt>
+        <dd>{{ demande.type }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.telephone">telephone</span></dt>
+        <dd>{{ demande.telephone }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.address">address</span></dt>
+        <dd>{{ demande.address }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.user">user</span></dt>
+        <dd>{{ demande.user }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.createdBy">Créé par</span></dt>
+        <dd>{{ demande.createdBy }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.createdDate">Créé le</span></dt>
+        <dd>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span></dt>
+        <dd>{{ demande.lastModifiedBy }}</dd>
+
+        <dt><span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span></dt>
+        <dd>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
+      </dl>
+
+      <button class="btn btn-info" routerLink="../../" type="submit">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+    </div>
+  </div>
+</div>

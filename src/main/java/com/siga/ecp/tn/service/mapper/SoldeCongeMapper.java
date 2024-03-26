@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 
 /**
  * Mapper for the entity {@link com.siga.ecp.tn.domain.SoldeConge} and its DTO called {@link com.siga.ecp.tn.service.dto.SoldeCongeDTO}.
- * Normal mappers are generated using MapStruct, this one is hand-coded as MapStruct
- * support is still in beta, and requires a manual step with an IDE.
  */
 @Service
 public class SoldeCongeMapper {
@@ -42,6 +40,12 @@ public class SoldeCongeMapper {
                 throw new UserNotFoundException();
             }
             soldeConge.setUser(user.get());
+            if (soldeCongeDTO.getCreatedBy() != null) {
+                soldeConge.setCreatedBy(user.get().getLogin());
+            }
+            if (soldeCongeDTO.getCreatedDate() != null) {
+                soldeConge.setCreatedDate(soldeCongeDTO.getCreatedDate());
+            }
             return soldeConge;
         }
     }
@@ -54,6 +58,12 @@ public class SoldeCongeMapper {
             throw new UserNotFoundException();
         }
         soldeConge.setUser(user.get());
+        if (soldeCongeDTO.getCreatedBy() != null) {
+            soldeConge.setCreatedBy(user.get().getLogin());
+        }
+        if (soldeCongeDTO.getCreatedDate() != null) {
+            soldeConge.setCreatedDate(soldeCongeDTO.getCreatedDate());
+        }
         return soldeConge;
     }
 

@@ -28,19 +28,19 @@ public class TypeCongeController {
     }
 
     @PostMapping("")
-    public TypeConge createTypeConge(TypeConge typeConge) {
+    public TypeConge createTypeConge(@RequestBody TypeConge typeConge) {
         log.debug("REST request to save TypeConge : {}", typeConge);
         return typeCongeService.save(typeConge);
     }
 
     @PutMapping("")
-    public TypeConge updateTypeConge(TypeConge typeConge) {
+    public TypeConge updateTypeConge(@RequestBody TypeConge typeConge) {
         log.debug("REST request to update TypeConge : {}", typeConge);
         return typeCongeService.update(typeConge);
     }
 
     @PatchMapping("")
-    public Optional<TypeConge> partialUpdateTypeConge(TypeConge typeConge) {
+    public Optional<TypeConge> partialUpdateTypeConge(@RequestBody TypeConge typeConge) {
         log.debug("REST request to partially update TypeConge : {}", typeConge);
         return typeCongeService.partialUpdate(typeConge);
     }

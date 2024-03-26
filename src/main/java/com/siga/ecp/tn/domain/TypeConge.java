@@ -1,11 +1,11 @@
 package com.siga.ecp.tn.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
-import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * A TypeConge.
@@ -21,7 +21,6 @@ public class TypeConge extends AbstractAuditingEntity<Long> implements Serializa
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonIgnore
     private Long id;
 
     @Column(name = "code", unique = true)

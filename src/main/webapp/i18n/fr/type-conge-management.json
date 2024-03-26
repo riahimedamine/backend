@@ -1,0 +1,26 @@
+{
+  "typeManagement": {
+    "home": {
+      "title": "Types Congés",
+      "refreshListLabel": "Actualiser la liste",
+      "createLabel": "Créer un nouveau type",
+      "createOrEditLabel": "Créer ou éditer un type"
+    },
+    "created": "Le type {{ param }} a été créé.",
+    "updated": "Le type {{ param }} a été mis à jour.",
+    "deleted": "Le type {{ param }} a été supprimé.",
+    "delete": {
+      "question": "Etes-vous certain de vouloir supprimer le Type {{ libFr }} ?"
+    },
+    "detail": {
+      "title": "Détail de type"
+    },
+    "code": "Code",
+    "libFr": "Libellé Français",
+    "libAr": "Libellé Arabe",
+    "createdBy": "Créé par",
+    "createdDate": "Créé le",
+    "lastModifiedBy": "Modifié par",
+    "lastModifiedDate": "Modifié le"
+  }
+}

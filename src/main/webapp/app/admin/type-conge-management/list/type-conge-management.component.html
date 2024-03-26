@@ -1,16 +1,18 @@
 <div>
   <h2>
-    <span id="type-conges-management-page-heading" jhiTranslate="typeManagement.home.title" data-cy="userManagementPageHeading"
-      >Utilisateurs</span
+    <span data-cy="userManagementPageHeading" id="type-conges-management-page-heading"
+          jhiTranslate="typeManagement.home.title"
+    >Utilisateurs</span
     >
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+      <button (click)="loadAll()" [disabled]="isLoading" class="btn btn-info me-2">
+        <fa-icon [spin]="isLoading" icon="sync"></fa-icon>
         <span jhiTranslate="typeManagement.home.refreshListLabel">Actualiser la liste</span>
       </button>
-      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
-        <fa-icon icon="plus"></fa-icon> <span jhiTranslate="typeManagement.home.createLabel">Créer un nouvel utilisateur</span>
+      <button [routerLink]="['./new']" class="btn btn-primary jh-create-entity">
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="typeManagement.home.createLabel">Créer un nouvel utilisateur</span>
       </button>
     </div>
   </h2>
@@ -19,59 +21,68 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="table-responsive" *ngIf="typeConges">
-    <table class="table table-striped" aria-describedby="type-conges-management-page-heading">
+  <div *ngIf="typeConges" class="table-responsive">
+    <table aria-describedby="type-conges-management-page-heading" class="table table-striped">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="code"><span jhiTranslate="typeManagement.code">Login</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="libFr"><span jhiTranslate="typeManagement.libFr">Email</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"></th>
-          <th scope="col" jhiSortBy="libAr"><span jhiTranslate="typeManagement.libAr">Langue</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="isDeleted">
-            <span jhiTranslate="typeManagement.isDeleted">Langue</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-
-          <th scope="col"><span jhiTranslate="typeManagement.profiles">Droits</span></th>
-          <th scope="col" jhiSortBy="createdDate">
-            <span jhiTranslate="typeManagement.createdDate">Créé le</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedBy">
-            <span jhiTranslate="typeManagement.lastModifiedBy">Modifié par</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedDate">
-            <span jhiTranslate="typeManagement.lastModifiedDate">Modifié le</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
+      <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
+        <th jhiSortBy="id" scope="col"><span jhiTranslate="global.field.id">ID</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="code" scope="col"><span jhiTranslate="typeManagement.code">Code</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="libFr" scope="col"><span jhiTranslate="typeManagement.libFr">LibFr</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="libAr" scope="col"><span jhiTranslate="typeManagement.libAr">LibAr</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="createdBy" scope="col">
+          <span jhiTranslate="typeManagement.createdBy">Créé par</span>
+          <fa-icon icon="sort"></fa-icon>
+        <th jhiSortBy="createdDate" scope="col">
+          <span jhiTranslate="typeManagement.createdDate">Créé le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedBy" scope="col">
+          <span jhiTranslate="typeManagement.lastModifiedBy">Modifié par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedDate" scope="col">
+          <span jhiTranslate="typeManagement.lastModifiedDate">Modifié le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col"></th>
+      </tr>
       </thead>
       <tbody *ngIf="typeConges">
-        <tr *ngFor="let type of typeConges; trackBy: trackIdentity">
-          <td>
-            <a [routerLink]="['./', type.code, 'view']">{{ type.id }}</a>
-          </td>
-          <td>{{ type.code }}</td>
-          <td>{{ type.libFr }}</td>
+      <tr *ngFor="let type of typeConges; trackBy: trackIdentity">
+        <td>
+          <a [routerLink]="['./', type.id, 'view']">{{ type.id }}</a>
+        </td>
+        <td>{{ type.code }}</td>
+        <td>{{ type.libFr }}</td>
 
-          <td>{{ type.libAr }}</td>
-          <td>{{ type.isDeleted }}</td>
-          <td>{{ type.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ type.lastModifiedBy }}</td>
-          <td>{{ type.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['./', type.code, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
+        <td>{{ type.libAr }}</td>
+        <td>{{ type.createdBy }}</td>
+        <td>{{ type.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td>{{ type.lastModifiedBy }}</td>
+        <td>{{ type.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button [routerLink]="['./', type.id, 'edit']" class="btn btn-primary btn-sm" queryParamsHandling="merge"
+                    type="submit">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+            </button>
 
-              <button type="button" (click)="deleteType(type)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-              </button>
-            </div>
-          </td>
-        </tr>
+            <button (click)="deleteType(type)" class="btn btn-danger btn-sm" type="button">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -83,13 +94,13 @@
 
     <div class="d-flex justify-content-center">
       <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="page"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
         (pageChange)="transition()"
+        [(page)]="page"
+        [boundaryLinks]="true"
+        [collectionSize]="totalItems"
+        [maxSize]="5"
+        [pageSize]="itemsPerPage"
+        [rotate]="true"
       ></ngb-pagination>
     </div>
   </div>

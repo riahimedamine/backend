@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, Routes} from '@angular/router';
+import {Observable, of} from 'rxjs';
 
-import { IDemandeConge } from './demande-conge.model';
-import { DemandeCongeService } from './service/demande-conge.service';
-import { DemandeCongeComponent } from './list/demande-conge.component';
-//import { CongeManagementDetailComponent } from './detail/conge-management-detail.component';
+import {IDemandeConge} from './demande-conge.model';
+import {DemandeCongeService} from './service/demande-conge.service';
+import {DemandeCongeComponent} from './list/demande-conge.component';
+import {DemandeCongeDetailComponent} from "./detail/demande-conge-detail.component";
 
 @Injectable({ providedIn: 'root' })
 export class DemandeCongeResolve implements Resolve<IDemandeConge | null> {
@@ -31,9 +31,9 @@ export const congeManagementRoute: Routes = [
 
   {
     path: ':id/view',
-    component: DemandeCongeComponent,
+    component: DemandeCongeDetailComponent,
     resolve: {
-      conge: DemandeCongeResolve,
+      demande: DemandeCongeResolve,
     },
   },
 ];

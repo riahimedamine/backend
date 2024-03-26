@@ -15,6 +15,11 @@
     "detail": {
       "title": "Détail de la demande"
     },
+    "value": {
+      "vld0": "En attente",
+      "vld1": "Validé",
+      "vld2": "Refusé"
+    },
     "dateDebut": "Date de début",
     "dateFin": "Date de fin",
     "user": "Utilisateur",

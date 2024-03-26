@@ -30,13 +30,13 @@ public class SoldeCongeController {
     }
 
     @PostMapping("")
-    public SoldeConge createSoldeConge(SoldeCongeDTO soldeCongeDTO) {
+    public SoldeConge createSoldeConge(@RequestBody SoldeCongeDTO soldeCongeDTO) {
         log.debug("REST request to save SoldeConge : {}", soldeCongeDTO);
         return soldeCongeService.saveSolde(soldeCongeDTO);
     }
 
     @PutMapping("")
-    public SoldeCongeDTO updateSoldeConge(SoldeCongeDTO soldeCongeDTO) {
+    public SoldeCongeDTO updateSoldeConge(@RequestBody SoldeCongeDTO soldeCongeDTO) {
         log.debug("REST request to update SoldeConge : {}", soldeCongeDTO);
         return soldeCongeService.updateSolde(soldeCongeDTO);
     }
