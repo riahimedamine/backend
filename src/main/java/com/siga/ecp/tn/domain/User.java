@@ -96,7 +96,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     private Set<Authority> authorities = new HashSet<>();
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "validator_id", referencedColumnName = "id")
     private User validator;
 

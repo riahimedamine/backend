@@ -29,7 +29,7 @@ public class SoldeConge extends AbstractAuditingEntity<Long> implements Serializ
 
     @Column(name = "year")
     private Integer year;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user", referencedColumnName = "login")
     private User user;
 

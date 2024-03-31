@@ -6,6 +6,7 @@ import com.siga.ecp.tn.domain.DemandeConge;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
@@ -23,10 +24,14 @@ public class DemandeCongeDTO implements Serializable {
     private Date dateFin;
     private Integer vld; //0 en cours //1 validé //2 refusé
     private String notes;
-    private Integer telephone;
+    private Long telephone;
     private String address;
-    private Integer type;
+    private String type;
     private String user;
+    private String createdBy;
+    private Instant createdDate;
+    private String lastModifiedBy;
+    private Instant lastModifiedDate;
 
     public DemandeCongeDTO(DemandeConge demandeConge) {
         this.id = demandeConge.getId();
@@ -36,16 +41,50 @@ public class DemandeCongeDTO implements Serializable {
         this.notes = demandeConge.getNotes();
         this.telephone = demandeConge.getTelephone();
         this.address = demandeConge.getAddress();
-        if (demandeConge.getType() != null) {
-            this.type = demandeConge.getType().getCode();
-        }
+        this.type = demandeConge.getType().getLibFr();
         if (demandeConge.getUser() != null) {
             this.user = demandeConge.getUser().getLogin();
         }
+        this.createdBy = demandeConge.getCreatedBy();
+        this.createdDate = demandeConge.getCreatedDate();
+        this.lastModifiedBy = demandeConge.getLastModifiedBy();
+        this.lastModifiedDate = demandeConge.getLastModifiedDate();
     }
 
     public DemandeCongeDTO() {
         // Empty constructor needed for Jackson.
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override
@@ -120,11 +159,11 @@ public class DemandeCongeDTO implements Serializable {
         this.notes = notes;
     }
 
-    public Integer getTelephone() {
+    public Long getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(Integer telephone) {
+    public void setTelephone(Long telephone) {
         this.telephone = telephone;
     }
 
@@ -136,11 +175,11 @@ public class DemandeCongeDTO implements Serializable {
         this.address = address;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -154,16 +193,6 @@ public class DemandeCongeDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "DemandeCongeDTO{" +
-            "id=" + id +
-            ", dateDebut=" + dateDebut +
-            ", dateFin=" + dateFin +
-            ", vld=" + vld +
-            ", notes='" + notes + '\'' +
-            ", telephone=" + telephone +
-            ", address='" + address + '\'' +
-            ", type=" + type +
-            ", user='" + user + '\'' +
-            '}';
+        return "DemandeCongeDTO{" + "id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", vld=" + vld + ", notes='" + notes + '\'' + ", telephone=" + telephone + ", address='" + address + '\'' + ", type=" + type + ", user='" + user + '\'' + '}';
     }
 }

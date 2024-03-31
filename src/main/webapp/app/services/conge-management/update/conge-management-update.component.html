@@ -29,6 +29,25 @@
 
         <div
           *ngIf="editForm.get('dateFin')!.invalid && (editForm.get('dateFin')!.dirty || editForm.get('dateFin')!.touched)">
+          <small *ngIf="editForm.get('dateFin')?.errors?.required" class="form-text text-danger"
+                 jhiTranslate="entity.validation.required">
+            Ce champ est obligatoire.
+          </small>
+          <small *ngIf="editForm.get('dateFin')?.errors?.dateFinAfterDateDebut" class="form-text text-danger"
+                 jhiTranslate="entity.validation.dateFinAfterDateDebut">
+            Date fin doit être supérieur à la date début.
+          </small>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" jhiTranslate="congeManagement.type">Type</label>
+        <select class="form-control" formControlName="type" id="type" name="type">
+          <option *ngFor="let type of types" [value]="type.libFr">{{ type.libFr }}</option>
+        </select>
+
+        <div
+          *ngIf="editForm.get('type')!.invalid && (editForm.get('dateFin')!.dirty || editForm.get('dateFin')!.touched)">
           <small *ngIf="editForm.get('dateDebut')?.errors?.required" class="form-text text-danger"
                  jhiTranslate="entity.validation.required">
             Ce champ est obligatoire.
@@ -37,7 +56,7 @@
       </div>
 
       <div class="mb-3">
-        <label jhiTranslate="congeManagement.notes">Nom</label>
+        <label jhiTranslate="congeManagement.notes">Notes</label>
         <input class="form-control" formControlName="notes" name="notes" type="text"/>
 
         <div *ngIf="editForm.get('notes')!.invalid && (editForm.get('notes')!.dirty || editForm.get('notes')!.touched)">
@@ -54,7 +73,7 @@
 
       <div class="mb-3">
         <label class="form-label" jhiTranslate="congeManagement.telephone">telephone</label>
-        <input class="form-control no-arrow" formControlName="telephone" name="telephone" type="number"/>
+        <input class="form-control no-arrow" formControlName="telephone" name="telephone" type="tel"/>
 
         <div
           *ngIf="editForm.get('telephone')!.invalid && (editForm.get('telephone')!.dirty || editForm.get('telephone')!.touched)">

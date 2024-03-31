@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { Authority } from 'app/config/authority.constants';
-import { UserManagementService } from '../service/solde-management.service';
-import { User } from '../solde-management.model';
+import {Authority} from 'app/config/authority.constants';
+import {UserManagementService} from '../service/solde-management.service';
+import {User} from '../solde-management.model';
 
-import { SoldeManagementUpdateComponent } from './solde-management-update.component';
+import {SoldeManagementUpdateComponent} from './solde-management-update.component';
 
 describe('User Management Update Component', () => {
   let comp: SoldeManagementUpdateComponent;

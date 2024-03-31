@@ -1,12 +1,13 @@
 package com.siga.ecp.tn.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
-import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * A DemandeConge.
@@ -39,12 +40,12 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     private String notes;
 
     @Column(name = "telephone")
-    private Integer telephone;
+    private Long telephone;
 
     @Column(name = "address")
     private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = TypeConge.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = TypeConge.class)
     @JoinColumn(name = "type", referencedColumnName = "code")
     private TypeConge type;
 
@@ -113,11 +114,11 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
         return result;
     }
 
-    public Integer getTelephone() {
+    public Long getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(Integer telephone) {
+    public void setTelephone(Long telephone) {
         this.telephone = telephone;
     }
 

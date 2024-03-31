@@ -18,7 +18,7 @@ import {SoldeManagementDeleteDialogComponent} from '../delete/solde-management-d
 })
 export class SoldeManagementComponent implements OnInit {
   currentAccount: Account | null = null;
-  soldes: Solde[] | null = null;
+  soldes: Solde[] | null = [];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -102,6 +102,7 @@ export class SoldeManagementComponent implements OnInit {
   }
 
   private onSuccess(soldes: Solde[] | null, headers: HttpHeaders): void {
+    console.log('Soldes:', soldes);
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.soldes = soldes;
   }

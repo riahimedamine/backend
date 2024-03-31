@@ -5,7 +5,6 @@ import com.siga.ecp.tn.service.SoldeCongeService;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class SoldeCongeController {
     }
 
     @GetMapping("")
-    public Page<SoldeCongeDTO> getAllSoldeConges(Pageable pageable) {
+    public List<SoldeCongeDTO> getAllSoldeConges(Pageable pageable) {
         log.debug("REST request to get all SoldeConges");
         return soldeCongeService.findAll(pageable);
     }
@@ -54,8 +53,8 @@ public class SoldeCongeController {
     }
 
     @GetMapping("/user/{login}")
-    public List<SoldeCongeDTO> getSoldeCongeByUser(@PathVariable String login) {
+    public List<SoldeCongeDTO> getSoldeCongeByUser(@PathVariable String login, Pageable pageable) {
         log.debug("REST request to get SoldeConge by user : {}", login);
-        return soldeCongeService.findByUserLogin(login);
+        return soldeCongeService.findByUserLogin(login, pageable);
     }
 }

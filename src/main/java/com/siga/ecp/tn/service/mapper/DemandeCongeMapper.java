@@ -53,7 +53,7 @@ public class DemandeCongeMapper {
                 demandeConge.setTelephone(demandeCongeDTO.getTelephone());
             }
             if (demandeCongeDTO.getType() != null) {
-                demandeConge.setType(typeCongeService.findByCode(demandeCongeDTO.getType()));
+                demandeConge.setType(typeCongeService.findByLibFr(demandeCongeDTO.getType()));
             }
             Optional<User> user = userRepository.findOneByLogin(demandeCongeDTO.getUser());
             if (demandeCongeDTO.getUser() != null && (user.isPresent())) {
@@ -70,6 +70,12 @@ public class DemandeCongeMapper {
             }
             if (demandeCongeDTO.getNotes() != null) {
                 demandeConge.setNotes(demandeCongeDTO.getNotes());
+            }
+            if (demandeCongeDTO.getCreatedBy() != null) {
+                demandeConge.setCreatedBy(demandeCongeDTO.getCreatedBy());
+            }
+            if (demandeCongeDTO.getCreatedDate() != null) {
+                demandeConge.setCreatedDate(demandeCongeDTO.getCreatedDate());
             }
 
             return demandeConge;

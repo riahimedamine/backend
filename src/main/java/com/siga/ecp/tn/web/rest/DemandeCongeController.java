@@ -1,13 +1,16 @@
 package com.siga.ecp.tn.web.rest;
 
+import com.siga.ecp.tn.domain.TypeConge;
+import com.siga.ecp.tn.repository.TypeCongeRepository;
 import com.siga.ecp.tn.service.DemandeCongeService;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
-import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/demande-conges")
@@ -16,9 +19,11 @@ public class DemandeCongeController {
     private final Logger log = LoggerFactory.getLogger(DemandeCongeController.class);
 
     private final DemandeCongeService demandeCongeService;
+    private final TypeCongeRepository typeCongeRepository;
 
-    public DemandeCongeController(DemandeCongeService demandeCongeService) {
+    public DemandeCongeController(DemandeCongeService demandeCongeService, TypeCongeRepository typeCongeRepository) {
         this.demandeCongeService = demandeCongeService;
+        this.typeCongeRepository = typeCongeRepository;
     }
 
     @GetMapping("")
@@ -75,5 +80,11 @@ public class DemandeCongeController {
     public void validateDemandeConge(@PathVariable Long id, @RequestParam int vld) {
         log.debug("REST request to validate DemandeConge : {}", id);
         demandeCongeService.validateDemandeConge(id, vld);
+    }
+
+    @GetMapping("/types")
+    public List<TypeConge> types() {
+        log.debug("REST request to get types");
+        return typeCongeRepository.findAllByisDeletedFalse();
     }
 }

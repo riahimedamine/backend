@@ -32,8 +32,8 @@ public class TypeConge extends AbstractAuditingEntity<Long> implements Serializa
     @Column(name = "lib_ar")
     private String libAr;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     public Long getId() {
         return this.id;

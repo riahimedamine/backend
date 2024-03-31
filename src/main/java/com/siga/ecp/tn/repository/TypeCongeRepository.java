@@ -14,4 +14,6 @@ public interface TypeCongeRepository extends JpaRepository<TypeConge, Long> {
     TypeConge findByCode(Integer code);
 
     List<TypeConge> findAllByisDeletedFalse();
+
+    TypeConge findByLibFr(String libFr);
 }

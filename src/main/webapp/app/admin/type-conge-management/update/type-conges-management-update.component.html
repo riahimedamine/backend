@@ -11,8 +11,8 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label" jhiTranslate="typeManagement.code">Login</label>
-        <input type="text" class="form-control" name="code" formControlName="code" />
+        <label class="form-label" jhiTranslate="typeManagement.code">Code</label>
+        <input class="form-control no-arrow" formControlName="code" name="code" type="number"/>
 
         <div *ngIf="editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get('code')?.errors?.required" jhiTranslate="entity.validation.required">

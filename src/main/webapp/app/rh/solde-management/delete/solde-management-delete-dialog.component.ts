@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { Solde } from '../solde-management.model';
-import { SlodeManagementService } from '../service/solde-management.service';
+import {Solde} from '../solde-management.model';
+import {SlodeManagementService} from '../service/solde-management.service';
 
 @Component({
   selector: 'jhi-type-conge-mgmt-delete-dialog',

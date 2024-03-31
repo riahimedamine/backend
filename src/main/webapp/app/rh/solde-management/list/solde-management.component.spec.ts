@@ -1,17 +1,17 @@
 jest.mock('app/core/auth/account.service');
 
-import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { of } from 'rxjs';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync} from '@angular/core/testing';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ActivatedRoute} from '@angular/router';
+import {RouterTestingModule} from '@angular/router/testing';
+import {of} from 'rxjs';
 
-import { UserManagementService } from '../service/solde-management.service';
-import { User } from '../solde-management.model';
-import { AccountService } from 'app/core/auth/account.service';
+import {UserManagementService} from '../service/solde-management.service';
+import {User} from '../solde-management.model';
+import {AccountService} from 'app/core/auth/account.service';
 
-import { SoldeManagementComponent } from './solde-management.component';
+import {SoldeManagementComponent} from './solde-management.component';
 
 describe('User Management Component', () => {
   let comp: SoldeManagementComponent;

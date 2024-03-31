@@ -73,8 +73,6 @@
         <td>{{ demande.user }}</td>
         <td>{{ demande.type }}</td>
 
-        <td>{{ demande.notes }}</td>
-
         <td *ngIf="demande.vld == 0">
           <button (click)="validate(demande.id!)" class="btn btn-warning btn-sm">
             <fa-icon icon="check"></fa-icon>

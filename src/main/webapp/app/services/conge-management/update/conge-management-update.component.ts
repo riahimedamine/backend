@@ -1,8 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { IDemandeConge } from '../conge-management.model';
-import { CongeManagementService } from '../service/conge-management.service';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {IDemandeConge} from '../conge-management.model';
+import {CongeManagementService} from '../service/conge-management.service';
+import {LANGUAGES} from "../../../config/language.constants";
+
+function DateValidator(dateDebutControl: AbstractControl): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (control.value && dateDebutControl.value) {
+      const dateDebut = new Date(dateDebutControl.value);
+      const dateFin = new Date(control.value);
+      return dateFin > dateDebut ? null : {'dateFinAfterDateDebut': true};
+    }
+    return null;
+  }
+}
 
 const demandeTemplate = {} as IDemandeConge;
 
@@ -17,27 +29,28 @@ const newDemande: IDemandeConge = {
 export class CongeManagementUpdateComponent implements OnInit {
   isSaving = false;
 
+  types: any[] = [];
+
   editForm = new FormGroup({
-    id: new FormControl(demandeTemplate.id, { nonNullable: true }),
+    id: new FormControl(demandeTemplate.id, {nonNullable: true}),
 
-    dateDebut: new FormControl(demandeTemplate.dateDebut, { validators: [Validators.required], nonNullable: true }),
-    dateFin: new FormControl(demandeTemplate.dateFin, { validators: [Validators.required], nonNullable: true }),
-    type: new FormControl(demandeTemplate.type, { nonNullable: true }),
-    notes: new FormControl(demandeTemplate.notes, { validators: [Validators.maxLength(100)] }),
-    telephone: new FormControl(demandeTemplate.telephone, { validators: [Validators.minLength(8)] }),
-    address: new FormControl(demandeTemplate.address, { validators: [Validators.maxLength(50)] }),
+    dateDebut: new FormControl(demandeTemplate.dateDebut, {validators: [Validators.required], nonNullable: true}),
+    dateFin: new FormControl(demandeTemplate.dateFin, {
+      validators: [Validators.required], nonNullable: true
+    }),
+    type: new FormControl(demandeTemplate.type, {validators: [Validators.required], nonNullable: true}),
+    notes: new FormControl(demandeTemplate.notes, {validators: [Validators.maxLength(100)]}),
+    telephone: new FormControl(demandeTemplate.telephone, {validators: [Validators.minLength(8)]}),
+    address: new FormControl(demandeTemplate.address, {validators: [Validators.maxLength(50)]}),
   });
+  protected readonly languages = LANGUAGES;
 
-  constructor(private congeService: CongeManagementService, private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.route.data.subscribe(({ conge }) => {
-      if (conge) {
-        this.editForm.reset(conge);
-      } else {
-        this.editForm.reset(newDemande);
-      }
-    });
+  constructor(private congeService: CongeManagementService, private route: ActivatedRoute) {
+    this.editForm.get('dateFin')?.setValidators([
+        Validators.required,
+        DateValidator(this.editForm.get('dateDebut')!)
+      ]
+    );
   }
 
   previousState(): void {
@@ -67,5 +80,20 @@ export class CongeManagementUpdateComponent implements OnInit {
 
   private onSaveError(): void {
     this.isSaving = false;
+  }
+
+  ngOnInit(): void {
+    this.route.data.subscribe(({conge}) => {
+      if (conge) {
+        this.editForm.reset(conge);
+      } else {
+        this.editForm.reset(newDemande);
+      }
+    });
+
+    this.congeService.getTypes().subscribe((response) => {
+      this.types = response;
+      console.log(this.types)
+    });
   }
 }

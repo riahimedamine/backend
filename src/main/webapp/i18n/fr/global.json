@@ -12,7 +12,8 @@
       },
       "rh": {
         "main": "Ressources Humaines",
-        "demandeConge": "Demande de congés"
+        "demandeConge": "Demande de congés",
+        "soldeManagement": "Soldes des congés"
       },
       "account": {
         "main": "Compte",
@@ -27,7 +28,6 @@
         "main": "Administration",
         "userManagement": "Gestion des utilisateurs",
         "typeCongeManagement": "Gestion des types de congés",
-        "soldeManagement": "Gestion des soldes des congés",
         "tracker": "Suivi des utilisateurs",
         "metrics": "Métriques",
         "health": "Diagnostics",
@@ -127,7 +127,8 @@
       "pattern": "Ce champ doit suivre l'expression régulière {{pattern}}.",
       "number": "Ce champ doit être un nombre.",
       "datetimelocal": "Ce champ doit être une date et une heure.",
-      "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail."
+      "patternLogin": "Ce champ ne peut contenir que des lettres, des chiffres ou des adresses e-mail.",
+      "dateFinAfterDateDebut": "La date de fin doit être après la date de début."
     },
     "filters": {
       "set": "Following filters are set",

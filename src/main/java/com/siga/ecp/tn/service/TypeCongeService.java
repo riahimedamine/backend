@@ -85,7 +85,7 @@ public class TypeCongeService {
     @Transactional(readOnly = true)
     public List<TypeConge> findAll() {
         log.debug("Request to get all TypeConges");
-        return typeCongeRepository.findAll();
+        return typeCongeRepository.findAllByisDeletedFalse();
     }
 
     /**
@@ -107,10 +107,26 @@ public class TypeCongeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete TypeConge : {}", id);
-        typeCongeRepository.deleteById(id);
+        Optional<TypeConge> type = typeCongeRepository.findById(id);
+        if (type.isEmpty()) return;
+        type.get().setIsDeleted(true);
     }
 
+    /**
+     * Get one typeConge by code.
+     *
+     * @param code the code of the type.
+     */
     public TypeConge findByCode(Integer code) {
         return typeCongeRepository.findByCode(code);
+    }
+
+    /**
+     * Get one typeConge by libFr.
+     *
+     * @param libFr the libFr of the type.
+     */
+    public TypeConge findByLibFr(String libFr) {
+        return typeCongeRepository.findByLibFr(libFr);
     }
 }

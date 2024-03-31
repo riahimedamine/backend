@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ISolde } from '../solde-management.model';
-import { SlodeManagementService } from '../service/solde-management.service';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {ISolde} from '../solde-management.model';
+import {SlodeManagementService} from '../service/solde-management.service';
 
 const soldeTemplate = {} as ISolde;
 

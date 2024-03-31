@@ -21,7 +21,7 @@
 
   <jhi-alert></jhi-alert>
 
-  <div *ngIf="soldes" class="table-responsive">
+  <div *ngIf="soldes != null" class="table-responsive">
     <table aria-describedby="solde-conges-management-page-heading" class="table table-striped">
       <thead>
       <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
@@ -37,7 +37,10 @@
         <th jhiSortBy="user" scope="col"><span jhiTranslate="soldeManagement.user">Langue</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
-
+        <th jhiSortBy="createdBy" scope="col">
+          <span jhiTranslate="soldeManagement.createdBy">Créé par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
         <th jhiSortBy="createdDate" scope="col">
           <span jhiTranslate="soldeManagement.createdDate">Créé le</span>
           <fa-icon icon="sort"></fa-icon>
@@ -60,8 +63,8 @@
         </td>
         <td>{{ solde.solde }}</td>
         <td>{{ solde.year }}</td>
-
         <td>{{ solde.user }}</td>
+        <td>{{ solde.createdBy }}</td>
         <td>{{ solde.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
         <td>{{ solde.lastModifiedBy }}</td>
         <td>{{ solde.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>

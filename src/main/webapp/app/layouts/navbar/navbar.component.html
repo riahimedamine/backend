@@ -115,13 +115,6 @@
                 <span jhiTranslate="global.menu.admin.typeCongeManagement">type congé</span>
               </a>
             </li>
-            <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/solde-management"
-                 routerLinkActive="active">
-                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
-                <span jhiTranslate="global.menu.admin.soldeManagement">solde</span>
-              </a>
-            </li>
             <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
           </ul>
         </li>
@@ -146,6 +139,13 @@
                  routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="users"></fa-icon>
                 <span jhiTranslate="global.menu.rh.demandeConge">Gestion des utilisateurs</span>
+              </a>
+            </li>
+            <li>
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/solde-management"
+                 routerLinkActive="active">
+                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
+                <span jhiTranslate="global.menu.rh.soldeManagement">solde</span>
               </a>
             </li>
           </ul>

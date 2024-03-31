@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 @NgModule({
@@ -39,13 +40,6 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./type-conge-management/type-conge-management.module').then(m => m.TypeCongeManagementModule),
         data: {
           pageTitle: 'typeManagement.home.title',
-        },
-      },
-      {
-        path: 'solde-management',
-        loadChildren: () => import('./solde-management/solde-management.module').then(m => m.SoldeManagementModule),
-        data: {
-          pageTitle: 'soldeManagement.home.title',
         },
       },
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
