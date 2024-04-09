@@ -2,25 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ASC, DESC, SORT } from 'app/config/navigation.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
-import { DemandeCongeService } from '../service/demande-conge.service';
-import { DemandeConge } from '../demande-conge.model';
-import { Solde } from '../../solde-management/solde-management.model';
-import { SoldeManagementDeleteDialogComponent } from '../../solde-management/delete/solde-management-delete-dialog.component';
-import { DemandeCongeValidateDialogComponent } from '../validate/demande-conge-validate-dialog.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { YearManagementService } from '../service/year-management.service';
+import { Year } from '../year-management.model';
+import { YearManagementDeleteDialogComponent } from '../delete/year-management-delete-dialog.component';
 
 @Component({
-  selector: 'jhi-conge-mgmt',
-  templateUrl: './demande-conge.component.html',
+  selector: 'jhi-year-mgmt',
+  templateUrl: './year-management.component.html',
 })
-export class DemandeCongeComponent implements OnInit {
-  currentAccount: Account | null = null;
-  demandeConges: DemandeConge[] | null = null;
+export class YearManagementComponent implements OnInit {
+  years: Year[] | null = [];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -29,7 +26,7 @@ export class DemandeCongeComponent implements OnInit {
   ascending!: boolean;
 
   constructor(
-    private congeService: DemandeCongeService,
+    private yearService: YearManagementService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -37,24 +34,34 @@ export class DemandeCongeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
   }
 
-  trackIdentity(_index: number, item: DemandeConge): number {
+  trackIdentity(_index: number, item: Year): number {
     return item.id!;
+  }
+
+  deleteYear(year: Year): void {
+    const modalRef = this.modalService.open(YearManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.year = year;
+    // unsubscribe not needed because closed completes on modal close
+    modalRef.closed.subscribe(reason => {
+      if (reason === 'deleted') {
+        this.loadAll();
+      }
+    });
   }
 
   loadAll(): void {
     this.isLoading = true;
-    this.congeService
+    this.yearService
       .query({
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe({
-        next: (res: HttpResponse<DemandeConge[]>) => {
+        next: (res: HttpResponse<Year[]>) => {
           this.isLoading = false;
           this.onSuccess(res.body, res.headers);
         },
@@ -91,18 +98,8 @@ export class DemandeCongeComponent implements OnInit {
     return result;
   }
 
-  private onSuccess(demandes: DemandeConge[] | null, headers: HttpHeaders): void {
+  private onSuccess(years: Year[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
-    this.demandeConges = demandes;
-  }
-  validate(demande: DemandeConge): void {
-    const modalRef = this.modalService.open(DemandeCongeValidateDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.demande = demande;
-    // unsubscribe not needed because closed completes on modal close
-    modalRef.closed.subscribe(reason => {
-      if (reason === 'validated') {
-        this.loadAll();
-      }
-    });
+    this.years = years;
   }
 }

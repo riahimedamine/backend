@@ -62,4 +62,9 @@ public class PublicUserResource {
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
+
+    @GetMapping("/users/list")
+    public List<String> getList() {
+        return userService.getUsers();
+    }
 }

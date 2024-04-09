@@ -1,9 +1,12 @@
 package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.DemandeConge;
+import com.siga.ecp.tn.domain.SoldeConge;
 import com.siga.ecp.tn.repository.DemandeCongeRepository;
+import com.siga.ecp.tn.repository.SoldeCongeRepository;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,10 +27,16 @@ public class DemandeCongeService {
     private final DemandeCongeRepository demandeCongeRepository;
 
     private final DemandeCongeMapper demandeCongeMapper;
+    private final SoldeCongeRepository soldeCongeRepository;
 
-    public DemandeCongeService(DemandeCongeRepository demandeCongeRepository, DemandeCongeMapper demandeCongeMapper) {
+    public DemandeCongeService(
+        DemandeCongeRepository demandeCongeRepository,
+        DemandeCongeMapper demandeCongeMapper,
+        SoldeCongeRepository soldeCongeRepository
+    ) {
         this.demandeCongeRepository = demandeCongeRepository;
         this.demandeCongeMapper = demandeCongeMapper;
+        this.soldeCongeRepository = soldeCongeRepository;
     }
 
     /**
@@ -132,7 +141,21 @@ public class DemandeCongeService {
         log.debug("Request to validate DemandeConge : {}", id);
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
         if (demandeConge != null) {
-            demandeConge.setVld(vld);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(demandeConge.getDateDebut());
+            int year = cal.getWeekYear();
+            String user = demandeConge.getUser().getLogin();
+            long nbJours = (demandeConge.getDateFin().getTime() - demandeConge.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
+            SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, user).orElse(null);
+            log.debug("nbJours : {}", nbJours);
+            log.debug("year : {}", year);
+            if (vld == 1 && soldeConge != null && soldeConge.getSolde() >= nbJours) {
+                soldeConge.setSolde((int) (soldeConge.getSolde() - nbJours));
+                soldeCongeRepository.save(soldeConge);
+                demandeConge.setVld(1);
+            } else {
+                demandeConge.setVld(2);
+            }
             demandeCongeRepository.save(demandeConge);
         }
     }

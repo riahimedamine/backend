@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/config/language.constants';
 import { IUser } from '../user-management.model';
 import { UserManagementService } from '../service/user-management.service';
+import { UserItem } from '../../../core/util/userItem';
+import { UserService } from '../../../core/util/user.service';
 
 const userTemplate = {} as IUser;
 
@@ -18,6 +20,7 @@ const newUser: IUser = {
   templateUrl: './user-management-update.component.html',
 })
 export class UserManagementUpdateComponent implements OnInit {
+  users: UserItem[] = [];
   languages = LANGUAGES;
   authorities: string[] = [];
   isSaving = false;
@@ -33,6 +36,7 @@ export class UserManagementUpdateComponent implements OnInit {
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
     }),
+
     firstName: new FormControl(userTemplate.firstName, { validators: [Validators.maxLength(50)] }),
     lastName: new FormControl(userTemplate.lastName, { validators: [Validators.maxLength(50)] }),
     email: new FormControl(userTemplate.email, {
@@ -42,11 +46,13 @@ export class UserManagementUpdateComponent implements OnInit {
     activated: new FormControl(userTemplate.activated, { nonNullable: true }),
     langKey: new FormControl(userTemplate.langKey, { nonNullable: true }),
     authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
+    validator: new FormControl(userTemplate.validator, { nonNullable: true }),
   });
 
-  constructor(private userService: UserManagementService, private route: ActivatedRoute) {}
+  constructor(private userService: UserManagementService, private route: ActivatedRoute, private userListService: UserService) {}
 
   ngOnInit(): void {
+    this.userListService.getUsers().subscribe(users => (this.users = users));
     this.route.data.subscribe(({ user }) => {
       if (user) {
         this.editForm.reset(user);

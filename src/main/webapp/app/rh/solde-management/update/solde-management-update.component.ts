@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {ISolde} from '../solde-management.model';
-import {SlodeManagementService} from '../service/solde-management.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ISolde } from '../solde-management.model';
+import { SlodeManagementService } from '../service/solde-management.service';
+import { YearService } from '../../../core/util/year.service';
+import { UserService } from '../../../core/util/user.service';
+import { UserItem } from '../../../core/util/userItem';
 
 const soldeTemplate = {} as ISolde;
 
@@ -13,6 +16,8 @@ const newSolde: ISolde = {} as ISolde;
   templateUrl: './solde-management-update.component.html',
 })
 export class SoldeManagementUpdateComponent implements OnInit {
+  users: UserItem[] = [];
+  years: number[] = [];
   isSaving = false;
 
   editForm = new FormGroup({
@@ -25,7 +30,12 @@ export class SoldeManagementUpdateComponent implements OnInit {
     user: new FormControl(soldeTemplate.user, { nonNullable: true, validators: [Validators.maxLength(50), Validators.required] }),
   });
 
-  constructor(private soldeService: SlodeManagementService, private route: ActivatedRoute) {}
+  constructor(
+    private soldeService: SlodeManagementService,
+    private route: ActivatedRoute,
+    private yearsService: YearService,
+    private userServise: UserService
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ solde }) => {
@@ -34,6 +44,16 @@ export class SoldeManagementUpdateComponent implements OnInit {
       } else {
         this.editForm.reset(newSolde);
       }
+    });
+    this.yearsService.getYears().subscribe({
+      next: years => {
+        this.years = years;
+      },
+    });
+    this.userServise.getUsers().subscribe({
+      next: users => {
+        this.users = users;
+      },
     });
   }
 

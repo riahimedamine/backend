@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {ApplicationConfigService} from 'app/core/config/application-config.service';
-import {createRequestOption} from 'app/core/request/request-util';
-import {Pagination} from 'app/core/request/request.model';
-import {ISolde} from '../solde-management.model';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { createRequestOption } from 'app/core/request/request-util';
+import { Pagination } from 'app/core/request/request.model';
+import { ISolde } from '../solde-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class SlodeManagementService {
@@ -34,9 +34,5 @@ export class SlodeManagementService {
 
   delete(id: number): Observable<{}> {
     return this.http.delete(`${this.resourceUrl}/${id}`);
-  }
-
-  authorities(): Observable<string[]> {
-    return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
 }

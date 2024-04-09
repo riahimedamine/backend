@@ -116,6 +116,12 @@
           <span jhiTranslate="userManagement.activated">Activé</span>
         </label>
       </div>
+      <div class="mb-3">
+        <label jhiTranslate="userManagement.validator">Langue</label>
+        <select class="form-control" id="validator" name="validator" formControlName="validator">
+          <option *ngFor="let user of users" [value]="user.login">{{ user.login }}</option>
+        </select>
+      </div>
 
       <div class="mb-3" *ngIf="languages && languages.length > 0">
         <label jhiTranslate="userManagement.langKey">Langue</label>

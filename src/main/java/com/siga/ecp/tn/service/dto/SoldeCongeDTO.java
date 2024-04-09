@@ -1,11 +1,11 @@
 package com.siga.ecp.tn.service.dto;
 
 import com.siga.ecp.tn.domain.SoldeConge;
-
 import java.time.Instant;
 import java.util.Objects;
 
 public class SoldeCongeDTO {
+
     private Long id;
     private Integer solde;
     private Integer year;
@@ -15,13 +15,12 @@ public class SoldeCongeDTO {
     private Instant createdDate;
     private Instant lastModifiedDate;
 
-    public SoldeCongeDTO() {
-    }
+    public SoldeCongeDTO() {}
 
     public SoldeCongeDTO(SoldeConge soldeConge) {
         this.id = soldeConge.getId();
         this.solde = soldeConge.getSolde();
-        this.year = soldeConge.getYear();
+        this.year = soldeConge.getYear().getYear();
         this.user = soldeConge.getUser().getLogin();
         this.createdBy = soldeConge.getCreatedBy();
         this.lastModifiedBy = soldeConge.getLastModifiedBy();
@@ -77,7 +76,29 @@ public class SoldeCongeDTO {
 
     @Override
     public String toString() {
-        return "SoldeCongeDTO{" + "id=" + id + ", solde=" + solde + ", year=" + year + ", user='" + user + '\'' + ", createdBy='" + createdBy + '\'' + ", LastModifiedBy='" + lastModifiedBy + '\'' + ", createdDate=" + createdDate + ", lastModifiedDate=" + lastModifiedDate + '}';
+        return (
+            "SoldeCongeDTO{" +
+            "id=" +
+            id +
+            ", solde=" +
+            solde +
+            ", year=" +
+            year +
+            ", user='" +
+            user +
+            '\'' +
+            ", createdBy='" +
+            createdBy +
+            '\'' +
+            ", LastModifiedBy='" +
+            lastModifiedBy +
+            '\'' +
+            ", createdDate=" +
+            createdDate +
+            ", lastModifiedDate=" +
+            lastModifiedDate +
+            '}'
+        );
     }
 
     public Instant getCreatedDate() {
@@ -127,5 +148,4 @@ public class SoldeCongeDTO {
     public void setUser(String user) {
         this.user = user;
     }
-
 }

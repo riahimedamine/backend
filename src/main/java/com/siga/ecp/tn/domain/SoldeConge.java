@@ -1,12 +1,11 @@
 package com.siga.ecp.tn.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A SoldeConge.
@@ -27,8 +26,10 @@ public class SoldeConge extends AbstractAuditingEntity<Long> implements Serializ
     @Column(name = "solde")
     private Integer solde;
 
-    @Column(name = "year")
-    private Integer year;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "year", referencedColumnName = "id")
+    private Year year;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user", referencedColumnName = "login")
     private User user;
@@ -72,11 +73,11 @@ public class SoldeConge extends AbstractAuditingEntity<Long> implements Serializ
         this.solde = solde;
     }
 
-    public Integer getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(Year year) {
         this.year = year;
     }
 

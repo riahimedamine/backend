@@ -23,14 +23,18 @@
 
       <div class="mb-3">
         <label class="form-label" jhiTranslate="soldeManagement.year">Year</label>
-        <input type="number" class="form-control" name="year" formControlName="year" />
+        <select class="form-control" name="year" formControlName="year">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
 
         <div *ngIf="editForm.get('year')!.invalid && (editForm.get('year')!.dirty || editForm.get('year')!.touched)"></div>
       </div>
 
       <div class="mb-3">
         <label jhiTranslate="soldeManagement.user">Nom</label>
-        <input type="text" class="form-control" name="user" formControlName="user" />
+        <select class="form-control" name="user" formControlName="user">
+          <option *ngFor="let user of users" [value]="user.login">{{ user.login }}</option>
+        </select>
 
         <div *ngIf="editForm.get('user')!.invalid && (editForm.get('user')!.dirty || editForm.get('user')!.touched)">
           <small

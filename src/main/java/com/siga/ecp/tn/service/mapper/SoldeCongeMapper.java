@@ -4,13 +4,13 @@ import com.siga.ecp.tn.domain.SoldeConge;
 import com.siga.ecp.tn.domain.User;
 import com.siga.ecp.tn.exception.UserNotFoundException;
 import com.siga.ecp.tn.repository.UserRepository;
+import com.siga.ecp.tn.repository.YearRepository;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Mapper for the entity {@link com.siga.ecp.tn.domain.SoldeConge} and its DTO called {@link com.siga.ecp.tn.service.dto.SoldeCongeDTO}.
@@ -19,9 +19,11 @@ import java.util.stream.Collectors;
 public class SoldeCongeMapper {
 
     private final UserRepository userRepository;
+    private final YearRepository yearRepository;
 
-    public SoldeCongeMapper(UserRepository userRepository) {
+    public SoldeCongeMapper(UserRepository userRepository, YearRepository yearRepository) {
         this.userRepository = userRepository;
+        this.yearRepository = yearRepository;
     }
 
     public SoldeCongeDTO soldeCongeToSoldeCongeDTO(SoldeConge soldeConge) {
@@ -34,7 +36,7 @@ public class SoldeCongeMapper {
         } else {
             SoldeConge soldeConge = new SoldeConge();
             soldeConge.setSolde(soldeCongeDTO.getSolde());
-            soldeConge.setYear(soldeCongeDTO.getYear());
+            soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()));
             Optional<User> user = userRepository.findOneByLogin(soldeCongeDTO.getUser());
             if (user.isEmpty()) {
                 throw new UserNotFoundException();
@@ -52,7 +54,7 @@ public class SoldeCongeMapper {
 
     public SoldeConge updateSoldeCongeFromDTO(SoldeCongeDTO soldeCongeDTO, SoldeConge soldeConge) {
         soldeConge.setSolde(soldeCongeDTO.getSolde());
-        soldeConge.setYear(soldeCongeDTO.getYear());
+        soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()));
         Optional<User> user = userRepository.findOneByLogin(soldeCongeDTO.getUser());
         if (user.isEmpty()) {
             throw new UserNotFoundException();
@@ -74,5 +76,4 @@ public class SoldeCongeMapper {
     public List<SoldeConge> soldeCongeDTOsToSoldeConges(List<SoldeCongeDTO> soldeCongeDTOs) {
         return soldeCongeDTOs.stream().filter(Objects::nonNull).map(this::soldeCongeDTOToSoldeConge).collect(Collectors.toList());
     }
-
 }
