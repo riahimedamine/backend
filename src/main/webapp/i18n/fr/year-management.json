@@ -1,0 +1,20 @@
+{
+  "yearManagement": {
+    "home": {
+      "title": "Années",
+      "refreshListLabel": "Actualiser la liste",
+      "createLabel": "Ajouter une année",
+      "createOrEditLabel": "Ajouter ou éditer une année"
+    },
+    "created": "L'année {{ param }} a été créée.",
+    "updated": "L'année {{ param }} a été modifiée.",
+    "deleted": "L'année {{ param }} a été supprimée.",
+    "delete": {
+      "question": "Etes-vous certain de vouloir supprimer le année {{ year }} ?"
+    },
+    "detail": {
+      "title": "Détail de l'année"
+    },
+    "year": "Année"
+  }
+}

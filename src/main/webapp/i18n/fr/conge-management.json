@@ -12,6 +12,9 @@
     "delete": {
       "question": "Etes-vous certain de vouloir supprimer la demande {{ id }} ?"
     },
+    "validate": {
+      "question": "Valider la demande {{ id }}"
+    },
     "detail": {
       "title": "Détail de la demande"
     },

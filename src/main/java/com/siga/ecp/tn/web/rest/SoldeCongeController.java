@@ -41,7 +41,7 @@ public class SoldeCongeController {
     }
 
     @GetMapping("/{id}")
-    public SoldeConge getSoldeConge(@PathVariable Long id) {
+    public SoldeCongeDTO getSoldeConge(@PathVariable Long id) {
         log.debug("REST request to get SoldeConge : {}", id);
         return soldeCongeService.findById(id);
     }

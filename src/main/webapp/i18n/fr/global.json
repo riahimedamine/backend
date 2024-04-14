@@ -13,7 +13,8 @@
       "rh": {
         "main": "Ressources Humaines",
         "demandeConge": "Demande de congés",
-        "soldeManagement": "Soldes des congés"
+        "soldeManagement": "Soldes des congés",
+        "yearManagement": "Années"
       },
       "account": {
         "main": "Compte",
@@ -107,7 +108,7 @@
       "view": "Voir",
       "show": "Show {{otherEntity}}",
       "validate": "Valider",
-      "invalidate": "Invalider"
+      "refuse": "Refuser"
     },
     "detail": {
       "field": "Champs",
@@ -115,6 +116,9 @@
     },
     "delete": {
       "title": "Confirmation de suppression"
+    },
+    "validate": {
+      "title": "Confirmation de validation"
     },
     "validation": {
       "required": "Ce champ est obligatoire.",

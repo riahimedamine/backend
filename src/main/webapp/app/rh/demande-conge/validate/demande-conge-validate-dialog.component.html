@@ -1,6 +1,6 @@
 <form *ngIf="demande" name="deleteForm" (ngSubmit)="validate(demande.id!)">
   <div class="modal-header">
-    <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirmation de suppression</h4>
+    <h4 class="modal-title" jhiTranslate="entity.validate.title">Confirmation de validation</h4>
 
     <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
   </div>
@@ -8,8 +8,8 @@
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
 
-    <p jhiTranslate="soldeManagement.delete.question" [translateValues]="{ id: demande.id }">
-      Etes-vous certain de vouloir supprimer l'utilisateur {{ demande.id }} ?
+    <p [translateValues]="{ id: demande.id }" jhiTranslate="congeManagement.validate.question">
+      Valider la demande {{ demande.id }}
     </p>
   </div>
 
@@ -19,11 +19,13 @@
     </button>
 
     <button type="submit" class="btn btn-done">
-      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Supprimer</span>
+      <fa-icon icon="check"></fa-icon>
+      <span jhiTranslate="entity.action.validate">Valider</span>
     </button>
 
     <button type="button" class="btn btn-danger" (click)="refuse(demande.id!)">
-      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">invalider</span>
+      <fa-icon icon="times"></fa-icon>
+      <span jhiTranslate="entity.action.refuse">Refuser</span>
     </button>
   </div>
 </form>

@@ -10,7 +10,7 @@
     "updated": "La solde pour {{ param }} a été mis à jour.",
     "deleted": "La solde {{ param }} a été supprimé.",
     "delete": {
-      "question": "Etes-vous certain de vouloir supprimer le solde {{ year }} ?"
+      "question": "Etes-vous certain de vouloir supprimer le solde {{ year }} pour l'utilisateur {{ user }} ?"
     },
     "detail": {
       "title": "Détail du solde"

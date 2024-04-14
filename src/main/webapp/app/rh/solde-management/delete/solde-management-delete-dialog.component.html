@@ -8,7 +8,7 @@
   <div class="modal-body">
     <jhi-alert-error></jhi-alert-error>
 
-    <p jhiTranslate="soldeManagement.delete.question" [translateValues]="{ id: solde.id }">
+    <p [translateValues]="{ year: solde.year, user: solde.user }" jhiTranslate="soldeManagement.delete.question">
       Etes-vous certain de vouloir supprimer l'utilisateur {{ solde.id }} ?
     </p>
   </div>

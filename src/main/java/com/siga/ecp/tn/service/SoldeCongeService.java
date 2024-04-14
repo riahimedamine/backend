@@ -77,13 +77,13 @@ public class SoldeCongeService {
      * @return the entity.
      */
     @Transactional(readOnly = true)
-    public SoldeConge findById(Long id) {
+    public SoldeCongeDTO findById(Long id) {
         log.debug("Request to get SoldeConge : {}", id);
         Optional<SoldeConge> soldeConge = soldeCongeRepository.findById(id);
         if (soldeConge.isEmpty()) {
             throw new SoldeNotFoundException();
         } else {
-            return soldeConge.get();
+            return soldeCongeMapper.soldeCongeToSoldeCongeDTO(soldeConge.get());
         }
     }
 
