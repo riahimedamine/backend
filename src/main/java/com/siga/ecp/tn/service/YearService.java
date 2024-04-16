@@ -2,9 +2,11 @@ package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.Year;
 import com.siga.ecp.tn.repository.YearRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 @Service
 public class YearService {
@@ -19,20 +21,20 @@ public class YearService {
         return yearRepository.save(year);
     }
 
-    public Year update(Year year) {
-        return yearRepository.save(year);
-    }
-
     public void delete(Long id) {
         yearRepository.deleteById(id);
+    }
+
+    public List<Year> findAll(Pageable pageable) {
+        return yearRepository.findAll(pageable).toList();
     }
 
     public Year findById(Long id) {
         return yearRepository.findById(id).orElse(null);
     }
 
-    public List<Year> findAll() {
-        return yearRepository.findAll();
+    public Year update(Year year) {
+        return yearRepository.save(year);
     }
 
     public List<Integer> getYears() {

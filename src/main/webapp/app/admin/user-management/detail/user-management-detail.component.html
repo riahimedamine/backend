@@ -3,7 +3,7 @@
     <div *ngIf="user">
       <h2>
         <span jhiTranslate="userManagement.detail.title">Utilisateur</span> [<strong>{{ user.login }}</strong
-        >]
+      >]
       </h2>
 
       <dl class="row-md jh-entity-details">
@@ -11,7 +11,8 @@
         <dd>
           <span>{{ user.login }}</span>
           <span *ngIf="user.activated" class="badge bg-success" jhiTranslate="userManagement.activated">Activé</span>
-          <span *ngIf="!user.activated" class="badge bg-danger" jhiTranslate="userManagement.deactivated">Désactivé</span>
+          <span *ngIf="!user.activated" class="badge bg-danger"
+                jhiTranslate="userManagement.deactivated">Désactivé</span>
         </dd>
 
         <dt><span jhiTranslate="userManagement.firstName">Prénom</span></dt>
@@ -22,6 +23,9 @@
 
         <dt><span jhiTranslate="userManagement.email">Email</span></dt>
         <dd>{{ user.email }}</dd>
+
+        <dt><span jhiTranslate="userManagement.validator">Validator</span></dt>
+        <dd>{{ user.validator }}</dd>
 
         <dt><span jhiTranslate="userManagement.langKey">Langue</span></dt>
         <dd>{{ user.langKey }}</dd>

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
-import { LANGUAGES } from 'app/config/language.constants';
-import { IUser } from '../user-management.model';
-import { UserManagementService } from '../service/user-management.service';
-import { UserItem } from '../../../core/util/userItem';
-import { UserService } from '../../../core/util/user.service';
+import {LANGUAGES} from 'app/config/language.constants';
+import {IUser} from '../user-management.model';
+import {UserManagementService} from '../service/user-management.service';
+import {UserItem} from '../../../core/util/userItem';
+import {UserService} from '../../../core/util/user.service';
 
 const userTemplate = {} as IUser;
 
@@ -37,23 +37,26 @@ export class UserManagementUpdateComponent implements OnInit {
       ],
     }),
 
-    firstName: new FormControl(userTemplate.firstName, { validators: [Validators.maxLength(50)] }),
-    lastName: new FormControl(userTemplate.lastName, { validators: [Validators.maxLength(50)] }),
+    firstName: new FormControl(userTemplate.firstName, {validators: [Validators.maxLength(50)]}),
+    lastName: new FormControl(userTemplate.lastName, {validators: [Validators.maxLength(50)]}),
     email: new FormControl(userTemplate.email, {
       nonNullable: true,
       validators: [Validators.minLength(5), Validators.maxLength(254), Validators.email],
     }),
-    activated: new FormControl(userTemplate.activated, { nonNullable: true }),
-    langKey: new FormControl(userTemplate.langKey, { nonNullable: true }),
-    authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
-    validator: new FormControl(userTemplate.validator, { nonNullable: true }),
+    activated: new FormControl(userTemplate.activated, {nonNullable: true}),
+    langKey: new FormControl(userTemplate.langKey, {nonNullable: true}),
+    authorities: new FormControl(userTemplate.authorities, {nonNullable: true}),
+    validator: new FormControl(userTemplate.validator, {nonNullable: true}),
   });
 
-  constructor(private userService: UserManagementService, private route: ActivatedRoute, private userListService: UserService) {}
+  constructor(private userService: UserManagementService, private route: ActivatedRoute, private userListService: UserService) {
+  }
 
   ngOnInit(): void {
-    this.userListService.getUsers().subscribe(users => (this.users = users));
-    this.route.data.subscribe(({ user }) => {
+    this.userListService.getUsers().subscribe(users => {
+      this.users = users.filter(user => user.login !== this.editForm.get('login')?.value);
+    });
+    this.route.data.subscribe(({user}) => {
       if (user) {
         this.editForm.reset(user);
       } else {

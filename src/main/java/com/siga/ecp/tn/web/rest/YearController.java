@@ -2,8 +2,10 @@ package com.siga.ecp.tn.web.rest;
 
 import com.siga.ecp.tn.domain.Year;
 import com.siga.ecp.tn.service.YearService;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/years")
@@ -21,8 +23,8 @@ public class YearController {
     }
 
     @GetMapping("")
-    public List<Year> getYear() {
-        return yearService.findAll();
+    public List<Year> getYear(Pageable pageable) {
+        return yearService.findAll(pageable);
     }
 
     @PostMapping("")
