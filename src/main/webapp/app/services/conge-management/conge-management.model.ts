@@ -29,6 +29,10 @@ export class DemandeConge implements IDemandeConge {
     public createdDate?: Date,
     public lastModifiedBy?: string,
     public lastModifiedDate?: Date
-  ) {
-  }
+  ) {}
+}
+
+export interface ISoldeConge {
+  solde: number;
+  year: number;
 }

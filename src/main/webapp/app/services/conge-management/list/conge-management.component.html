@@ -1,4 +1,23 @@
 <div>
+  <div *ngIf="soldes">
+    <h2>solde congé</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Année</th>
+            <th>Solde</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="soldes">
+          <tr *ngFor="let solde of soldes">
+            <td>{{ solde.year }}</td>
+            <td>{{ solde.solde }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <h2>
     <span id="conge-management-page-heading" jhiTranslate="congeManagement.home.title" data-cy="congeManagementPageHeading"
       >Demande congés</span
@@ -15,7 +34,6 @@
       </button>
     </div>
   </h2>
-
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>

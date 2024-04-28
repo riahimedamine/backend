@@ -2,16 +2,19 @@ package com.siga.ecp.tn.web.rest;
 
 import com.siga.ecp.tn.domain.TypeConge;
 import com.siga.ecp.tn.repository.TypeCongeRepository;
+import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.DemandeCongeService;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
+import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/demande-conges")
@@ -87,5 +90,17 @@ public class DemandeCongeController {
     public List<TypeConge> types() {
         log.debug("REST request to get types");
         return typeCongeRepository.findAllByisDeletedFalse();
+    }
+
+    @GetMapping("/solde/{login}")
+    public List<SoldeCongeDTO> solde(@PathVariable String login) {
+        log.debug("REST request to get solde");
+        return demandeCongeService.getSoldeCongeByUser(login, Pageable.unpaged());
+    }
+
+    @PostMapping("/check")
+    public Boolean check(@RequestBody LocalDate dateDebut, @RequestBody LocalDate dateFin) {
+        log.debug("REST request to check solde");
+        return demandeCongeService.check(dateDebut, dateFin);
     }
 }

@@ -2,7 +2,6 @@ package com.siga.ecp.tn.repository;
 
 import com.siga.ecp.tn.domain.DemandeConge;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,4 +23,6 @@ public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long
     List<DemandeConge> findByUserLogin(String login);
 
     List<DemandeConge> findByUserLoginAndVld(String login, Integer state);
+
+    Boolean existsByUserLoginAndVld(String login, Integer state);
 }

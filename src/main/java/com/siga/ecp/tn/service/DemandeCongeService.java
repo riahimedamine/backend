@@ -4,18 +4,22 @@ import com.siga.ecp.tn.domain.DemandeConge;
 import com.siga.ecp.tn.domain.SoldeConge;
 import com.siga.ecp.tn.repository.DemandeCongeRepository;
 import com.siga.ecp.tn.repository.SoldeCongeRepository;
+import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
+import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link com.siga.ecp.tn.domain.DemandeConge}.
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class DemandeCongeService {
+
+    private final WorkflowService workflowService;
 
     private final Logger log = LoggerFactory.getLogger(DemandeCongeService.class);
 
@@ -32,10 +38,12 @@ public class DemandeCongeService {
     private final SoldeCongeRepository soldeCongeRepository;
 
     public DemandeCongeService(
+        WorkflowService workflowService,
         DemandeCongeRepository demandeCongeRepository,
         DemandeCongeMapper demandeCongeMapper,
         SoldeCongeRepository soldeCongeRepository
     ) {
+        this.workflowService = workflowService;
         this.demandeCongeRepository = demandeCongeRepository;
         this.demandeCongeMapper = demandeCongeMapper;
         this.soldeCongeRepository = soldeCongeRepository;
@@ -121,9 +129,24 @@ public class DemandeCongeService {
      */
     public DemandeCongeDTO saveDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to save DemandeConge : {}", demandeCongeDTO);
-        return demandeCongeMapper.demandeCongeToDemandeCongeDTO(
-            demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO))
-        );
+        boolean exist = demandeCongeRepository.existsByUserLoginAndVld(demandeCongeDTO.getUser(), 0);
+        SoldeConge soldeConge = soldeCongeRepository
+            .findByYearYearAndUserLogin(Calendar.getInstance().getWeekYear(), demandeCongeDTO.getUser())
+            .orElse(null);
+        if (soldeConge != null && !exist) {
+            long nbJours = (demandeCongeDTO.getDateFin().getTime() - demandeCongeDTO.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
+            if (soldeConge.getSolde() >= nbJours) {
+                DemandeConge demande = demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO);
+                HashMap<String, Object> variables = new HashMap<String, Object>();
+                // replace ny current matricule
+                variables.put("demande", demande);
+                variables.put("type", demande.getType().getLibFr());
+                ProcessInstance processInstance = workflowService.startProcessById("demande congé", variables);
+
+                return demandeCongeMapper.demandeCongeToDemandeCongeDTO(demande);
+            }
+        }
+        throw new RuntimeException("Solde insuffisant");
     }
 
     /**
@@ -143,22 +166,23 @@ public class DemandeCongeService {
         log.debug("Request to validate DemandeConge : {}", id);
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
         if (demandeConge != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(demandeConge.getDateDebut());
-            int year = cal.getWeekYear();
-            String user = demandeConge.getUser().getLogin();
-            long nbJours = (demandeConge.getDateFin().getTime() - demandeConge.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
-            SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, user).orElse(null);
-            log.debug("nbJours : {}", nbJours);
-            log.debug("year : {}", year);
-            if (vld == 1 && soldeConge != null && soldeConge.getSolde() >= nbJours) {
-                soldeConge.setSolde((int) (soldeConge.getSolde() - nbJours));
-                soldeCongeRepository.save(soldeConge);
-                demandeConge.setVld(1);
-            } else {
-                demandeConge.setVld(2);
-            }
+            demandeConge.setVld(vld);
             demandeCongeRepository.save(demandeConge);
         }
+    }
+
+    public List<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
+        log.debug("Request to get SoldeConge by user : {}", login);
+        return soldeCongeRepository.findByUserLogin(login, pageable).stream().map(SoldeCongeDTO::new).collect(Collectors.toList());
+    }
+
+    public boolean check(LocalDate dateDebut, LocalDate dateFin) {
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        long days = dateDebut.datesUntil(dateFin).count();
+        int year = dateDebut.getYear();
+
+        SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
+        return soldeConge != null && soldeConge.getSolde() >= days && demandeCongeRepository.existsByUserLoginAndVld(login, 0);
     }
 }

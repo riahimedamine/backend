@@ -211,3 +211,21 @@ jhipster:
 # ===================================================================
 
 # application:
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      email: chaar@gmail.com
+      first-name: chaar
+      last-name: mohamed
+    database:
+      schema-update: true
+      schema-name: backend
+      table-prefix: backend.
+    webapp:
+      index-redirect-enabled: true
+      application-path: /workflow
+    authorization:
+      enabled: false
+      enabled-for-custom-code: false

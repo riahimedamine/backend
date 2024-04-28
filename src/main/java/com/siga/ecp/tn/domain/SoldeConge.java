@@ -11,7 +11,7 @@ import org.hibernate.envers.Audited;
  * A SoldeConge.
  */
 @Entity
-@Table(name = "solde_conge")
+@Table(name = "solde_conge", uniqueConstraints = { @UniqueConstraint(columnNames = { "year", "user" }) })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Audited
 public class SoldeConge extends AbstractAuditingEntity<Long> implements Serializable {
