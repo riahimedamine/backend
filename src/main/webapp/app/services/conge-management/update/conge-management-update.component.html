@@ -12,7 +12,7 @@
 
       <div class="mb-3">
         <label class="form-label" jhiTranslate="congeManagement.dateDebut">Date Debut</label>
-        <input class="form-control" formControlName="dateDebut" name="dateDebut" type="date" />
+        <input class="form-control" formControlName="dateDebut" name="dateDebut" type="date" (blur)="check()" />
 
         <div *ngIf="editForm.get('dateDebut')!.invalid && (editForm.get('dateDebut')!.dirty || editForm.get('dateDebut')!.touched)">
           <small

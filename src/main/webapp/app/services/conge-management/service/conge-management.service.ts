@@ -59,20 +59,7 @@ export class CongeManagementService {
     return this.http.get<ISoldeConge[]>(`${this.resourceUrl}/solde/${login}`);
   }
 
-  hasDemandeEnCours(login: string): boolean {
-    let exist = false;
-    this.findByUser(login).subscribe((demandes: IDemandeConge[]) => {
-      for (const demande of demandes) {
-        if (demande.vld === 0) {
-          exist = true;
-        }
-      }
-      exist = false;
-    });
-    return exist;
-  }
-
-  check(obj: any): Observable<boolean> {
+  check(obj: { dateDebut: Date; dateFin: Date }): Observable<boolean> {
     return this.http.post<boolean>(`${this.resourceUrl}/check`, obj);
   }
 }

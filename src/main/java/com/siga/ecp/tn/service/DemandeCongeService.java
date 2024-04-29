@@ -8,11 +8,9 @@ import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -179,10 +177,9 @@ public class DemandeCongeService {
     public boolean check(LocalDate dateDebut, LocalDate dateFin) {
         String login = SecurityUtils.getCurrentUserLogin().get();
 
-        long days = dateDebut.datesUntil(dateFin).count();
+        long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
         int year = dateDebut.getYear();
-
         SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
-        return soldeConge != null && soldeConge.getSolde() >= days && demandeCongeRepository.existsByUserLoginAndVld(login, 0);
+        return soldeConge != null && soldeConge.getSolde() >= days && !demandeCongeRepository.existsByUserLoginAndVld(login, 0);
     }
 }

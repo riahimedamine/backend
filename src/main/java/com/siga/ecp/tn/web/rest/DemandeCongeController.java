@@ -6,7 +6,9 @@ import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.DemandeCongeService;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,8 +101,16 @@ public class DemandeCongeController {
     }
 
     @PostMapping("/check")
-    public Boolean check(@RequestBody LocalDate dateDebut, @RequestBody LocalDate dateFin) {
+    public Boolean check(@RequestBody Demande demande) {
         log.debug("REST request to check solde");
-        return demandeCongeService.check(dateDebut, dateFin);
+        return demandeCongeService.check(demande.dateDebut, demande.dateFin);
+    }
+
+    public static class Demande {
+
+        public LocalDate dateDebut;
+        public LocalDate dateFin;
+
+        public Demande() {}
     }
 }

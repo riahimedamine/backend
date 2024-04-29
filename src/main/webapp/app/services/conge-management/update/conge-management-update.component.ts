@@ -114,14 +114,15 @@ export class CongeManagementUpdateComponent implements OnInit {
   }
 
   check(): void {
-    let obj = {
-      dateDebut: this.editForm.get('dateDebut')!.value,
-      dateFin: this.editForm.get('dateFin')!.value,
-    };
+    if (this.editForm.get('dateDebut')!.value && this.editForm.get('dateFin')!.value) {
+      let obj = {
+        dateDebut: this.editForm.get('dateDebut')!.value!,
+        dateFin: this.editForm.get('dateFin')!.value!,
+      };
 
-    this.congeService.check(obj).subscribe(response => {
-      console.error(response);
-      this.error = response;
-    });
+      this.congeService.check(obj).subscribe(response => {
+        this.error = !response;
+      });
+    }
   }
 }
