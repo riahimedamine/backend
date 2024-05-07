@@ -134,13 +134,13 @@ public class DemandeCongeService {
         if (soldeConge != null && !exist) {
             long nbJours = (demandeCongeDTO.getDateFin().getTime() - demandeCongeDTO.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
             if (soldeConge.getSolde() >= nbJours) {
-                DemandeConge demande = demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO);
+                DemandeConge demande = demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO));
                 HashMap<String, Object> variables = new HashMap<String, Object>();
-                // replace ny current matricule
                 variables.put("demande", demande);
                 variables.put("type", demande.getType().getLibFr());
                 ProcessInstance processInstance = workflowService.startProcessById("demande congé", variables);
-
+                demande.setProcessInstanceId(processInstance.getId());
+                demandeCongeRepository.save(demande);
                 return demandeCongeMapper.demandeCongeToDemandeCongeDTO(demande);
             }
         }

@@ -114,6 +114,7 @@ export class CongeManagementUpdateComponent implements OnInit {
   }
 
   check(): void {
+    console.log('////////////');
     if (this.editForm.get('dateDebut')!.value && this.editForm.get('dateFin')!.value) {
       let obj = {
         dateDebut: this.editForm.get('dateDebut')!.value!,

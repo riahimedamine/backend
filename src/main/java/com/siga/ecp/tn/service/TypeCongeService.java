@@ -2,13 +2,12 @@ package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.TypeConge;
 import com.siga.ecp.tn.repository.TypeCongeRepository;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link com.siga.ecp.tn.domain.TypeConge}.
@@ -110,6 +109,7 @@ public class TypeCongeService {
         Optional<TypeConge> type = typeCongeRepository.findById(id);
         if (type.isEmpty()) return;
         type.get().setIsDeleted(true);
+        typeCongeRepository.save(type.get());
     }
 
     /**

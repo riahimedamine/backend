@@ -9,6 +9,10 @@ import com.siga.ecp.tn.security.AuthoritiesConstants;
 import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.AdminUserDTO;
 import com.siga.ecp.tn.service.dto.UserDTO;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -19,11 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -111,7 +110,9 @@ public class UserService {
     @Transactional
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
-        user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
+        if (!userDTO.getValidator().isBlank() && userDTO.getValidator() != null) {
+            user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
+        }
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -268,7 +269,9 @@ public class UserService {
             .map(user -> {
                 this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
-                user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
+                if (!userDTO.getValidator().isBlank() && userDTO.getValidator() != null) {
+                    user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
+                }
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 if (userDTO.getEmail() != null) {

@@ -48,7 +48,6 @@ public class CacheConfiguration {
             createCache(cm, com.siga.ecp.tn.domain.User.class.getName());
             createCache(cm, com.siga.ecp.tn.domain.Authority.class.getName());
             createCache(cm, com.siga.ecp.tn.domain.User.class.getName() + ".authorities");
-            // jhipster-needle-ehcache-add-entry
         };
     }
 

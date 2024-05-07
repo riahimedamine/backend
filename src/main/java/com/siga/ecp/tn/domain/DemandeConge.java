@@ -1,13 +1,12 @@
 package com.siga.ecp.tn.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.envers.Audited;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.envers.Audited;
 
 /**
  * A DemandeConge.
@@ -34,7 +33,7 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     private Date dateFin;
 
     @Column(name = "vld")
-    private Integer vld; //0 en cours //1 validé //2 refusé
+    private Integer vld; //-1: invalid, 0: pending, 1: valid1, 2: validFinal
 
     @Column(name = "notes")
     private String notes;
@@ -45,6 +44,9 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     @Column(name = "address")
     private String address;
 
+    @Column(name = "process_instance_id")
+    private String processInstanceId;
+
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = TypeConge.class)
     @JoinColumn(name = "type", referencedColumnName = "code")
     private TypeConge type;
@@ -52,6 +54,14 @@ public class DemandeConge extends AbstractAuditingEntity<Long> implements Serial
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user", referencedColumnName = "login")
     private User user;
+
+    public String getProcessInstanceId() {
+        return processInstanceId;
+    }
+
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
+    }
 
     @Override
     public String toString() {

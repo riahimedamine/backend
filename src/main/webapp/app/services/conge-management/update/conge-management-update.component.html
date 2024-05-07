@@ -5,6 +5,12 @@
 
       <jhi-alert-error></jhi-alert-error>
 
+      <small *ngIf="error" class="form-text text-danger" jhiTranslate="congeManagement.error">
+        Solde insuffisant pour cette demande ou il y a une demande en attente.
+      </small>
+
+      <small *ngIf="!error" class="form-text text-success" jhiTranslate="congeManagement.success"> Demande valide. </small>
+
       <div [hidden]="!editForm.value.id" class="mb-3">
         <label jhiTranslate="global.field.id">ID</label>
         <input class="form-control" formControlName="id" name="id" readonly type="text" />
