@@ -269,7 +269,7 @@ public class UserService {
             .map(user -> {
                 this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
-                if (!userDTO.getValidator().isBlank() && userDTO.getValidator() != null) {
+                if (userDTO.getValidator() != null) {
                     user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
                 }
                 user.setFirstName(userDTO.getFirstName());

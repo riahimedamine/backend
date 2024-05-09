@@ -8,9 +8,11 @@ import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -165,7 +167,28 @@ public class DemandeCongeService {
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
         if (demandeConge != null) {
             demandeConge.setVld(vld);
-            demandeCongeRepository.save(demandeConge);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(demandeConge.getDateDebut());
+            int year = calendar.get(Calendar.YEAR);
+            long nbJours = (demandeConge.getDateFin().getTime() - demandeConge.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
+
+            if (vld == 2) {
+                demandeConge.setVld(2);
+                soldeCongeRepository
+                    .findByYearYearAndUserLogin(year, demandeConge.getUser().getLogin())
+                    .ifPresent(soldeConge -> {
+                        soldeConge.setSolde((int) (soldeConge.getSolde() - nbJours));
+                        soldeCongeRepository.save(soldeConge);
+                        demandeCongeRepository.save(demandeConge);
+                    });
+            } else if (vld == 1) {
+                demandeConge.setVld(1);
+                demandeCongeRepository.save(demandeConge);
+            } else {
+                demandeConge.setVld(-1);
+                demandeCongeRepository.save(demandeConge);
+            }
         }
     }
 
