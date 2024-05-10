@@ -17,7 +17,8 @@
     >
       <fa-icon icon="bars"></fa-icon>
     </a>
-    <div [ngSwitch]="account !== null" [ngbCollapse]="isNavbarCollapsed" class="navbar-collapse collapse" id="navbarResponsive">
+    <div [ngSwitch]="account !== null" [ngbCollapse]="isNavbarCollapsed" class="navbar-collapse collapse"
+         id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
         <li [routerLinkActiveOptions]="{ exact: true }" class="nav-item" routerLinkActive="active">
           <a (click)="collapseNavbar()" class="nav-link" routerLink="/">
@@ -36,7 +37,8 @@
           ngbDropdown
           routerLinkActive="active"
         >
-          <a class="nav-link dropdown-toggle" data-cy="services" href="javascript:void(0);" id="services-menu" ngbDropdownToggle>
+          <a class="nav-link dropdown-toggle" data-cy="services" href="javascript:void(0);" id="services-menu"
+             ngbDropdownToggle>
             <span>
               <fa-icon icon="th-list"></fa-icon>
               <span jhiTranslate="global.menu.services.main">Services</span>
@@ -44,11 +46,18 @@
           </a>
           <ul aria-labelledby="services-menu" class="dropdown-menu" ngbDropdownMenu>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="service/conge-management" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="service/conge-management"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="users"></fa-icon>
                 <span jhiTranslate="global.menu.services.congesManagement">Gestion des congés</span>
               </a>
             </li>
+            <li>
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="service/demandes-en-cours"
+                 routerLinkActive="active">
+                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
+                <span jhiTranslate="global.menu.services.demandesEnCours">Demandes en cours</span>
+              </a>
           </ul>
         </li>
         <li
@@ -59,7 +68,8 @@
           ngbDropdown
           routerLinkActive="active"
         >
-          <a class="nav-link dropdown-toggle" data-cy="adminMenu" href="javascript:void(0);" id="admin-menu" ngbDropdownToggle>
+          <a class="nav-link dropdown-toggle" data-cy="adminMenu" href="javascript:void(0);" id="admin-menu"
+             ngbDropdownToggle>
             <span>
               <fa-icon icon="users-cog"></fa-icon>
               <span jhiTranslate="global.menu.admin.main">Administration</span>
@@ -67,7 +77,8 @@
           </a>
           <ul aria-labelledby="admin-menu" class="dropdown-menu" ngbDropdownMenu>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/user-management"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="users"></fa-icon>
                 <span jhiTranslate="global.menu.admin.userManagement">Gestion des utilisateurs</span>
               </a>
@@ -85,7 +96,8 @@
               </a>
             </li>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/configuration" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/configuration"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="cogs"></fa-icon>
                 <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
               </a>
@@ -104,7 +116,8 @@
               </a>
             </li>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/type-conge-management" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="admin/type-conge-management"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
                 <span jhiTranslate="global.menu.admin.typeCongeManagement">type congé</span>
               </a>
@@ -120,7 +133,8 @@
           ngbDropdown
           routerLinkActive="active"
         >
-          <a class="nav-link dropdown-toggle" data-cy="rhMenu" href="javascript:void(0);" id="rh-menu" ngbDropdownToggle>
+          <a class="nav-link dropdown-toggle" data-cy="rhMenu" href="javascript:void(0);" id="rh-menu"
+             ngbDropdownToggle>
             <span>
               <fa-icon icon="users-cog"></fa-icon>
               <span jhiTranslate="global.menu.rh.main">Administration</span>
@@ -128,19 +142,22 @@
           </a>
           <ul aria-labelledby="rh-menu" class="dropdown-menu" ngbDropdownMenu>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/demande-conge" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/demande-conge"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="users"></fa-icon>
                 <span jhiTranslate="global.menu.rh.demandeConge">Gestion des utilisateurs</span>
               </a>
             </li>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/year-management" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/year-management"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
                 <span jhiTranslate="global.menu.rh.yearManagement">year</span>
               </a>
             </li>
             <li>
-              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/solde-management" routerLinkActive="active">
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/solde-management"
+                 routerLinkActive="active">
                 <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
                 <span jhiTranslate="global.menu.rh.soldeManagement">solde</span>
               </a>
@@ -161,7 +178,7 @@
                 [jhiActiveMenu]="language"
                 class="dropdown-item"
                 href="javascript:void(0);"
-                >{{ language | findLanguageFromKey }}</a
+              >{{ language | findLanguageFromKey }}</a
               >
             </li>
           </ul>
@@ -173,13 +190,14 @@
           ngbDropdown
           routerLinkActive="active"
         >
-          <a class="nav-link dropdown-toggle" data-cy="accountMenu" href="javascript:void(0);" id="account-menu" ngbDropdownToggle>
+          <a class="nav-link dropdown-toggle" data-cy="accountMenu" href="javascript:void(0);" id="account-menu"
+             ngbDropdownToggle>
             <span *ngIf="!account?.imageUrl">
               <fa-icon icon="user"></fa-icon>
               <span jhiTranslate="global.menu.account.main">Compte</span>
             </span>
             <span *ngIf="account?.imageUrl">
-              <img [src]="account!.imageUrl" alt="Avatar" class="profile-image rounded-circle" />
+              <img [src]="account!.imageUrl" alt="Avatar" class="profile-image rounded-circle"/>
             </span>
           </a>
           <ul aria-labelledby="account-menu" class="dropdown-menu" ngbDropdownMenu>

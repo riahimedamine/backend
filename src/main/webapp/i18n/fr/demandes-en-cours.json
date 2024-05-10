@@ -1,0 +1,40 @@
+{
+  "demandesEnCours": {
+    "home": {
+      "title": "Demandes en cours",
+      "refreshListLabel": "Actualiser la liste",
+      "createLabel": "Créer une nouvelle demande",
+      "createOrEditLabel": "Créer ou éditer une demande"
+    },
+    "created": "La demande {{ param }} a été créé.",
+    "updated": "La demande {{ param }} a été mis à jour.",
+    "deleted": "La demande {{ param }} a été supprimé.",
+    "delete": {
+      "question": "Etes-vous certain de vouloir supprimer la demande {{ id }} ?"
+    },
+    "validate": {
+      "question": "Valider la demande {{ id }}"
+    },
+    "detail": {
+      "title": "Détail de la demande"
+    },
+    "value": {
+      "vld0": "En attente",
+      "vld1": "Validé",
+      "vld2": "Refusé"
+    },
+    "dateDebut": "Date de début",
+    "dateFin": "Date de fin",
+    "user": "Utilisateur",
+    "address": "Adresse",
+    "type": "Type",
+    "telephone": "Téléphone",
+    "notes": "Observations",
+    "vld": "Validé",
+    "createdBy": "Créé par",
+    "createdDate": "Créé le",
+    "lastModifiedBy": "Modifié par",
+    "lastModifiedDate": "Modifié le",
+    "supervisee": "Supervisée"
+  }
+}
