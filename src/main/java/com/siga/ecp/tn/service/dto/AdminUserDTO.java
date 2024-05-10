@@ -49,6 +49,9 @@ public class AdminUserDTO implements Serializable {
     }
 
     public AdminUserDTO(User user) {
+        if (user == null) {
+            return;
+        }
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
