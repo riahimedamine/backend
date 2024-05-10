@@ -2,24 +2,26 @@ package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.DemandeConge;
 import com.siga.ecp.tn.domain.SoldeConge;
+import com.siga.ecp.tn.domain.User;
 import com.siga.ecp.tn.repository.DemandeCongeRepository;
 import com.siga.ecp.tn.repository.SoldeCongeRepository;
 import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link com.siga.ecp.tn.domain.DemandeConge}.
@@ -47,6 +49,15 @@ public class DemandeCongeService {
         this.demandeCongeRepository = demandeCongeRepository;
         this.demandeCongeMapper = demandeCongeMapper;
         this.soldeCongeRepository = soldeCongeRepository;
+    }
+
+    public boolean check(LocalDate dateDebut, LocalDate dateFin) {
+        String login = SecurityUtils.getCurrentUserLogin().get();
+
+        long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
+        int year = dateDebut.getYear();
+        SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
+        return soldeConge != null && soldeConge.getSolde() >= days && !demandeCongeRepository.existsByUserLoginAndVld(login, 0);
     }
 
     /**
@@ -96,6 +107,11 @@ public class DemandeCongeService {
         }
     }
 
+    public List<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
+        log.debug("Request to get SoldeConge by user : {}", login);
+        return soldeCongeRepository.findByUserLogin(login, pageable).stream().map(SoldeCongeDTO::new).collect(Collectors.toList());
+    }
+
     /**
      * Partially update a demandeConge.
      *
@@ -140,6 +156,10 @@ public class DemandeCongeService {
                 HashMap<String, Object> variables = new HashMap<String, Object>();
                 variables.put("demande", demande);
                 variables.put("type", demande.getType().getLibFr());
+                User validator = demande.getUser().getValidator();
+                if (validator != null) {
+                    variables.put("assignee", validator.getLogin());
+                }
                 ProcessInstance processInstance = workflowService.startProcessById("demande congé", variables);
                 demande.setProcessInstanceId(processInstance.getId());
                 demandeCongeRepository.save(demande);
@@ -190,19 +210,5 @@ public class DemandeCongeService {
                 demandeCongeRepository.save(demandeConge);
             }
         }
-    }
-
-    public List<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
-        log.debug("Request to get SoldeConge by user : {}", login);
-        return soldeCongeRepository.findByUserLogin(login, pageable).stream().map(SoldeCongeDTO::new).collect(Collectors.toList());
-    }
-
-    public boolean check(LocalDate dateDebut, LocalDate dateFin) {
-        String login = SecurityUtils.getCurrentUserLogin().get();
-
-        long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
-        int year = dateDebut.getYear();
-        SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
-        return soldeConge != null && soldeConge.getSolde() >= days && !demandeCongeRepository.existsByUserLoginAndVld(login, 0);
     }
 }

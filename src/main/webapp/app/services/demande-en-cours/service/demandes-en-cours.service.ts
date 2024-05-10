@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
-import { Pagination } from 'app/core/request/request.model';
-import { IDemandeConge } from '../demande-conge.model';
-import { User } from '../../../entities/user/user.model';
+import {ApplicationConfigService} from 'app/core/config/application-config.service';
+import {createRequestOption} from 'app/core/request/request-util';
+import {Pagination} from 'app/core/request/request.model';
+import {IDemandeConge} from '../demande-conge.model';
+import {User} from '../../../entities/user/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class DemandesEnCoursService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('api/Notifications/');
+  private resourceUrl = this.applicationConfigService.getEndpointFor('api/tasks');
 
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
