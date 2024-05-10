@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {combineLatest} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 
-import {ITEMS_PER_PAGE} from 'app/config/pagination.constants';
-import {ASC, DESC, SORT} from 'app/config/navigation.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/auth/account.model';
-import {DemandesEnCoursService} from '../service/demandes-en-cours.service';
-import {DemandeConge} from '../demande-conge.model';
-import {DemandeCongeValidateDialogComponent} from '../validate/demande-conge-validate-dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {User} from "../../../entities/user/user.model";
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ASC, DESC, SORT } from 'app/config/navigation.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { DemandesEnCoursService } from '../service/demandes-en-cours.service';
+import { DemandeConge } from '../demande-conge.model';
+import { DemandeCongeValidateDialogComponent } from '../validate/demande-conge-validate-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { User } from '../../../entities/user/user.model';
 
 @Component({
   selector: 'jhi-conge-mgmt',
@@ -34,8 +34,7 @@ export class DemandesEnCoursComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
@@ -52,18 +51,23 @@ export class DemandesEnCoursComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.demandesEnCoursService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<DemandeConge[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers);
-        },
-        error: () => (this.isLoading = false),
-      });
+      .query //{
+      //page: this.page - 1,
+      //size: this.itemsPerPage,
+      //sort: this.sort(),
+      //}
+      ()
+      .subscribe(
+        //{
+        //next: (res: HttpResponse<DemandeConge[]>) => {
+        //this.isLoading = false;
+        //this.onSuccess(res.body, res.headers);
+        //},
+        //error: () => (this.isLoading = false),
+        res => console.log('res: ', res)
+
+        //}
+      );
   }
 
   transition(): void {
@@ -77,7 +81,7 @@ export class DemandesEnCoursComponent implements OnInit {
   }
 
   validate(demande: DemandeConge): void {
-    const modalRef = this.modalService.open(DemandeCongeValidateDialogComponent, {size: 'lg', backdrop: 'static'});
+    const modalRef = this.modalService.open(DemandeCongeValidateDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.demande = demande;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
@@ -110,5 +114,4 @@ export class DemandesEnCoursComponent implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.demandeConges = demandes;
   }
-
 }
