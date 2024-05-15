@@ -12,6 +12,7 @@ export interface IDemandeConge {
   createdDate?: Date;
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
+  taskId?: string | null;
 }
 
 export class DemandeConge implements IDemandeConge {
@@ -28,7 +29,8 @@ export class DemandeConge implements IDemandeConge {
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date
+    public lastModifiedDate?: Date,
+    public taskId?: string | null
   ) {
   }
 }

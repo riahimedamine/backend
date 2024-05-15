@@ -18,7 +18,7 @@ import {RouterModule} from '@angular/router';
         path: 'demandes-en-cours',
         loadChildren: () => import('./demande-en-cours/demande-en-cours.module').then(m => m.DemandeEnCoursModule),
         data: {
-          pageTitle: 'demandeEnCours.home.title',
+          pageTitle: 'demandesEnCours.home.title',
         },
       }
     ]),

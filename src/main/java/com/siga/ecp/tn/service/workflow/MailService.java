@@ -1,18 +1,16 @@
 package com.siga.ecp.tn.service.workflow;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.ExecutionListener;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MailService implements ExecutionListener {
+public class MailService implements JavaDelegate {
 
     private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Override
-    public void notify(DelegateExecution execution) throws Exception {
-        log.debug("Start event triggered. Process instance ID: " + execution.getProcessInstanceId());
+    public void execute(DelegateExecution delegateExecution) throws Exception {
+        log.debug("Start event triggered. Process instance ID: " + delegateExecution.getProcessInstanceId());
     }
-
-    public MailService() {}
 }

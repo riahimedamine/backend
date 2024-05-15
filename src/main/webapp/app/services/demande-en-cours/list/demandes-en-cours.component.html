@@ -17,8 +17,8 @@
   <jhi-alert></jhi-alert>
 
   <div class="row">
-    <div *ngIf="demandeConges" class="table-responsive col-lg-10">
-      <table aria-describedby="demandes-en-cours-page-heading" class="table table-striped">
+    <div *ngIf="demandes" class="table-responsive col-lg-10">
+      <table aria-describedby="conge-Management-page-heading" class="table table-striped">
         <thead>
         <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
           <th jhiSortBy="id" scope="col">
@@ -26,47 +26,47 @@
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="dateDebut" scope="col">
-            <span jhiTranslate="demandesEnCours.dateDebut">Date debut</span>
+            <span jhiTranslate="congeManagement.dateDebut">Date debut</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="dateFin" scope="col">
-            <span jhiTranslate="demandesEnCours.dateFin">Date fin</span>
+            <span jhiTranslate="congeManagement.dateFin">Date fin</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="user" scope="col">
-            <span jhiTranslate="demandesEnCours.user">User</span>
+            <span jhiTranslate="congeManagement.user">User</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="type" scope="col">
-            <span jhiTranslate="demandesEnCours.type">Type</span>
+            <span jhiTranslate="congeManagement.type">Type</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="vld" scope="col">
-            <span jhiTranslate="demandesEnCours.vld">Vld</span>
+            <span jhiTranslate="congeManagement.vld">Vld</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="createdBy" scope="col">
-            <span jhiTranslate="demandesEnCours.createdBy">Créé par</span>
+            <span jhiTranslate="congeManagement.createdBy">Créé par</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
 
           <th jhiSortBy="createdDate" scope="col">
-            <span jhiTranslate="demandesEnCours.createdDate">Créé le</span>
+            <span jhiTranslate="congeManagement.createdDate">Créé le</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="lastModifiedBy" scope="col">
-            <span jhiTranslate="demandesEnCours.lastModifiedBy">Modifié par</span>
+            <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th jhiSortBy="lastModifiedDate" scope="col">
-            <span jhiTranslate="demandesEnCours.lastModifiedDate">Modifié le</span>
+            <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
         </thead>
-        <tbody *ngIf="demandeConges">
-        <tr *ngFor="let demande of demandeConges; trackBy: trackIdentity">
+        <tbody *ngIf="demandes">
+        <tr *ngFor="let demande of demandes; trackBy: trackIdentity">
           <td>
             <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
           </td>
@@ -78,7 +78,7 @@
 
           <td *ngIf="demande.vld == 0">en attente</td>
           <td *ngIf="demande.vld == 1">Validé</td>
-          <td *ngIf="demande.vld == 2">Non Validé</td>
+          <td *ngIf="demande.vld == -1">Non Validé</td>
 
           <td>{{ demande.createdBy }}</td>
           <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
@@ -101,37 +101,22 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-1 table-responsive">
+    <div class="col-lg-2 table-responsive">
       <table class="table table-striped">
         <thead>
         <tr>
-          <th jhiTranslate="demandesEnCours.supervisee">Supervisee</th>
+          <th>
+            <fa-icon icon="users"></fa-icon>
+            <span jhiTranslate="demandesEnCours.supervisee">Supervisee</span>
+          </th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let user of users">
-          <td>{{ user.login }}</td>
+          <td>{{ user }}</td>
         </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <div *ngIf="demandeConges">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        (pageChange)="transition()"
-        [(page)]="page"
-        [boundaryLinks]="true"
-        [collectionSize]="totalItems"
-        [maxSize]="5"
-        [pageSize]="itemsPerPage"
-        [rotate]="true"
-      ></ngb-pagination>
     </div>
   </div>
 </div>

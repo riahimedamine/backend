@@ -30,12 +30,17 @@ public class Authority implements Serializable {
     @Column(length = 50)
     private String name;
 
-    public String getName() {
-        return name;
+    public Authority(String name) {
+        this.name = name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Authority() {
+        // Empty constructor needed for Jackson.
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 
     @Override
@@ -49,16 +54,19 @@ public class Authority implements Serializable {
         return Objects.equals(name, ((Authority) o).name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(name);
-    }
-
     // prettier-ignore
     @Override
     public String toString() {
         return "Authority{" +
             "name='" + name + '\'' +
             "}";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

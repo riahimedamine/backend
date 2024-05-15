@@ -32,6 +32,7 @@ public class DemandeCongeDTO implements Serializable {
     private Instant createdDate;
     private String lastModifiedBy;
     private Instant lastModifiedDate;
+    private String taskId;
 
     public DemandeCongeDTO(DemandeConge demandeConge) {
         this.id = demandeConge.getId();
@@ -55,36 +56,18 @@ public class DemandeCongeDTO implements Serializable {
         // Empty constructor needed for Jackson.
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (dateDebut != null ? dateDebut.hashCode() : 0);
+        result = 31 * result + (dateFin != null ? dateFin.hashCode() : 0);
+        result = 31 * result + (vld != null ? vld.hashCode() : 0);
+        result = 31 * result + (notes != null ? notes.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -106,25 +89,32 @@ public class DemandeCongeDTO implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (dateDebut != null ? dateDebut.hashCode() : 0);
-        result = 31 * result + (dateFin != null ? dateFin.hashCode() : 0);
-        result = 31 * result + (vld != null ? vld.hashCode() : 0);
-        result = 31 * result + (notes != null ? notes.hashCode() : 0);
-        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        return result;
+    public String toString() {
+        return "DemandeCongeDTO{" + "id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", vld=" + vld + ", notes='" + notes + '\'' + ", telephone=" + telephone + ", address='" + address + '\'' + ", type=" + type + ", user='" + user + '\'' + '}';
     }
 
-    public Long getId() {
-        return id;
+    public String getAddress() {
+        return address;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Date getDateDebut() {
@@ -143,12 +133,28 @@ public class DemandeCongeDTO implements Serializable {
         this.dateFin = dateFin;
     }
 
-    public Integer getVld() {
-        return vld;
+    public Long getId() {
+        return id;
     }
 
-    public void setVld(Integer vld) {
-        this.vld = vld;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getNotes() {
@@ -159,20 +165,20 @@ public class DemandeCongeDTO implements Serializable {
         this.notes = notes;
     }
 
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
     public Long getTelephone() {
         return telephone;
     }
 
     public void setTelephone(Long telephone) {
         this.telephone = telephone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getType() {
@@ -191,8 +197,11 @@ public class DemandeCongeDTO implements Serializable {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "DemandeCongeDTO{" + "id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", vld=" + vld + ", notes='" + notes + '\'' + ", telephone=" + telephone + ", address='" + address + '\'' + ", type=" + type + ", user='" + user + '\'' + '}';
+    public Integer getVld() {
+        return vld;
+    }
+
+    public void setVld(Integer vld) {
+        this.vld = vld;
     }
 }

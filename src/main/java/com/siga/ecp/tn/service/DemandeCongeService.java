@@ -7,8 +7,11 @@ import com.siga.ecp.tn.repository.DemandeCongeRepository;
 import com.siga.ecp.tn.repository.SoldeCongeRepository;
 import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
+import com.siga.ecp.tn.service.dto.DemandeCongeError;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.mapper.DemandeCongeMapper;
+import com.siga.ecp.tn.service.workflow.NotificationService;
+import com.siga.ecp.tn.service.workflow.WorkflowService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,27 +40,34 @@ public class DemandeCongeService {
     private final DemandeCongeRepository demandeCongeRepository;
 
     private final DemandeCongeMapper demandeCongeMapper;
+
     private final SoldeCongeRepository soldeCongeRepository;
+
+    private final NotificationService notificationService;
 
     public DemandeCongeService(
         WorkflowService workflowService,
         DemandeCongeRepository demandeCongeRepository,
         DemandeCongeMapper demandeCongeMapper,
-        SoldeCongeRepository soldeCongeRepository
+        SoldeCongeRepository soldeCongeRepository, NotificationService notificationService
     ) {
         this.workflowService = workflowService;
         this.demandeCongeRepository = demandeCongeRepository;
         this.demandeCongeMapper = demandeCongeMapper;
         this.soldeCongeRepository = soldeCongeRepository;
+        this.notificationService = notificationService;
     }
 
-    public boolean check(LocalDate dateDebut, LocalDate dateFin) {
+    public DemandeCongeError check(LocalDate dateDebut, LocalDate dateFin) {
         String login = SecurityUtils.getCurrentUserLogin().get();
 
         long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
         int year = dateDebut.getYear();
         SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
-        return soldeConge != null && soldeConge.getSolde() >= days && !demandeCongeRepository.existsByUserLoginAndVld(login, 0);
+        return new DemandeCongeError(
+            demandeCongeRepository.existsByUserLoginAndVld(login, 0),
+            !(soldeConge != null && soldeConge.getSolde() >= days)
+        );
     }
 
     /**
@@ -67,7 +77,11 @@ public class DemandeCongeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete DemandeConge : {}", id);
+        if (demandeCongeRepository.findById(id).get().getVld() != 0) {
+            throw new RuntimeException("Demande déjà validée");
+        }
         demandeCongeRepository.deleteById(id);
+        // todo delete process instance
     }
 
     /**
@@ -83,12 +97,29 @@ public class DemandeCongeService {
 
     public List<DemandeCongeDTO> findByCurrentUser() {
         log.debug("Request to get DemandeConge by current user");
-        return demandeCongeRepository.findByUserIsCurrentUser().stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+        return demandeCongeRepository.findByUserIsCurrentUserOrderByDateDebutDesc().stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+    }
+
+    public List<DemandeCongeDTO> findByRh() {
+        log.debug("Request to get DemandeConge by Rh");
+        return notificationService.getAllNotificationByCandidateGroup("RH").stream()
+            .map(notification ->
+                demandeCongeRepository.findById(notification.getDemande().getId())
+                    .flatMap(
+                        demande -> {
+                            DemandeCongeDTO dto = demandeCongeMapper.demandeCongeToDemandeCongeDTO(demande);
+                            dto.setTaskId(notification.getTaskId());
+                            return Optional.of(dto);
+                        }
+                    )
+                    .orElse(null)
+            )
+            .collect(Collectors.toList());
     }
 
     public List<DemandeCongeDTO> findByUser(String login) {
         log.debug("Request to get DemandeConge by user : {}", login);
-        return demandeCongeRepository.findByUserLogin(login).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+        return demandeCongeRepository.findByUserLoginOrderByDateDebutDesc(login).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
     }
 
     /**
@@ -159,6 +190,8 @@ public class DemandeCongeService {
                 User validator = demande.getUser().getValidator();
                 if (validator != null) {
                     variables.put("assignee", validator.getLogin());
+                } else {
+                    variables.put("assignee", "RH");
                 }
                 ProcessInstance processInstance = workflowService.startProcessById("demande congé", variables);
                 demande.setProcessInstanceId(processInstance.getId());
@@ -177,11 +210,21 @@ public class DemandeCongeService {
      */
     public DemandeCongeDTO updateDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to update DemandeConge : {}", demandeCongeDTO);
+        if (demandeCongeRepository.findById(demandeCongeDTO.getId()).get().getVld() != 0) {
+            throw new RuntimeException("Demande déjà validée");
+        }
+
         return demandeCongeMapper.demandeCongeToDemandeCongeDTO(
             demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO))
         );
     }
 
+    /**
+     * Validate a demandeConge.
+     *
+     * @param id  the id of the entity.
+     * @param vld the validation state.
+     */
     public void validateDemandeConge(Long id, int vld) {
         log.debug("Request to validate DemandeConge : {}", id);
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
@@ -193,8 +236,8 @@ public class DemandeCongeService {
             int year = calendar.get(Calendar.YEAR);
             long nbJours = (demandeConge.getDateFin().getTime() - demandeConge.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
 
-            if (vld == 2) {
-                demandeConge.setVld(2);
+            if (vld == 1) {
+                demandeConge.setVld(1);
                 soldeCongeRepository
                     .findByYearYearAndUserLogin(year, demandeConge.getUser().getLogin())
                     .ifPresent(soldeConge -> {
@@ -202,13 +245,32 @@ public class DemandeCongeService {
                         soldeCongeRepository.save(soldeConge);
                         demandeCongeRepository.save(demandeConge);
                     });
-            } else if (vld == 1) {
-                demandeConge.setVld(1);
-                demandeCongeRepository.save(demandeConge);
             } else {
                 demandeConge.setVld(-1);
                 demandeCongeRepository.save(demandeConge);
             }
         }
+    }
+
+    /**
+     * Get all the demandeConges by current validator.
+     *
+     * @return the list of entities.
+     */
+    public List<DemandeCongeDTO> getDemandeCongeByCurrentValidator() {
+        log.debug("Request to get DemandeConge by current validator");
+        return notificationService.getAllNotification().stream()
+            .map(notification ->
+                demandeCongeRepository.findById(notification.getDemande().getId())
+                    .flatMap(
+                        demande -> {
+                            DemandeCongeDTO dto = demandeCongeMapper.demandeCongeToDemandeCongeDTO(demande);
+                            dto.setTaskId(notification.getTaskId());
+                            return Optional.of(dto);
+                        }
+                    )
+                    .orElse(null)
+            )
+            .collect(Collectors.toList());
     }
 }

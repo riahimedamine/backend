@@ -14,7 +14,7 @@
         <dd>{{ conge.dateFin }}</dd>
 
         <dt><span jhiTranslate="congeManagement.vld">vld</span></dt>
-        <dd *ngIf="conge.vld == 2">Non validé</dd>
+        <dd *ngIf="conge.vld == -1">Non validé</dd>
         <dd *ngIf="conge.vld == 0">En attente</dd>
         <dd *ngIf="conge.vld == 1">Validé</dd>
 

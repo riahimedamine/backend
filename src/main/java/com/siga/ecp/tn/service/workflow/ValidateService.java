@@ -25,10 +25,8 @@ public class ValidateService implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         DemandeConge demandeConge = (DemandeConge) execution.getVariable("demande");
         demandeConge = demandeCongeRepository.findById(demandeConge.getId()).get();
-        if (demandeConge.getVld() == 1) {
-            demandeCongeService.validateDemandeConge(demandeConge.getId(), 2);
-        } else {
-            demandeCongeService.validateDemandeConge(demandeConge.getId(), 1);
-        }
+
+        demandeCongeService.validateDemandeConge(demandeConge.getId(), 1);
+
     }
 }

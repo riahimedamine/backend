@@ -16,7 +16,7 @@
 
   <jhi-alert></jhi-alert>
 
-  <div *ngIf="demandeConges" class="table-responsive">
+  <div *ngIf="activeDemandes" class="table-responsive">
     <table aria-describedby="conge-Management-page-heading" class="table table-striped">
       <thead>
         <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
@@ -64,8 +64,8 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody *ngIf="demandeConges">
-        <tr *ngFor="let demande of demandeConges; trackBy: trackIdentity">
+      <tbody *ngIf="activeDemandes">
+      <tr *ngFor="let demande of activeDemandes; trackBy: trackIdentity">
           <td>
             <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
           </td>
@@ -77,7 +77,7 @@
 
           <td *ngIf="demande.vld == 0">en attente</td>
           <td *ngIf="demande.vld == 1">Validé</td>
-          <td *ngIf="demande.vld == 2">Non Validé</td>
+        <td *ngIf="demande.vld == -1">Non Validé</td>
 
           <td>{{ demande.createdBy }}</td>
           <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
@@ -101,7 +101,90 @@
     </table>
   </div>
 
-  <div *ngIf="demandeConges">
+  <h2 jhiTranslate="congeManagement.all">All demandes</h2>
+
+  <div *ngIf="demandes" class="table-responsive">
+    <table aria-describedby="conge-Management-page-heading" class="table table-striped">
+      <thead>
+      <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
+        <th jhiSortBy="id" scope="col">
+          <span jhiTranslate="global.field.id">ID</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="dateDebut" scope="col">
+          <span jhiTranslate="congeManagement.dateDebut">Date debut</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="dateFin" scope="col">
+          <span jhiTranslate="congeManagement.dateFin">Date fin</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="user" scope="col">
+          <span jhiTranslate="congeManagement.user">User</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="type" scope="col">
+          <span jhiTranslate="congeManagement.type">Type</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="vld" scope="col">
+          <span jhiTranslate="congeManagement.vld">Vld</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="createdBy" scope="col">
+          <span jhiTranslate="congeManagement.createdBy">Créé par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+
+        <th jhiSortBy="createdDate" scope="col">
+          <span jhiTranslate="congeManagement.createdDate">Créé le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedBy" scope="col">
+          <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedDate" scope="col">
+          <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody *ngIf="demandes">
+      <tr *ngFor="let demande of demandes; trackBy: trackIdentity">
+        <td>
+          <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
+        </td>
+        <td>{{ demande.dateDebut }}</td>
+        <td>{{ demande.dateFin }}</td>
+
+        <td>{{ demande.user }}</td>
+        <td>{{ demande.type }}</td>
+
+        <td *ngIf="demande.vld == 0">en attente</td>
+        <td *ngIf="demande.vld == 1">Validé</td>
+        <td *ngIf="demande.vld == -1">Non Validé</td>
+
+        <td>{{ demande.createdBy }}</td>
+        <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td>{{ demande.lastModifiedBy }}</td>
+        <td>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button [routerLink]="['./', demande.id, 'view']" class="btn btn-info btn-sm" type="submit">
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div *ngIf="demandes">
     <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>

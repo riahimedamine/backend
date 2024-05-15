@@ -6,7 +6,8 @@
       "home": "Accueil",
       "services": {
         "main": "Services",
-        "congesManagement": "Gestion des congés"
+        "congesManagement": "Gestion des congés",
+        "demandesEnCours": "Demandes en cours"
       },
       "rh": {
         "main": "Ressources Humaines",

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
         path: 'demande-conge',
         loadChildren: () => import('./demande-conge/demande-conge.module').then(m => m.DemandeCongeModule),
         data: {
-          pageTitle: 'demandeConge.home.title',
+          pageTitle: 'congeManagement.home.title',
         },
       },
       {

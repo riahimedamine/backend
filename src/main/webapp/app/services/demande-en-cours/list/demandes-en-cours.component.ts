@@ -1,5 +1,6 @@
+// todo: make it simlar to the rh one
 import {Component, OnInit} from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {combineLatest} from 'rxjs';
 
@@ -8,10 +9,9 @@ import {ASC, DESC, SORT} from 'app/config/navigation.constants';
 import {AccountService} from 'app/core/auth/account.service';
 import {Account} from 'app/core/auth/account.model';
 import {DemandesEnCoursService} from '../service/demandes-en-cours.service';
-import {DemandeConge} from '../demande-conge.model';
 import {DemandeCongeValidateDialogComponent} from '../validate/demande-conge-validate-dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {User} from '../../../entities/user/user.model';
+import {IDemandeConge} from "../demande-conge.model";
 
 @Component({
   selector: 'jhi-conge-mgmt',
@@ -19,14 +19,14 @@ import {User} from '../../../entities/user/user.model';
 })
 export class DemandesEnCoursComponent implements OnInit {
   currentAccount: Account | null = null;
-  demandeConges: DemandeConge[] | null = null;
+  demandes: IDemandeConge[] | null = null;
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   page!: number;
   predicate!: string;
   ascending!: boolean;
-  users: User[] | null = [];
+  users: string[] | null = [];
 
   constructor(
     private demandesEnCoursService: DemandesEnCoursService,
@@ -34,39 +34,29 @@ export class DemandesEnCoursComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
-    // this.demandesEnCoursService.getSupervisees().subscribe(res => {
-    //   this.users = res.body;
-    // });
+    this.demandesEnCoursService.getSupervisees().subscribe(res => {
+      this.users = res.body;
+    });
     this.handleNavigation();
   }
 
-  trackIdentity(_index: number, item: DemandeConge): number {
+  trackIdentity(_index: number, item: IDemandeConge): number {
     return item.id!;
   }
 
   loadAll(): void {
     this.isLoading = true;
-    this.demandesEnCoursService
-      .query //{
-      //page: this.page - 1,
-      //size: this.itemsPerPage,
-      //sort: this.sort(),
-      //}
-      ()
+    this.demandesEnCoursService.query()
       .subscribe(
-        //{
-        //next: (res: HttpResponse<DemandeConge[]>) => {
-        //this.isLoading = false;
-        //this.onSuccess(res.body, res.headers);
-        //},
-        //error: () => (this.isLoading = false),
-        res => console.log('res: ', res)
-
-        //}
+        {
+          next: (res: HttpResponse<IDemandeConge[]>) => this.onSuccess(res.body, res.headers),
+          error: () => (this.isLoading = false),
+        }
       );
   }
 
@@ -80,8 +70,8 @@ export class DemandesEnCoursComponent implements OnInit {
     });
   }
 
-  validate(demande: DemandeConge): void {
-    const modalRef = this.modalService.open(DemandeCongeValidateDialogComponent, { size: 'lg', backdrop: 'static' });
+  validate(demande: IDemandeConge): void {
+    const modalRef = this.modalService.open(DemandeCongeValidateDialogComponent, {size: 'lg', backdrop: 'static'});
     modalRef.componentInstance.demande = demande;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
@@ -110,8 +100,9 @@ export class DemandesEnCoursComponent implements OnInit {
     return result;
   }
 
-  private onSuccess(demandes: DemandeConge[] | null, headers: HttpHeaders): void {
+  private onSuccess(tasks: IDemandeConge[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
-    this.demandeConges = demandes;
+    this.demandes = tasks;
+    this.isLoading = false;
   }
 }

@@ -18,7 +18,7 @@
       <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
     </button>
 
-    <button type="submit" class="btn btn-danger">
+    <button [disabled]="demande.vld != 0" class="btn btn-danger" type="submit">
       <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Supprimer</span>
     </button>
   </div>

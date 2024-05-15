@@ -15,7 +15,7 @@
         <dt><span jhiTranslate="congeManagement.vld">vld</span></dt>
         <dd *ngIf="demande.vld == 0" jhiTranslate="congeManagement.value.vld0">En attente</dd>
         <dd *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</dd>
-        <dd *ngIf="demande.vld == 2" jhiTranslate="congeManagement.value.vld2">Non validé</dd>
+        <dd *ngIf="demande.vld == -1" jhiTranslate="congeManagement.value.vld2">Non validé</dd>
 
         <dt><span jhiTranslate="congeManagement.notes">Langue</span></dt>
         <dd>{{ demande.notes }}</dd>

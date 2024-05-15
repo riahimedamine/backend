@@ -3,11 +3,12 @@ package com.siga.ecp.tn.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.siga.ecp.tn.config.Constants;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.*;
 import org.hibernate.envers.Audited;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -62,30 +63,24 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
-
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
-
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
-
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore
     private String activationKey;
-
     @Size(max = 20)
     @Column(name = "reset_key", length = 20)
     @JsonIgnore
     private String resetKey;
-
     @Column(name = "reset_date")
     private Instant resetDate = null;
-
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -94,14 +89,25 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
-
     @ManyToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "validator_id", referencedColumnName = "id")
     private User validator;
 
+    public User(String login, String password, String email, boolean activated, Set<Authority> authorities) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.activated = activated;
+        this.authorities = authorities;
+    }
+
+    public User() {
+        // Empty constructor needed for Hibernate.
+    }
+
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 

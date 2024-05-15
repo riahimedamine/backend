@@ -23,18 +23,11 @@
       "vld1": "Validé",
       "vld2": "Refusé"
     },
-    "dateDebut": "Date de début",
-    "dateFin": "Date de fin",
-    "user": "Utilisateur",
-    "address": "Adresse",
-    "type": "Type",
-    "telephone": "Téléphone",
-    "notes": "Observations",
-    "vld": "Validé",
-    "createdBy": "Créé par",
-    "createdDate": "Créé le",
-    "lastModifiedBy": "Modifié par",
-    "lastModifiedDate": "Modifié le",
+    "taskName": "Date de début",
+    "initiator": "Date de fin",
+    "collaborator": "Utilisateur",
+    "createdAt": "Adresse",
+    "dueDate": "Type",
     "supervisee": "Supervisée"
   }
 }

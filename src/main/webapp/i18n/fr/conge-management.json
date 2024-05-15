@@ -23,6 +23,11 @@
       "vld1": "Validé",
       "vld2": "Refusé"
     },
+    "error": {
+      "hasOne": "Vous avez déjà une demande de congé en cours.",
+      "solde": "Vous n'avez pas assez de solde."
+    },
+    "success": "Demande de congé valide.",
     "dateDebut": "Date de début",
     "dateFin": "Date de fin",
     "user": "Utilisateur",
@@ -34,6 +39,7 @@
     "createdBy": "Créé par",
     "createdDate": "Créé le",
     "lastModifiedBy": "Modifié par",
-    "lastModifiedDate": "Modifié le"
+    "lastModifiedDate": "Modifié le",
+    "all": "Tous les demandes"
   }
 }

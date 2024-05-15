@@ -5,7 +5,6 @@ public class TreatTask {
     private String taskId;
     private String value;
     private String comment;
-
     private String initiator;
 
     public String getTaskId() {

@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {DemandeConge} from '../demande-conge.model';
 import {DemandesEnCoursService} from "../service/demandes-en-cours.service";
+import {IDemandeConge} from "../demande-conge.model";
 
 @Component({
   selector: 'jhi-type-conge-mgmt-delete-dialog',
   templateUrl: './demande-conge-validate-dialog.component.html',
 })
 export class DemandeCongeValidateDialogComponent {
-  demande?: DemandeConge;
+  demande?: IDemandeConge;
 
   constructor(private demandeService: DemandesEnCoursService, private activeModal: NgbActiveModal) {
   }
@@ -17,13 +17,13 @@ export class DemandeCongeValidateDialogComponent {
     this.activeModal.dismiss();
   }
 
-  validate(id: number): void {
+  validate(id: string): void {
     this.demandeService.validate(id).subscribe(() => {
       this.activeModal.close('validated');
     });
   }
 
-  refuse(id: number): void {
+  refuse(id: string): void {
     this.demandeService.refuse(id).subscribe(() => {
       this.activeModal.close('refused');
     });

@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { DemandeCongeComponent } from '../list/demande-conge.component';
-import { DemandeConge } from '../demande-conge.model';
-import { DemandeCongeService } from '../service/demande-conge.service';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {DemandeConge} from '../demande-conge.model';
+import {DemandeCongeService} from '../service/demande-conge.service';
 
 @Component({
   selector: 'jhi-type-conge-mgmt-delete-dialog',
@@ -17,14 +16,14 @@ export class DemandeCongeValidateDialogComponent {
     this.activeModal.dismiss();
   }
 
-  validate(id: number): void {
-    this.demandeService.validate(id).subscribe(() => {
+  validate(taskId: string): void {
+    this.demandeService.validate(taskId).subscribe(() => {
       this.activeModal.close('validated');
     });
   }
 
-  refuse(id: number): void {
-    this.demandeService.refuse(id).subscribe(() => {
+  refuse(taskId: string): void {
+    this.demandeService.refuse(taskId).subscribe(() => {
       this.activeModal.close('refused');
     });
   }

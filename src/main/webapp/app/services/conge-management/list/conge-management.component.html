@@ -4,23 +4,24 @@
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
-          <tr>
-            <th>Année</th>
-            <th>Solde</th>
-          </tr>
+        <tr>
+          <th>Année</th>
+          <th>Solde</th>
+        </tr>
         </thead>
         <tbody *ngIf="soldes">
-          <tr *ngFor="let solde of soldes">
-            <td>{{ solde.year }}</td>
-            <td>{{ solde.solde }}</td>
-          </tr>
+        <tr *ngFor="let solde of soldes">
+          <td>{{ solde.year }}</td>
+          <td>{{ solde.solde }}</td>
+        </tr>
         </tbody>
       </table>
     </div>
   </div>
   <h2>
-    <span id="conge-management-page-heading" jhiTranslate="congeManagement.home.title" data-cy="congeManagementPageHeading"
-      >Demande congés</span
+    <span data-cy="congeManagementPageHeading" id="conge-management-page-heading"
+          jhiTranslate="congeManagement.home.title"
+    >Demande congés</span
     >
 
     <div class="d-flex justify-content-end">
@@ -41,83 +42,86 @@
   <div class="table-responsive" *ngIf="demandeConges">
     <table class="table table-striped" aria-describedby="conge-Management-page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
-          <th scope="col" jhiSortBy="id">
-            <span jhiTranslate="global.field.id">ID</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateDebut">
-            <span jhiTranslate="congeManagement.dateDebut">Date debut</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="dateFin">
-            <span jhiTranslate="congeManagement.dateFin">Date fin</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="type" scope="col">
-            <span jhiTranslate="congeManagement.type">Type</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="vld" scope="col">
-            <span jhiTranslate="congeManagement.vld">Vld</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="createdBy" scope="col">
-            <span jhiTranslate="congeManagement.createdBy">Créé par</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="createdDate" scope="col">
-            <span jhiTranslate="congeManagement.createdDate">Créé le</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedBy">
-            <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="lastModifiedDate">
-            <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col"></th>
-        </tr>
+      <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
+        <th jhiSortBy="id" scope="col">
+          <span jhiTranslate="global.field.id">ID</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="dateDebut" scope="col">
+          <span jhiTranslate="congeManagement.dateDebut">Date debut</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="dateFin" scope="col">
+          <span jhiTranslate="congeManagement.dateFin">Date fin</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="type" scope="col">
+          <span jhiTranslate="congeManagement.type">Type</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="vld" scope="col">
+          <span jhiTranslate="congeManagement.vld">Vld</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="createdBy" scope="col">
+          <span jhiTranslate="congeManagement.createdBy">Créé par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="createdDate" scope="col">
+          <span jhiTranslate="congeManagement.createdDate">Créé le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedBy" scope="col">
+          <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th jhiSortBy="lastModifiedDate" scope="col">
+          <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
+          <fa-icon icon="sort"></fa-icon>
+        </th>
+        <th scope="col"></th>
+      </tr>
       </thead>
       <tbody *ngIf="demandeConges">
-        <tr *ngFor="let demande of demandeConges; trackBy: trackIdentity">
-          <td>
-            <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
-          </td>
-          <td>{{ demande.dateDebut }}</td>
-          <td>{{ demande.dateFin }}</td>
+      <tr *ngFor="let demande of demandeConges; trackBy: trackIdentity">
+        <td>
+          <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
+        </td>
+        <td>{{ demande.dateDebut }}</td>
+        <td>{{ demande.dateFin }}</td>
 
-          <td>{{ demande.type }}</td>
+        <td>{{ demande.type }}</td>
 
-          <td *ngIf="demande.vld == 0" jhiTranslate="congeManagement.value.vld0">En attente</td>
-          <td *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</td>
-          <td *ngIf="demande.vld == 2" jhiTranslate="congeManagement.value.vld2">Non Validé</td>
+        <td *ngIf="demande.vld == 0" jhiTranslate="congeManagement.value.vld0">En attente</td>
+        <td *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</td>
+        <td *ngIf="demande.vld == -1" jhiTranslate="congeManagement.value.vld2">Non Validé</td>
 
-          <td>{{ demande.createdBy }}</td>
-          <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td>{{ demande.lastModifiedBy }}</td>
-          <td>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
-          <td class="text-end">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['./', demande.id, 'view']" class="btn btn-info btn-sm">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-              </button>
+        <td>{{ demande.createdBy }}</td>
+        <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td>{{ demande.lastModifiedBy }}</td>
+        <td>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button [routerLink]="['./', demande.id, 'view']" class="btn btn-info btn-sm" type="submit">
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+            </button>
 
-              <button type="submit" [routerLink]="['./', demande.id, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
-              </button>
+            <button [disabled]="demande.vld == 1 || demande.vld == -1" [routerLink]="['./', demande.id, 'edit']"
+                    class="btn btn-primary btn-sm" queryParamsHandling="merge"
+                    type="submit">
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+            </button>
 
-              <button type="button" (click)="deleteDemandeConge(demande)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
-              </button>
-            </div>
-          </td>
-        </tr>
+            <button (click)="deleteDemandeConge(demande)" [disabled]="demande.vld == 1 || demande.vld == -1"
+                    class="btn btn-danger btn-sm" type="submit">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+            </button>
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>

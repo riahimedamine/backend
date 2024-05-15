@@ -1,4 +1,4 @@
-package com.siga.ecp.tn.service;
+package com.siga.ecp.tn.service.workflow;
 
 import com.siga.ecp.tn.security.SecurityUtils;
 import org.camunda.bpm.engine.IdentityService;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -31,23 +31,27 @@ public class WorkflowService {
     private IdentityService identityService;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ProcessInstance startProcessById(String processName, HashMap<String, Object> variables) {
+    public ProcessInstance startProcessById(String processName, Map<String, Object> variables) {
         if (variables.get("initiateur") == null) {
-            variables.put("initiator", SecurityUtils.getCurrentUserLogin().get()); // replace ny current matricule
-            variables.put("startProcessByKey", SecurityUtils.getCurrentUserLogin().get()); // replace ny current matricule
-            variables.put("startedBy", SecurityUtils.getCurrentUserLogin().get()); // replace ny current matricule
+            variables.put("initiator", SecurityUtils.getCurrentUserLogin().get());
+            variables.put("startProcessByKey", SecurityUtils.getCurrentUserLogin().get());
+            variables.put("startedBy", SecurityUtils.getCurrentUserLogin().get());
             variables.put("initiateur", SecurityUtils.getCurrentUserLogin().get());
         }
 
         log.info("process id {} for {} ", this.getIdProcessByName(processName), processName);
         return runtimeService.startProcessInstanceById(this.getIdProcessByName(processName), variables);
-        // throw new BadRequestAlertException("Processus "+processName +" Non trouvé ","","Workflow");
     }
 
     public String getIdProcessByName(String name) {
-        Optional<ProcessDefinitionQuery> def = Optional.of(
-            repositoryService.createProcessDefinitionQuery().active().latestVersion().startableInTasklist().processDefinitionName(name)
+        Optional<ProcessDefinitionQuery> def = Optional.ofNullable(
+            repositoryService.createProcessDefinitionQuery()
+                .active()
+                .latestVersion()
+                .startableInTasklist()
+                .processDefinitionName(name)
         );
+
         if (def.isPresent() && def.get().singleResult() != null) {
             log.debug("def found");
             return def.get().singleResult().getId();
