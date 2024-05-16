@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * Implementation class for managing workflows
  */
@@ -19,8 +21,12 @@ public class MailService implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         log.debug("Start event triggered. Process instance ID: {}", delegateExecution.getProcessInstanceId());
 
+        Optional<DemandeConge> demande = Optional.ofNullable(
+            (DemandeConge) delegateExecution.getProcessEngine().getRuntimeService().getVariable(delegateExecution.getProcessInstanceId(), "demande")
+        );
+
         // TODO: Implement mail sending logic
-        DemandeConge demandeConge = (DemandeConge) delegateExecution.getVariable("demande");
-        log.debug("************** demande", demandeConge);
+//        DemandeConge demandeConge = (DemandeConge) delegateExecution.getVariable("demande");
+        log.debug("************** demande {}", demande.get().getId());
     }
 }
