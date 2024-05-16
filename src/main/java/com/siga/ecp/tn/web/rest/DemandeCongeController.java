@@ -110,7 +110,7 @@ public class DemandeCongeController {
             treatTask.setComment("Demande de congé refusée");
             treatTask.setValue("rejet");
         }
-        treatTask.setInitiator(SecurityUtils.getCurrentUserLogin().get());
+        treatTask.setInitiator(SecurityUtils.getCurrentUserLogin().orElse(null));
         notificationService.completeTask(treatTask);
     }
 

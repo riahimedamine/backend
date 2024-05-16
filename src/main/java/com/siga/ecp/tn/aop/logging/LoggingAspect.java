@@ -1,6 +1,5 @@
 package com.siga.ecp.tn.aop.logging;
 
-import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -13,9 +12,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import tech.jhipster.config.JHipsterConstants;
 
+import java.util.Arrays;
+
 /**
  * Aspect for logging execution of service and repository Spring components.
- *
  * By default, it only runs with the "dev" profile.
  */
 @Aspect

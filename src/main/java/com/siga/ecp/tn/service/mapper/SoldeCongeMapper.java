@@ -6,11 +6,12 @@ import com.siga.ecp.tn.exception.UserNotFoundException;
 import com.siga.ecp.tn.repository.UserRepository;
 import com.siga.ecp.tn.repository.YearRepository;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 /**
  * Mapper for the entity {@link com.siga.ecp.tn.domain.SoldeConge} and its DTO called {@link com.siga.ecp.tn.service.dto.SoldeCongeDTO}.
@@ -35,24 +36,11 @@ public class SoldeCongeMapper {
             return null;
         } else {
             SoldeConge soldeConge = new SoldeConge();
-            soldeConge.setSolde(soldeCongeDTO.getSolde());
-            soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()));
-            Optional<User> user = userRepository.findOneByLogin(soldeCongeDTO.getUser());
-            if (user.isEmpty()) {
-                throw new UserNotFoundException();
-            }
-            soldeConge.setUser(user.get());
-            if (soldeCongeDTO.getCreatedBy() != null) {
-                soldeConge.setCreatedBy(user.get().getLogin());
-            }
-            if (soldeCongeDTO.getCreatedDate() != null) {
-                soldeConge.setCreatedDate(soldeCongeDTO.getCreatedDate());
-            }
-            return soldeConge;
+            return getSoldeConge(soldeCongeDTO, soldeConge);
         }
     }
 
-    public SoldeConge updateSoldeCongeFromDTO(SoldeCongeDTO soldeCongeDTO, SoldeConge soldeConge) {
+    private SoldeConge getSoldeConge(SoldeCongeDTO soldeCongeDTO, SoldeConge soldeConge) {
         soldeConge.setSolde(soldeCongeDTO.getSolde());
         soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()));
         Optional<User> user = userRepository.findOneByLogin(soldeCongeDTO.getUser());
@@ -67,6 +55,10 @@ public class SoldeCongeMapper {
             soldeConge.setCreatedDate(soldeCongeDTO.getCreatedDate());
         }
         return soldeConge;
+    }
+
+    public SoldeConge updateSoldeCongeFromDTO(SoldeCongeDTO soldeCongeDTO, SoldeConge soldeConge) {
+        return getSoldeConge(soldeCongeDTO, soldeConge);
     }
 
     public List<SoldeCongeDTO> soldeCongesToSoldeCongeDTOs(List<SoldeConge> soldeConges) {

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementation class for managing workflows
+ */
 @Component
 public class InvalidateService implements JavaDelegate {
 

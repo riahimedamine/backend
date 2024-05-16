@@ -58,8 +58,15 @@ public class DemandeCongeService {
         this.notificationService = notificationService;
     }
 
+    /**
+     * Check if the user has already a pending demand or if the user has enough days in his balance.
+     *
+     * @param dateDebut the start date of the demand.
+     * @param dateFin   the end date of the demand.
+     * @return the error object.
+     */
     public DemandeCongeError check(LocalDate dateDebut, LocalDate dateFin) {
-        String login = SecurityUtils.getCurrentUserLogin().get();
+        String login = SecurityUtils.getCurrentUserLogin().orElse(null);
 
         long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
         int year = dateDebut.getYear();
@@ -77,11 +84,15 @@ public class DemandeCongeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete DemandeConge : {}", id);
-        if (demandeCongeRepository.findById(id).get().getVld() != 0) {
+        DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
+        if (demandeConge == null) {
+            return;
+        }
+        if (demandeConge.getVld() != 0) {
             throw new RuntimeException("Demande déjà validée");
         }
+        workflowService.deleteProcessInstance(demandeConge.getProcessInstanceId(), "Demande de congé annulée");
         demandeCongeRepository.deleteById(id);
-        // todo delete process instance
     }
 
     /**
@@ -95,11 +106,21 @@ public class DemandeCongeService {
         return demandeCongeRepository.findAll(pageable).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
     }
 
+    /**
+     * Get all the demandeConges by current user.
+     *
+     * @return the list of entities.
+     */
     public List<DemandeCongeDTO> findByCurrentUser() {
         log.debug("Request to get DemandeConge by current user");
         return demandeCongeRepository.findByUserIsCurrentUserOrderByDateDebutDesc().stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
     }
 
+    /**
+     * Get all the demandeConges by Rh.
+     *
+     * @return the list of entities.
+     */
     public List<DemandeCongeDTO> findByRh() {
         log.debug("Request to get DemandeConge by Rh");
         return notificationService.getAllNotificationByCandidateGroup("RH").stream()
@@ -117,6 +138,12 @@ public class DemandeCongeService {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Get all the demandeConges by user.
+     *
+     * @param login the login of the user.
+     * @return the list of entities.
+     */
     public List<DemandeCongeDTO> findByUser(String login) {
         log.debug("Request to get DemandeConge by user : {}", login);
         return demandeCongeRepository.findByUserLoginOrderByDateDebutDesc(login).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
@@ -138,6 +165,13 @@ public class DemandeCongeService {
         }
     }
 
+    /**
+     * Get all the soldeConges by user.
+     *
+     * @param login    the login of the user.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
     public List<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
         log.debug("Request to get SoldeConge by user : {}", login);
         return soldeCongeRepository.findByUserLogin(login, pageable).stream().map(SoldeCongeDTO::new).collect(Collectors.toList());
@@ -184,7 +218,7 @@ public class DemandeCongeService {
             long nbJours = (demandeCongeDTO.getDateFin().getTime() - demandeCongeDTO.getDateDebut().getTime()) / (1000 * 60 * 60 * 24);
             if (soldeConge.getSolde() >= nbJours) {
                 DemandeConge demande = demandeCongeRepository.save(demandeCongeMapper.demandeCongeDTOToDemandeConge(demandeCongeDTO));
-                HashMap<String, Object> variables = new HashMap<String, Object>();
+                HashMap<String, Object> variables = new HashMap<>();
                 variables.put("demande", demande);
                 variables.put("type", demande.getType().getLibFr());
                 User validator = demande.getUser().getValidator();

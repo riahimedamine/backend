@@ -1,6 +1,7 @@
 package com.siga.ecp.tn.service.dto;
 
 import com.siga.ecp.tn.domain.DemandeConge;
+
 import java.util.Date;
 
 public class Notification {
@@ -14,70 +15,6 @@ public class Notification {
     private DemandeConge demande;
     private Date createdAt;
     private Date dueDate;
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public String getInitiateur() {
-        return initiateur;
-    }
-
-    public void setInitiateur(String initiateur) {
-        this.initiateur = initiateur;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCollaborateur() {
-        return collaborateur;
-    }
-
-    public void setCollaborateur(String collaborateur) {
-        this.collaborateur = collaborateur;
-    }
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public String getProcessInstanceId() {
-        return processInstanceId;
-    }
-
-    public void setProcessInstanceId(String processInstanceId) {
-        this.processInstanceId = processInstanceId;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public DemandeConge getDemande() {
-        return demande;
-    }
-
-    public void setDemande(DemandeConge demande) {
-        this.demande = demande;
-    }
 
     public Notification(
         String processInstanceId,
@@ -99,5 +36,78 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    public Notification() {}
+    public Notification() {
+    }
+
+    public String getCollaborateur() {
+        return collaborateur;
+    }
+
+    public void setCollaborateur(String collaborateur) {
+        this.collaborateur = collaborateur;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public DemandeConge getDemande() {
+        return demande;
+    }
+
+    public void setDemande(DemandeConge demande) {
+        this.demande = demande;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getInitiateur() {
+        return initiateur;
+    }
+
+    public void setInitiateur(String initiateur) {
+        this.initiateur = initiateur;
+    }
+
+    public String getProcessInstanceId() {
+        return processInstanceId;
+    }
+
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

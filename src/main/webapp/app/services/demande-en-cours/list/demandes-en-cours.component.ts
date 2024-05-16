@@ -1,4 +1,3 @@
-// todo: make it simlar to the rh one
 import {Component, OnInit} from '@angular/core';
 import {HttpHeaders, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';

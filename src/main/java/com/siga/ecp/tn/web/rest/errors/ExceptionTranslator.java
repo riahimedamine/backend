@@ -1,14 +1,5 @@
 package com.siga.ecp.tn.web.rest.errors;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -21,20 +12,26 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.zalando.problem.DefaultProblem;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.*;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 import tech.jhipster.config.JHipsterConstants;
 import tech.jhipster.web.util.HeaderUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
- * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
+ * The error response follows RFC7807 - Problem Details for HTTP APIs (<a href="https://tools.ietf.org/html/rfc7807">RFC7807</a>).
  */
 @ControllerAdvice
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
@@ -43,50 +40,48 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private static final String MESSAGE_KEY = "message";
     private static final String PATH_KEY = "path";
     private static final String VIOLATIONS_KEY = "violations";
-
+    private final Environment env;
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final Environment env;
 
     public ExceptionTranslator(Environment env) {
         this.env = env;
     }
 
-    /**
-     * Post-process the Problem payload to add the message key for the front-end if needed.
-     */
-    @Override
-    public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, NativeWebRequest request) {
-        if (entity == null) {
-            return null;
-        }
-        Problem problem = entity.getBody();
-        if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
-            return entity;
-        }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
+        return create(
+            ex,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
+        );
+    }
 
-        HttpServletRequest nativeRequest = request.getNativeRequest(HttpServletRequest.class);
-        String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
-        ProblemBuilder builder = Problem
-            .builder()
-            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
-            .withStatus(problem.getStatus())
-            .withTitle(problem.getTitle())
-            .with(PATH_KEY, requestUri);
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
+        return create(ex, problem, request);
+    }
 
-        if (problem instanceof ConstraintViolationProblem) {
-            builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
-                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
-        } else {
-            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
-            problem.getParameters().forEach(builder::with);
-            if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
-                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
-            }
-        }
-        return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleEmailAlreadyUsedException(
+        com.siga.ecp.tn.service.EmailAlreadyUsedException ex,
+        NativeWebRequest request
+    ) {
+        EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(
+        com.siga.ecp.tn.service.InvalidPasswordException ex,
+        NativeWebRequest request
+    ) {
+        return create(new InvalidPasswordException(), request);
     }
 
     @Override
@@ -116,19 +111,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleEmailAlreadyUsedException(
-        com.siga.ecp.tn.service.EmailAlreadyUsedException ex,
-        NativeWebRequest request
-    ) {
-        EmailAlreadyUsedException problem = new EmailAlreadyUsedException();
-        return create(
-            problem,
-            request,
-            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
-        );
-    }
-
-    @ExceptionHandler
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
         com.siga.ecp.tn.service.UsernameAlreadyUsedException ex,
         NativeWebRequest request
@@ -141,31 +123,8 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(
-        com.siga.ecp.tn.service.InvalidPasswordException ex,
-        NativeWebRequest request
-    ) {
-        return create(new InvalidPasswordException(), request);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
-        return create(
-            ex,
-            request,
-            HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage())
-        );
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
-        Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
-        return create(ex, problem, request);
-    }
-
     @Override
-    public ProblemBuilder prepare(final Throwable throwable, final StatusType status, final URI type) {
+    public ProblemBuilder prepare(@Nonnull final Throwable throwable, @Nonnull final StatusType status, @Nonnull final URI type) {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
 
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
@@ -218,5 +177,41 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private boolean containsPackageName(String message) {
         // This list is for sure not complete
         return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "com.siga.ecp.tn");
+    }
+
+    /**
+     * Post-process the Problem payload to add the message key for the front-end if needed.
+     */
+    @Override
+    public ResponseEntity<Problem> process(@Nullable ResponseEntity<Problem> entity, @Nonnull NativeWebRequest request) {
+        if (entity == null) {
+            return null;
+        }
+        Problem problem = entity.getBody();
+        if (!(problem instanceof ConstraintViolationProblem || problem instanceof DefaultProblem)) {
+            return entity;
+        }
+
+        HttpServletRequest nativeRequest = request.getNativeRequest(HttpServletRequest.class);
+        String requestUri = nativeRequest != null ? nativeRequest.getRequestURI() : StringUtils.EMPTY;
+        ProblemBuilder builder = Problem
+            .builder()
+            .withType(Problem.DEFAULT_TYPE.equals(problem.getType()) ? ErrorConstants.DEFAULT_TYPE : problem.getType())
+            .withStatus(problem.getStatus())
+            .withTitle(problem.getTitle())
+            .with(PATH_KEY, requestUri);
+
+        if (problem instanceof ConstraintViolationProblem) {
+            builder
+                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
+                .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
+        } else {
+            builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
+            problem.getParameters().forEach(builder::with);
+            if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
+                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
+            }
+        }
+        return new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode());
     }
 }

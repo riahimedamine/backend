@@ -21,6 +21,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing tasks and notifications
+ */
 @Service
 public class NotificationService {
 
@@ -48,7 +51,7 @@ public class NotificationService {
     public void completeTask(TreatTask treatTask) {
         Task currentTask = taskService.createTaskQuery().taskId(treatTask.getTaskId()).singleResult();
 
-        Map<String, Object> variables = new HashMap<String, Object>();
+        Map<String, Object> variables = new HashMap<>();
         variables.put("decision", treatTask.getValue());
         variables.put("comment", treatTask.getComment());
         variables.put("startProcessByKey", treatTask.getInitiator());

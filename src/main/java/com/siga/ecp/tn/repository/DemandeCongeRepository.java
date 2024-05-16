@@ -15,6 +15,8 @@ public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long
 
     Boolean existsByUserLoginAndVld(String login, Integer state);
 
+    DemandeConge findByProcessInstanceId(String processInstanceId);
+
     @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name}")
     List<DemandeConge> findByUserIsCurrentUserOrderByDateDebutDesc();
 

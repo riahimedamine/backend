@@ -30,8 +30,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,22 +61,7 @@ import java.util.Optional;
 @RequestMapping("/api/admin")
 public class UserResource {
 
-    private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
-        Arrays.asList(
-            "id",
-            "login",
-            "firstName",
-            "lastName",
-            "email",
-            "activated",
-            "langKey",
-            "validator",
-            "createdBy",
-            "createdDate",
-            "lastModifiedBy",
-            "lastModifiedDate"
-        )
-    );
+    private static final List<String> ALLOWED_ORDERED_PROPERTIES = List.of("id", "login", "firstName", "lastName", "email", "activated", "langKey", "validator", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate");
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
     private final UserService userService;
