@@ -1,10 +1,11 @@
 package com.siga.ecp.tn.domain;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "year")
@@ -23,6 +24,7 @@ public class Year implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "year", nullable = false, unique = true)
     private int year;
 
     public Year() {}
