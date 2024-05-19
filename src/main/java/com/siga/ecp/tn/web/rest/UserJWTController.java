@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.siga.ecp.tn.security.jwt.JWTFilter;
 import com.siga.ecp.tn.security.jwt.TokenProvider;
 import com.siga.ecp.tn.web.rest.vm.LoginVM;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Authentication", description = "Authentication endpoint")
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;
@@ -34,6 +36,12 @@ public class UserJWTController {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
+    /**
+     * {@code POST  /authenticate} : authenticate the user.
+     *
+     * @param loginVM the login view model.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the new JWT token, or with status {@code 401 (Unauthorized)} if the authentication failed.
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

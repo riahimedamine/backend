@@ -2,8 +2,10 @@ package com.siga.ecp.tn.web.rest;
 
 import com.siga.ecp.tn.service.UserService;
 import com.siga.ecp.tn.service.dto.UserDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,15 +22,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class PublicUserResource {
+@Tag(name = "Public Users", description = "Public users Management")
+public class PublicUserContoller {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = List.of("id", "login", "firstName", "lastName", "email", "activated", "langKey");
 
-    private final Logger log = LoggerFactory.getLogger(PublicUserResource.class);
+    private final Logger log = LoggerFactory.getLogger(PublicUserContoller.class);
 
     private final UserService userService;
 
-    public PublicUserResource(UserService userService) {
+    public PublicUserContoller(UserService userService) {
         this.userService = userService;
     }
 
@@ -39,7 +42,7 @@ public class PublicUserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllPublicUsers(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<UserDTO>> getAllPublicUsers(@ParameterObject Pageable pageable) {
         log.debug("REST request to get all public User names");
         if (!onlyContainsAllowedProperties(pageable)) {
             return ResponseEntity.badRequest().build();
@@ -64,8 +67,13 @@ public class PublicUserResource {
         return userService.getAuthorities();
     }
 
+    /**
+     * Gets a list of all users.
+     *
+     * @return a string list of all users.
+     */
     @GetMapping("/users/list")
     public List<String> getList() {
-        return userService.getUsers();
+        return userService.getUsersList();
     }
 }

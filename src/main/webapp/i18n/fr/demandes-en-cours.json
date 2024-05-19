@@ -28,6 +28,7 @@
     "collaborator": "Utilisateur",
     "createdAt": "Adresse",
     "dueDate": "Type",
-    "supervisee": "Supervisée"
+    "supervisee": "Supervisée",
+    "empty": "Pas de demandes à traiter!"
   }
 }

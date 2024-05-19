@@ -243,9 +243,9 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> requestPasswordReset(String mail) {
+    public Optional<User> requestPasswordReset(String email) {
         return userRepository
-            .findOneByEmailIgnoreCase(mail)
+            .findOneByEmailIgnoreCase(email)
             .filter(User::isActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
@@ -335,12 +335,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities() {
+    public Optional<User> getCurrentUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
     }
 
     @Transactional(readOnly = true)
-    public List<String> getUsers() {
+    public List<String> getUsersList() {
         return userRepository.findAll().stream().map(User::getLogin).collect(Collectors.toList());
     }
 

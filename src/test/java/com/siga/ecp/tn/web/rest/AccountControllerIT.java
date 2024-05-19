@@ -1,10 +1,5 @@
 package com.siga.ecp.tn.web.rest;
 
-import static com.siga.ecp.tn.web.rest.AccountResourceIT.TEST_USER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import com.siga.ecp.tn.IntegrationTest;
 import com.siga.ecp.tn.config.Constants;
 import com.siga.ecp.tn.domain.User;
@@ -14,11 +9,8 @@ import com.siga.ecp.tn.security.AuthoritiesConstants;
 import com.siga.ecp.tn.service.UserService;
 import com.siga.ecp.tn.service.dto.AdminUserDTO;
 import com.siga.ecp.tn.service.dto.PasswordChangeDTO;
-import com.siga.ecp.tn.service.dto.UserDTO;
 import com.siga.ecp.tn.web.rest.vm.KeyAndPasswordVM;
 import com.siga.ecp.tn.web.rest.vm.ManagedUserVM;
-import java.time.Instant;
-import java.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +21,25 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import static com.siga.ecp.tn.web.rest.AccountControllerIT.TEST_USER_LOGIN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 /**
- * Integration tests for the {@link AccountResource} REST controller.
+ * Integration tests for the {@link AccountController} REST controller.
  */
 @AutoConfigureMockMvc
 @WithMockUser(value = TEST_USER_LOGIN)
 @IntegrationTest
-class AccountResourceIT {
+class AccountControllerIT {
 
     static final String TEST_USER_LOGIN = "test";
 

@@ -16,8 +16,11 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="row">
-    <div *ngIf="demandes" class="table-responsive col-lg-10">
+  <div *ngIf="demandes" class="row">
+    <div *ngIf="demandes.length == 0" class="card text-xxl-center col-lg-10" jhiTranslate="demandesEnCours.empty">
+      No active demandes
+    </div>
+    <div *ngIf="demandes.length > 0" class="table-responsive col-lg-10">
       <table aria-describedby="conge-Management-page-heading" class="table table-striped">
         <thead>
         <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
@@ -45,21 +48,9 @@
             <span jhiTranslate="congeManagement.vld">Vld</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
-          <th jhiSortBy="createdBy" scope="col">
-            <span jhiTranslate="congeManagement.createdBy">Créé par</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
 
           <th jhiSortBy="createdDate" scope="col">
             <span jhiTranslate="congeManagement.createdDate">Créé le</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="lastModifiedBy" scope="col">
-            <span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span>
-            <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th jhiSortBy="lastModifiedDate" scope="col">
-            <span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span>
             <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>

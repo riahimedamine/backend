@@ -37,21 +37,6 @@
         <th jhiSortBy="libAr" scope="col"><span jhiTranslate="typeManagement.libAr">LibAr</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
-        <th jhiSortBy="createdBy" scope="col">
-          <span jhiTranslate="typeManagement.createdBy">Créé par</span>
-          <fa-icon icon="sort"></fa-icon>
-        <th jhiSortBy="createdDate" scope="col">
-          <span jhiTranslate="typeManagement.createdDate">Créé le</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="lastModifiedBy" scope="col">
-          <span jhiTranslate="typeManagement.lastModifiedBy">Modifié par</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="lastModifiedDate" scope="col">
-          <span jhiTranslate="typeManagement.lastModifiedDate">Modifié le</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
         <th scope="col"></th>
       </tr>
       </thead>
@@ -64,10 +49,6 @@
         <td>{{ type.libFr }}</td>
 
         <td>{{ type.libAr }}</td>
-        <td>{{ type.createdBy }}</td>
-        <td>{{ type.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td>{{ type.lastModifiedBy }}</td>
-        <td>{{ type.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
         <td class="text-end">
           <div class="btn-group">
             <button [routerLink]="['./', type.id, 'edit']" class="btn btn-primary btn-sm" queryParamsHandling="merge"

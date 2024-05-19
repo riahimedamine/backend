@@ -32,17 +32,8 @@
         <dt><span jhiTranslate="congeManagement.user">user</span></dt>
         <dd>{{ demande.user }}</dd>
 
-        <dt><span jhiTranslate="congeManagement.createdBy">Créé par</span></dt>
-        <dd>{{ demande.createdBy }}</dd>
-
         <dt><span jhiTranslate="congeManagement.createdDate">Créé le</span></dt>
         <dd>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
-
-        <dt><span jhiTranslate="congeManagement.lastModifiedBy">Modifié par</span></dt>
-        <dd>{{ demande.lastModifiedBy }}</dd>
-
-        <dt><span jhiTranslate="congeManagement.lastModifiedDate">Modifié le</span></dt>
-        <dd>{{ demande.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
       </dl>
 
       <button class="btn btn-info" routerLink="../../" type="submit">

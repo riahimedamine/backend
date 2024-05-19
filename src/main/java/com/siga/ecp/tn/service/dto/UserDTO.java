@@ -1,6 +1,7 @@
 package com.siga.ecp.tn.service.dto;
 
 import com.siga.ecp.tn.domain.User;
+
 import java.io.Serializable;
 
 /**
@@ -20,8 +21,16 @@ public class UserDTO implements Serializable {
 
     public UserDTO(User user) {
         this.id = user.getId();
-        // Customize it here if you need, or not, firstName/lastName/etc
         this.login = user.getLogin();
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+            "id='" + id + '\'' +
+            ", login='" + login + '\'' +
+            "}";
     }
 
     public Long getId() {
@@ -38,14 +47,5 @@ public class UserDTO implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-            "id='" + id + '\'' +
-            ", login='" + login + '\'' +
-            "}";
     }
 }

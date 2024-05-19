@@ -5,11 +5,12 @@
 
       <jhi-alert-error></jhi-alert-error>
 
-      <div *ngIf="error">
-        <small *ngIf="error.hasOne" class="form-text text-danger" jhiTranslate="congeManagement.error.hasOne">
+      <div *ngIf="error" class="container-fluid">
+        <small *ngIf="error.hasOne" class="form-text text-bg-danger text-xxl-center"
+               jhiTranslate="congeManagement.error.hasOne">
           Vous avez déjà une demande en cours.
         </small>
-        <small *ngIf="error.solde" class="form-text text-danger" jhiTranslate="congeManagement.error.solde">
+        <small *ngIf="error.solde" class="text-bg-danger text-xxl-center" jhiTranslate="congeManagement.error.solde">
           Solde insuffisant pour cette demande.
         </small>
         <small *ngIf="!error.solde && !error.hasOne" class="form-text text-success"

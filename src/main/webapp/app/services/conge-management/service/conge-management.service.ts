@@ -11,6 +11,7 @@ import {AccountService} from '../../../core/auth/account.service';
 @Injectable({providedIn: 'root'})
 export class CongeManagementService {
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/demande-conges');
+  private resourceUrlSolde = this.applicationConfigService.getEndpointFor('api/solde-conges');
 
   constructor(
     private accountService: AccountService,
@@ -52,16 +53,12 @@ export class CongeManagementService {
     return this.http.delete(`${this.resourceUrl}/${id}`);
   }
 
-  findByUser(login: string): Observable<IDemandeConge[]> {
-    return this.http.get<IDemandeConge[]>(`${this.resourceUrl}/user/${login}`);
-  }
-
   getTypes(): Observable<string[]> {
     return this.http.get<string[]>(`${this.resourceUrl}/types`);
   }
 
-  getSolde(login: string): Observable<ISoldeConge[]> {
-    return this.http.get<ISoldeConge[]>(`${this.resourceUrl}/solde/${login}`);
+  getSolde(): Observable<ISoldeConge[]> {
+    return this.http.get<ISoldeConge[]>(`${this.resourceUrlSolde}/current-user`)
   }
 
   check(obj: { dateDebut: Date; dateFin: Date }): Observable<{ hasOne: boolean, solde: boolean }> {

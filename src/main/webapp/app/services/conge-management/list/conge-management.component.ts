@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {combineLatest} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { ASC, DESC, SORT } from 'app/config/navigation.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { CongeManagementService } from '../service/conge-management.service';
-import { DemandeConge, ISoldeConge } from '../conge-management.model';
-import { CongeManagementDeleteDialogComponent } from '../delete/conge-management-delete-dialog.component';
-import { Solde } from '../../../rh/solde-management/solde-management.model';
+import {ITEMS_PER_PAGE} from 'app/config/pagination.constants';
+import {ASC, DESC, SORT} from 'app/config/navigation.constants';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/auth/account.model';
+import {CongeManagementService} from '../service/conge-management.service';
+import {DemandeConge, ISoldeConge} from '../conge-management.model';
+import {CongeManagementDeleteDialogComponent} from '../delete/conge-management-delete-dialog.component';
+import {Solde} from '../../../rh/solde-management/solde-management.model';
 
 @Component({
   selector: 'jhi-conge-mgmt',
@@ -34,13 +34,14 @@ export class CongeManagementComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
-      this.congeService.getSolde(this.currentAccount!.login!).subscribe(solde => (this.soldes = solde));
     });
+    this.congeService.getSolde().subscribe(solde => (this.soldes = solde));
     this.handleNavigation();
   }
 
@@ -49,7 +50,7 @@ export class CongeManagementComponent implements OnInit {
   }
 
   deleteDemandeConge(demandeConge: DemandeConge): void {
-    const modalRef = this.modalService.open(CongeManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(CongeManagementDeleteDialogComponent, {size: 'lg', backdrop: 'static'});
     modalRef.componentInstance.demande = demandeConge;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {

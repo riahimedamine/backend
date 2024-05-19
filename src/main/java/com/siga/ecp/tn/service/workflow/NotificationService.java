@@ -48,6 +48,39 @@ public class NotificationService {
         this.demandeCongeRepository = demandeCongeRepository;
     }
 
+    public void completeAutoTask(String processInstanceName) {
+        String processInstanceId = workflowService.getIdProcessByName(processInstanceName);
+        Optional<List<Task>> allAutoCompleteTasks = getAllAutoCompleteTasks(processInstanceId);
+
+        allAutoCompleteTasks.ifPresent(
+            tasks -> tasks.forEach(
+                task -> {
+                    Map<String, Object> variables = new HashMap<>();
+                    variables.put("decision", "auto");
+                    variables.put("comment", "Auto completed");
+                    variables.put("startProcessByKey", "auto");
+                    variables.put("startedBy", "auto");
+                    variables.put("dateComment", LocalDateTime.now());
+                    variables.put("treater", "auto");
+
+                    taskService.complete(task.getId(), variables);
+                }
+            )
+        );
+
+    }
+
+    public Optional<List<Task>> getAllAutoCompleteTasks(String processName) {
+        TaskQuery query = taskService
+            .createTaskQuery()
+            .processDefinitionId(workflowService.getIdProcessByName(processName))
+            .taskAssignee("autocomplete")
+            .orderByTaskCreateTime()
+            .desc();
+
+        return Optional.ofNullable(query.list());
+    }
+
     public void completeTask(TreatTask treatTask) {
         Task currentTask = taskService.createTaskQuery().taskId(treatTask.getTaskId()).singleResult();
 

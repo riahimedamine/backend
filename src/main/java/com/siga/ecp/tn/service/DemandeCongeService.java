@@ -15,6 +15,7 @@ import com.siga.ecp.tn.service.workflow.WorkflowService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class DemandeCongeService {
 
-    private final WorkflowService workflowService;
-
     private final Logger log = LoggerFactory.getLogger(DemandeCongeService.class);
 
     private final DemandeCongeRepository demandeCongeRepository;
@@ -43,7 +42,11 @@ public class DemandeCongeService {
 
     private final SoldeCongeRepository soldeCongeRepository;
 
+    private final WorkflowService workflowService;
+
     private final NotificationService notificationService;
+
+    private final String PROCESS_NAME = "demande congé";
 
     public DemandeCongeService(
         WorkflowService workflowService,
@@ -101,9 +104,9 @@ public class DemandeCongeService {
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public List<DemandeCongeDTO> findAll(Pageable pageable) {
+    public Page<DemandeCongeDTO> findAll(Pageable pageable) {
         log.debug("Request to get all DemandeConges");
-        return demandeCongeRepository.findAll(pageable).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+        return demandeCongeRepository.findAll(pageable).map(DemandeCongeDTO::new);
     }
 
     /**
@@ -111,9 +114,9 @@ public class DemandeCongeService {
      *
      * @return the list of entities.
      */
-    public List<DemandeCongeDTO> findByCurrentUser() {
+    public Page<DemandeCongeDTO> findByCurrentUser(Pageable pageable) {
         log.debug("Request to get DemandeConge by current user");
-        return demandeCongeRepository.findByUserIsCurrentUserOrderByDateDebutDesc().stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+        return demandeCongeRepository.findByUserIsCurrentUserOrderByDateDebutDesc(pageable).map(DemandeCongeDTO::new);
     }
 
     /**
@@ -144,9 +147,9 @@ public class DemandeCongeService {
      * @param login the login of the user.
      * @return the list of entities.
      */
-    public List<DemandeCongeDTO> findByUser(String login) {
+    public Page<DemandeCongeDTO> findByUser(String login, Pageable pageable) {
         log.debug("Request to get DemandeConge by user : {}", login);
-        return demandeCongeRepository.findByUserLoginOrderByDateDebutDesc(login).stream().map(DemandeCongeDTO::new).collect(Collectors.toList());
+        return demandeCongeRepository.findByUserLoginOrderByDateDebutDesc(login, pageable).map(DemandeCongeDTO::new);
     }
 
     /**
@@ -172,9 +175,9 @@ public class DemandeCongeService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    public List<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
+    public Page<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
         log.debug("Request to get SoldeConge by user : {}", login);
-        return soldeCongeRepository.findByUserLogin(login, pageable).stream().map(SoldeCongeDTO::new).collect(Collectors.toList());
+        return soldeCongeRepository.findByUserLogin(login, pageable).map(SoldeCongeDTO::new);
     }
 
     /**
@@ -210,6 +213,8 @@ public class DemandeCongeService {
      */
     public DemandeCongeDTO saveDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to save DemandeConge : {}", demandeCongeDTO);
+
+        boolean autoComplete = false;
         boolean exist = demandeCongeRepository.existsByUserLoginAndVld(demandeCongeDTO.getUser(), 0);
         SoldeConge soldeConge = soldeCongeRepository
             .findByYearYearAndUserLogin(Calendar.getInstance().getWeekYear(), demandeCongeDTO.getUser())
@@ -226,10 +231,16 @@ public class DemandeCongeService {
                     variables.put("assignee", validator.getLogin());
                 } else {
                     variables.put("assignee", "RH");
+                    autoComplete = true;
                 }
-                ProcessInstance processInstance = workflowService.startProcessById("demande congé", variables);
+                ProcessInstance processInstance = workflowService.startProcessById(PROCESS_NAME, variables);
                 demande.setProcessInstanceId(processInstance.getId());
                 demandeCongeRepository.save(demande);
+
+                if (autoComplete) {
+                    notificationService.completeAutoTask(PROCESS_NAME);
+                }
+
                 return demandeCongeMapper.demandeCongeToDemandeCongeDTO(demande);
             }
         }

@@ -28,29 +28,13 @@
         <th jhiSortBy="id" scope="col"><span jhiTranslate="global.field.id">ID</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
-        <th jhiSortBy="solde" scope="col"><span jhiTranslate="soldeManagement.solde">Login</span>
+        <th jhiSortBy="user" scope="col"><span jhiTranslate="soldeManagement.user">Langue</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
         <th jhiSortBy="year" scope="col"><span jhiTranslate="soldeManagement.year">Email</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
-        <th jhiSortBy="user" scope="col"><span jhiTranslate="soldeManagement.user">Langue</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="createdBy" scope="col">
-          <span jhiTranslate="soldeManagement.createdBy">Créé par</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="createdDate" scope="col">
-          <span jhiTranslate="soldeManagement.createdDate">Créé le</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="lastModifiedBy" scope="col">
-          <span jhiTranslate="soldeManagement.lastModifiedBy">Modifié par</span>
-          <fa-icon icon="sort"></fa-icon>
-        </th>
-        <th jhiSortBy="lastModifiedDate" scope="col">
-          <span jhiTranslate="soldeManagement.lastModifiedDate">Modifié le</span>
+        <th jhiSortBy="solde" scope="col"><span jhiTranslate="soldeManagement.solde">Login</span>
           <fa-icon icon="sort"></fa-icon>
         </th>
         <th scope="col"></th>
@@ -61,13 +45,9 @@
         <td>
           <a [routerLink]="['./', solde.id, 'view']">{{ solde.id }}</a>
         </td>
-        <td>{{ solde.solde }}</td>
-        <td>{{ solde.year }}</td>
         <td>{{ solde.user }}</td>
-        <td>{{ solde.createdBy }}</td>
-        <td>{{ solde.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
-        <td>{{ solde.lastModifiedBy }}</td>
-        <td>{{ solde.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td>{{ solde.year }}</td>
+        <td>{{ solde.solde }}</td>
         <td class="text-end">
           <div class="btn-group">
             <button [routerLink]="['./', solde.id, 'edit']" class="btn btn-primary btn-sm" queryParamsHandling="merge"

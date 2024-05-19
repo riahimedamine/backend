@@ -37,10 +37,10 @@ public class UserMapper {
     }
 
     public List<User> userDTOsToUsers(List<AdminUserDTO> userDTOs) {
-        return userDTOs.stream().filter(Objects::nonNull).map(this::userDTOToUser).collect(Collectors.toList());
+        return userDTOs.stream().filter(Objects::nonNull).map(this::adminUserDTOToUser).collect(Collectors.toList());
     }
 
-    public User userDTOToUser(AdminUserDTO userDTO) {
+    public User adminUserDTOToUser(AdminUserDTO userDTO) {
         if (userDTO == null) {
             return null;
         } else {

@@ -6,9 +6,15 @@
       "createLabel": "Créer une nouvelle demande",
       "createOrEditLabel": "Créer ou éditer une demande"
     },
+    "solde": {
+      "title": "Soldes Congés",
+      "year": "Année",
+      "solde": "Solde"
+    },
     "created": "La demande {{ param }} a été créé.",
     "updated": "La demande {{ param }} a été mis à jour.",
     "deleted": "La demande {{ param }} a été supprimé.",
+    "validated": "La demande a été traitée.",
     "delete": {
       "question": "Etes-vous certain de vouloir supprimer la demande {{ id }} ?"
     },
@@ -37,9 +43,10 @@
     "notes": "Observations",
     "vld": "Validé",
     "createdBy": "Créé par",
-    "createdDate": "Créé le",
+    "createdDate": "Date de Depot",
     "lastModifiedBy": "Modifié par",
     "lastModifiedDate": "Modifié le",
-    "all": "Tous les demandes"
+    "all": "Tous les demandes",
+    "empty": "Pas de demandes à traiter!"
   }
 }
