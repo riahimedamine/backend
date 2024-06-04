@@ -1,11 +1,14 @@
 package com.siga.ecp.tn.repository;
 
 import com.siga.ecp.tn.domain.DemandeConge;
+import com.siga.ecp.tn.domain.TypeConge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
 
 /**
  * Spring Data JPA repository for the DemandeConge entity.
@@ -21,4 +24,6 @@ public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long
     Page<DemandeConge> findByUserIsCurrentUser(Pageable pageable);
 
     Page<DemandeConge> findByUserLoginOrderByDateDebutDesc(String login, Pageable pageable);
+
+    Integer countByTypeAndDateDebutBetween(TypeConge type, Date startDate, Date endDate);
 }
