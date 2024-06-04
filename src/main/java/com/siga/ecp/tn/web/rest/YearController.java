@@ -49,8 +49,10 @@ public class YearController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.RH + "\")")
-    public void deleteYear(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteYear(@PathVariable Long id) {
+        Year year = yearService.findById(id);
         yearService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "yearManagement.deleted", String.valueOf(year.getYear()))).build();
     }
 
     @GetMapping("/{id}")

@@ -1,14 +1,16 @@
 package com.siga.ecp.tn.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "year")
+@Table(name = "years")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Audited
 public class Year implements Serializable {
@@ -20,6 +22,11 @@ public class Year implements Serializable {
 
     @Column(name = "year", nullable = false, unique = true)
     private int year;
+
+    @OneToMany(mappedBy = "year", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @SuppressWarnings("unused")
+    private List<SoldeConge> soldeConges;
 
     public Year() {
     }

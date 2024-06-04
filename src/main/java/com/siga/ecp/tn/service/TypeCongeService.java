@@ -27,25 +27,60 @@ public class TypeCongeService {
     }
 
     /**
-     * Save a typeConge.
+     * Delete the typeConge by id.
      *
-     * @param typeConge the entity to save.
-     * @return the persisted entity.
+     * @param id the id of the entity.
      */
-    public TypeConge save(TypeConge typeConge) {
-        log.debug("Request to save TypeConge : {}", typeConge);
-        return typeCongeRepository.save(typeConge);
+    @Transactional
+    public void delete(Long id) {
+        log.debug("Request to delete TypeConge : {}", id);
+        Optional<TypeConge> type = typeCongeRepository.findById(id);
+        if (type.isEmpty()) return;
+        type.get().setIsDeleted(true);
+        typeCongeRepository.save(type.get());
     }
 
     /**
-     * Update a typeConge.
+     * Get all the typeConges.
      *
-     * @param typeConge the entity to save.
-     * @return the persisted entity.
+     * @return the list of entities.
      */
-    public TypeConge update(TypeConge typeConge) {
-        log.debug("Request to update TypeConge : {}", typeConge);
-        return typeCongeRepository.save(typeConge);
+    @Transactional(readOnly = true)
+    public Page<TypeConge> findAll(Pageable pageable) {
+        log.debug("Request to get all TypeConges");
+        return typeCongeRepository.findAllByisDeletedFalse(pageable);
+    }
+
+    /**
+     * Get one typeConge by code.
+     *
+     * @param code the code of the type.
+     */
+    @Transactional
+    public TypeConge findByCode(Integer code) {
+        return typeCongeRepository.findByCode(code);
+    }
+
+    /**
+     * Get one typeConge by libFr.
+     *
+     * @param libFr the libFr of the type.
+     */
+    @Transactional
+    public TypeConge findByLibFr(String libFr) {
+        return typeCongeRepository.findByLibFr(libFr);
+    }
+
+    /**
+     * Get one typeConge by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<TypeConge> findOne(Long id) {
+        log.debug("Request to get TypeConge : {}", id);
+        return typeCongeRepository.findById(id);
     }
 
     /**
@@ -54,6 +89,7 @@ public class TypeCongeService {
      * @param typeConge the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Optional<TypeConge> partialUpdate(TypeConge typeConge) {
         log.debug("Request to partially update TypeConge : {}", typeConge);
 
@@ -79,56 +115,26 @@ public class TypeCongeService {
     }
 
     /**
-     * Get all the typeConges.
+     * Save a typeConge.
      *
-     * @return the list of entities.
+     * @param typeConge the entity to save.
+     * @return the persisted entity.
      */
-    @Transactional(readOnly = true)
-    public Page<TypeConge> findAll(Pageable pageable) {
-        log.debug("Request to get all TypeConges");
-        return typeCongeRepository.findAllByisDeletedFalse(pageable);
+    @Transactional
+    public TypeConge save(TypeConge typeConge) {
+        log.debug("Request to save TypeConge : {}", typeConge);
+        return typeCongeRepository.save(typeConge);
     }
 
     /**
-     * Get one typeConge by id.
+     * Update a typeConge.
      *
-     * @param id the id of the entity.
-     * @return the entity.
+     * @param typeConge the entity to save.
+     * @return the persisted entity.
      */
-    @Transactional(readOnly = true)
-    public Optional<TypeConge> findOne(Long id) {
-        log.debug("Request to get TypeConge : {}", id);
-        return typeCongeRepository.findById(id);
-    }
-
-    /**
-     * Delete the typeConge by id.
-     *
-     * @param id the id of the entity.
-     */
-    public void delete(Long id) {
-        log.debug("Request to delete TypeConge : {}", id);
-        Optional<TypeConge> type = typeCongeRepository.findById(id);
-        if (type.isEmpty()) return;
-        type.get().setIsDeleted(true);
-        typeCongeRepository.save(type.get());
-    }
-
-    /**
-     * Get one typeConge by code.
-     *
-     * @param code the code of the type.
-     */
-    public TypeConge findByCode(Integer code) {
-        return typeCongeRepository.findByCode(code);
-    }
-
-    /**
-     * Get one typeConge by libFr.
-     *
-     * @param libFr the libFr of the type.
-     */
-    public TypeConge findByLibFr(String libFr) {
-        return typeCongeRepository.findByLibFr(libFr);
+    @Transactional
+    public TypeConge update(TypeConge typeConge) {
+        log.debug("Request to update TypeConge : {}", typeConge);
+        return typeCongeRepository.save(typeConge);
     }
 }

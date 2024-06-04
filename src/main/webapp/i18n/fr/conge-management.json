@@ -34,6 +34,7 @@
       "solde": "Vous n'avez pas assez de solde."
     },
     "success": "Demande de congé valide.",
+    "invalid": "Demande de congé invalide.",
     "dateDebut": "Date de début",
     "dateFin": "Date de fin",
     "user": "Utilisateur",

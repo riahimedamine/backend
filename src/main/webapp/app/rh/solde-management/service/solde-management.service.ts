@@ -11,15 +11,14 @@ import { ISolde } from '../solde-management.model';
 export class SlodeManagementService {
   private resourceUrl = this.applicationConfigService.getEndpointFor('api/solde-conges');
 
-  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
+  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {
+  }
 
   create(solde: ISolde): Observable<ISolde> {
-    console.log('solde', solde);
     return this.http.post<ISolde>(this.resourceUrl, solde);
   }
 
   update(solde: ISolde): Observable<ISolde> {
-    console.log('solde', solde);
     return this.http.put<ISolde>(this.resourceUrl, solde);
   }
 

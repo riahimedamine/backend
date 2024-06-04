@@ -12,9 +12,9 @@ const newType: ITypeConge = {
 
 @Component({
   selector: 'jhi-type-conges-mgmt-update',
-  templateUrl: './type-conges-management-update.component.html',
+  templateUrl: './type-conge-update.component.html'
 })
-export class TypeCongesManagementUpdateComponent implements OnInit {
+export class TypeCongeUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = new FormGroup({

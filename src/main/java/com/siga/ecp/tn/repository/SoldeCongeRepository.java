@@ -1,6 +1,8 @@
 package com.siga.ecp.tn.repository;
 
 import com.siga.ecp.tn.domain.SoldeConge;
+import com.siga.ecp.tn.domain.User;
+import com.siga.ecp.tn.domain.Year;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,8 @@ import java.util.Optional;
  */
 @Repository
 public interface SoldeCongeRepository extends JpaRepository<SoldeConge, Long> {
+
+    boolean existsByYearAndUser(Year year, User user);
 
     Page<SoldeConge> findByUserLogin(String login, Pageable pageable);
 

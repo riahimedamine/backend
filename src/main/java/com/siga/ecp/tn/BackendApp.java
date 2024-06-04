@@ -30,13 +30,13 @@ import java.util.Set;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-public class Application {
+public class BackendApp {
 
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private static final Logger log = LoggerFactory.getLogger(BackendApp.class);
 
     private final Environment env;
 
-    public Application(Environment env) {
+    public BackendApp(Environment env) {
         this.env = env;
     }
 
@@ -46,7 +46,7 @@ public class Application {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(Application.class);
+        SpringApplication app = new SpringApplication(BackendApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         logApplicationStartup(env);

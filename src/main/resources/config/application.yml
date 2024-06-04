@@ -92,7 +92,7 @@ management:
 
 spring:
   application:
-    name: GRH
+    name: BackendApp
   profiles:
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by maven when building the JAR file
@@ -176,8 +176,8 @@ info:
 
 jhipster:
   clientApp:
-    name: 'GRH'
-  # By default CORS is disabled. Uncomment to enable.
+    name: 'BackendApp'
+  # Uncomment to enable CORS.
   # cors:
   #   allowed-origins: "http://localhost:8100,http://localhost:9000"
   #   allowed-methods: "*"

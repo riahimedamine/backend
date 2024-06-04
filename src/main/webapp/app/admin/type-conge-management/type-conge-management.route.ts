@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Routes} from '@angular/router';
-import {Observable, of} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, Routes } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
-import {ITypeConge} from './type-conge-management.model';
-import {TypeManagementService} from './service/type-conges-management.service';
-import {TypeCongeManagementComponent} from './list/type-conge-management.component';
-import {TypeCongesManagementUpdateComponent} from './update/type-conges-management-update.component';
+import { ITypeConge } from './type-conge-management.model';
+import { TypeManagementService } from './service/type-conges-management.service';
+import { TypeCongeComponent } from './list/type-conge.component';
+import { TypeCongeUpdateComponent } from './update/type-conge-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class TypeManagementResolve implements Resolve<ITypeConge | null> {
@@ -23,7 +23,7 @@ export class TypeManagementResolve implements Resolve<ITypeConge | null> {
 export const typeCongeManagementRoute: Routes = [
   {
     path: '',
-    component: TypeCongeManagementComponent,
+    component: TypeCongeComponent,
     data: {
       defaultSort: 'id,asc',
     },
@@ -31,14 +31,14 @@ export const typeCongeManagementRoute: Routes = [
 
   {
     path: 'new',
-    component: TypeCongesManagementUpdateComponent,
+    component: TypeCongeUpdateComponent,
     resolve: {
       type: TypeManagementResolve,
     },
   },
   {
     path: ':id/edit',
-    component: TypeCongesManagementUpdateComponent,
+    component: TypeCongeUpdateComponent,
     resolve: {
       type: TypeManagementResolve,
     },

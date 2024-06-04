@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {ApplicationConfigService} from 'app/core/config/application-config.service';
-import {createRequestOption} from 'app/core/request/request-util';
-import {Pagination} from 'app/core/request/request.model';
-import {IDemandeConge, ISoldeConge} from '../conge-management.model';
-import {AccountService} from '../../../core/auth/account.service';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { createRequestOption } from 'app/core/request/request-util';
+import { Pagination } from 'app/core/request/request.model';
+import { IDemandeConge, ISoldeConge } from '../conge-management.model';
+import { AccountService } from '../../../core/auth/account.service';
 
 @Injectable({providedIn: 'root'})
 export class CongeManagementService {
@@ -61,7 +61,8 @@ export class CongeManagementService {
     return this.http.get<ISoldeConge[]>(`${this.resourceUrlSolde}/current-user`)
   }
 
-  check(obj: { dateDebut: Date; dateFin: Date }): Observable<{ hasOne: boolean, solde: boolean }> {
+  check(obj: { dateDebut: Date; dateFin: Date, isUpdate: boolean }): Observable<{ hasOne: boolean, solde: boolean }> {
+    console.error('****************** obj', obj);
     return this.http.post<{ hasOne: boolean, solde: boolean }>(`${this.resourceUrl}/check`, obj);
   }
 }

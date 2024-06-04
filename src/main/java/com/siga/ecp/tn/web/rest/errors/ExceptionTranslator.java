@@ -1,5 +1,7 @@
 package com.siga.ecp.tn.web.rest.errors;
 
+import com.siga.ecp.tn.exception.SoldeNotFoundException;
+import com.siga.ecp.tn.exception.UserNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -9,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.*;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
@@ -33,7 +35,7 @@ import java.util.stream.Collectors;
  * Controller advice to translate the server side exceptions to client-friendly json structures.
  * The error response follows RFC7807 - Problem Details for HTTP APIs (<a href="https://tools.ietf.org/html/rfc7807">RFC7807</a>).
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
@@ -108,6 +110,41 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .with(FIELD_ERRORS_KEY, fieldErrors)
             .build();
         return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleSoldeAlreadyExistsException(
+        com.siga.ecp.tn.exception.SoldeAlreadyExistsException ex,
+        NativeWebRequest request) {
+
+        Problem problem = Problem.builder().withStatus(Status.BAD_REQUEST).with(MESSAGE_KEY, ex.getMessage()).build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleSoldeNotFoundException(
+        com.siga.ecp.tn.exception.SoldeNotFoundException ex,
+        NativeWebRequest request
+    ) {
+        SoldeNotFoundException problem = new SoldeNotFoundException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleUserNotFoundException(
+        com.siga.ecp.tn.exception.UserNotFoundException ex,
+        NativeWebRequest request
+    ) {
+        UserNotFoundException problem = new UserNotFoundException();
+        return create(
+            problem,
+            request,
+            HeaderUtil.createFailureAlert(applicationName, true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage())
+        );
     }
 
     @ExceptionHandler

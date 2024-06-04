@@ -1,7 +1,10 @@
 package com.siga.ecp.tn.exception;
 
-public class SoldeNotFoundException extends RuntimeException {
+import com.siga.ecp.tn.web.rest.errors.BadRequestAlertException;
+import com.siga.ecp.tn.web.rest.errors.ErrorConstants;
+
+public class SoldeNotFoundException extends BadRequestAlertException {
     public SoldeNotFoundException() {
-        super("Solde not found");
+        super(ErrorConstants.SOLDE_NOT_FOUND_TYPE, "Solde not found!", "soldeManagement", "soldenotexists");
     }
 }

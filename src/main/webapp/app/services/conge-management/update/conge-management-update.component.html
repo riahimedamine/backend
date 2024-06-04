@@ -6,14 +6,17 @@
       <jhi-alert-error></jhi-alert-error>
 
       <div *ngIf="error" class="container-fluid">
-        <small *ngIf="error.hasOne" class="form-text text-bg-danger text-xxl-center"
+        <small *ngIf="error.hasOne" class="form-text text-bg-danger text-center"
                jhiTranslate="congeManagement.error.hasOne">
           Vous avez déjà une demande en cours.
         </small>
-        <small *ngIf="error.solde" class="text-bg-danger text-xxl-center" jhiTranslate="congeManagement.error.solde">
+        <small *ngIf="error.solde" class="text-bg-danger text-center" jhiTranslate="congeManagement.error.solde">
           Solde insuffisant pour cette demande.
         </small>
-        <small *ngIf="!error.solde && !error.hasOne" class="form-text text-success"
+        <small *ngIf="editForm.invalid" class="form-text text-bg-warning text-center"
+               jhiTranslate="congeManagement.invalid"> Demande
+          invalide. </small>
+        <small *ngIf="!error.solde && !error.hasOne && editForm.valid" class="form-text text-success"
                jhiTranslate="congeManagement.success"> Demande
           valide. </small>
       </div>

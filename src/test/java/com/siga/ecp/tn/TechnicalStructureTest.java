@@ -9,7 +9,7 @@ import static com.tngtech.archunit.base.DescribedPredicate.alwaysTrue;
 import static com.tngtech.archunit.core.domain.JavaClass.Predicates.belongToAnyOf;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-@AnalyzeClasses(packagesOf = Application.class, importOptions = DoNotIncludeTests.class)
+@AnalyzeClasses(packagesOf = BackendApp.class, importOptions = DoNotIncludeTests.class)
 class TechnicalStructureTest {
 
     // prettier-ignore
@@ -29,7 +29,7 @@ class TechnicalStructureTest {
         .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service", "Security", "Web", "Config")
         .whereLayer("Domain").mayOnlyBeAccessedByLayers("Persistence", "Service", "Security", "Web", "Config")
 
-        .ignoreDependency(belongToAnyOf(Application.class), alwaysTrue())
+        .ignoreDependency(belongToAnyOf(BackendApp.class), alwaysTrue())
         .ignoreDependency(alwaysTrue(), belongToAnyOf(
             com.siga.ecp.tn.config.Constants.class,
             com.siga.ecp.tn.config.ApplicationProperties.class

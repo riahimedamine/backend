@@ -1,6 +1,9 @@
 package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.SoldeConge;
+import com.siga.ecp.tn.domain.User;
+import com.siga.ecp.tn.domain.Year;
+import com.siga.ecp.tn.exception.SoldeAlreadyExistsException;
 import com.siga.ecp.tn.exception.SoldeNotFoundException;
 import com.siga.ecp.tn.exception.UserNotFoundException;
 import com.siga.ecp.tn.repository.SoldeCongeRepository;
@@ -60,6 +63,7 @@ public class SoldeCongeService {
      *
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public Page<SoldeCongeDTO> findByCurrentUser(Pageable pageable) {
         log.debug("Request to get all SoldeConges by current user");
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow(UserNotFoundException::new);
@@ -100,10 +104,33 @@ public class SoldeCongeService {
      * @param soldeCongeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public SoldeConge saveSolde(SoldeCongeDTO soldeCongeDTO) {
         log.debug("Request to save SoldeConge : {}", soldeCongeDTO);
         SoldeConge soldeConge = soldeCongeMapper.soldeCongeDTOToSoldeConge(soldeCongeDTO);
+        checkSoldeExists(soldeConge.getYear(), soldeConge.getUser(), null);
         return soldeCongeRepository.save(soldeConge);
+    }
+
+    /**
+     * Check if solde exist.
+     *
+     * @param year the year of the entity.
+     * @param user the user of the entity.
+     */
+    @Transactional
+    public void checkSoldeExists(Year year, User user, Long id) {
+        if (soldeCongeRepository.existsByYearAndUser(year, user)) {
+            if (id == null) {
+                throw new SoldeAlreadyExistsException();
+            } else {
+                SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year.getYear(),
+                    user.getLogin()).orElseThrow(SoldeNotFoundException::new);
+                if (!soldeConge.getId().equals(id)) {
+                    throw new SoldeAlreadyExistsException();
+                }
+            }
+        }
     }
 
     /**
@@ -112,11 +139,13 @@ public class SoldeCongeService {
      * @param soldeCongeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public SoldeCongeDTO updateSolde(SoldeCongeDTO soldeCongeDTO) {
         log.debug("Request to update SoldeConge : {}", soldeCongeDTO);
 
         SoldeConge soldeConge = soldeCongeRepository.findById(soldeCongeDTO.getId()).orElseThrow(SoldeNotFoundException::new);
         SoldeConge updatedSoldeConge = soldeCongeMapper.updateSoldeCongeFromDTO(soldeCongeDTO, soldeConge);
+        checkSoldeExists(updatedSoldeConge.getYear(), updatedSoldeConge.getUser(), updatedSoldeConge.getId());
 
         return soldeCongeMapper.soldeCongeToSoldeCongeDTO(soldeCongeRepository.save(updatedSoldeConge));
     }

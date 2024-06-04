@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,13 +10,13 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { TypeManagementService } from '../service/type-conges-management.service';
 import { TypeConge } from '../type-conge-management.model';
-import { TypeCongesManagementDeleteDialogComponent } from '../delete/type-conges-management-delete-dialog.component';
+import { TypeCongeDeleteDialogComponent } from '../delete/type-conge-delete-dialog.component';
 
 @Component({
-  selector: 'jhi-typeConge-mgmt',
-  templateUrl: './type-conge-management.component.html',
+  selector: 'jhi-type-conge-mgmt',
+  templateUrl: './type-conge.component.html'
 })
-export class TypeCongeManagementComponent implements OnInit {
+export class TypeCongeComponent implements OnInit {
   currentAccount: Account | null = null;
   typeConges: TypeConge[] | null = null;
   isLoading = false;
@@ -44,7 +44,7 @@ export class TypeCongeManagementComponent implements OnInit {
   }
 
   deleteType(typeConge: TypeConge): void {
-    const modalRef = this.modalService.open(TypeCongesManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(TypeCongeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.typeConge = typeConge;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {

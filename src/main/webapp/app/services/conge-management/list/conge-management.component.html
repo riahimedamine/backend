@@ -1,9 +1,9 @@
 <div>
-  <div *ngIf="soldes">
+  <div *ngIf="soldes != null">
     <h2 jhiTranslate="congeManagement.solde.title">solde congé</h2>
     <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
+      <table class="table table-light table-hover table-condensed">
+        <thead class="table-header">
         <tr>
           <th jhiTranslate="congeManagement.solde.year">Année</th>
           <th jhiTranslate="congeManagement.solde.solde">Solde</th>
@@ -41,7 +41,7 @@
   <jhi-alert></jhi-alert>
 
   <div class="table-responsive" *ngIf="demandeConges">
-    <table class="table table-striped" aria-describedby="conge-Management-page-heading">
+    <table aria-describedby="conge-Management-page-heading" class="table table-hover">
       <thead>
       <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
         <th jhiSortBy="id" scope="col">
@@ -76,8 +76,9 @@
         <td>
           <a [routerLink]="['./', demande.id, 'view']">{{ demande.id }}</a>
         </td>
-        <td>{{ demande.dateDebut }}</td>
-        <td>{{ demande.dateFin }}</td>
+        <!--        TODO: make all dates this format-->
+        <td>{{ demande.dateDebut | date: 'dd/MM/yy' }}</td>
+        <td>{{ demande.dateFin | date: 'dd/MM/yy' }}</td>
 
         <td>{{ demande.type }}</td>
 
@@ -85,7 +86,7 @@
         <td *ngIf="demande.vld == 1" jhiTranslate="congeManagement.value.vld1">Validé</td>
         <td *ngIf="demande.vld == -1" jhiTranslate="congeManagement.value.vld2">Non Validé</td>
 
-        <td>{{ demande.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+        <td>{{ demande.createdDate | date: 'dd/MM/yy' }}</td>
         <td class="text-end">
           <div class="btn-group">
             <button [routerLink]="['./', demande.id, 'view']" class="btn btn-info btn-sm" type="submit">

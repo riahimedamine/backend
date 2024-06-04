@@ -68,23 +68,27 @@ public class DemandeCongeService {
      * @param dateFin   the end date of the demand.
      * @return the error object.
      */
-    public DemandeCongeError check(LocalDate dateDebut, LocalDate dateFin) {
+    @Transactional(readOnly = true)
+    public DemandeCongeError check(LocalDate dateDebut, LocalDate dateFin, boolean isUpdate) {
         String login = SecurityUtils.getCurrentUserLogin().orElse(null);
 
         long days = (dateFin.toEpochDay() - dateDebut.toEpochDay());
         int year = dateDebut.getYear();
         SoldeConge soldeConge = soldeCongeRepository.findByYearYearAndUserLogin(year, login).orElse(null);
         return new DemandeCongeError(
-            demandeCongeRepository.existsByUserLoginAndVld(login, 0),
+            demandeCongeRepository.existsByUserLoginAndVld(login, 0) && !isUpdate,
             !(soldeConge != null && soldeConge.getSolde() >= days)
         );
     }
+
+    // todo create isValidated method
 
     /**
      * Delete the demandeConge by id.
      *
      * @param id the id of the entity.
      */
+    @Transactional
     public void delete(Long id) {
         log.debug("Request to delete DemandeConge : {}", id);
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
@@ -114,9 +118,10 @@ public class DemandeCongeService {
      *
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public Page<DemandeCongeDTO> findByCurrentUser(Pageable pageable) {
         log.debug("Request to get DemandeConge by current user");
-        return demandeCongeRepository.findByUserIsCurrentUserOrderByDateDebutDesc(pageable).map(DemandeCongeDTO::new);
+        return demandeCongeRepository.findByUserIsCurrentUser(pageable).map(DemandeCongeDTO::new);
     }
 
     /**
@@ -124,6 +129,7 @@ public class DemandeCongeService {
      *
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public List<DemandeCongeDTO> findByRh() {
         log.debug("Request to get DemandeConge by Rh");
         return notificationService.getAllNotificationByCandidateGroup("RH").stream()
@@ -147,6 +153,7 @@ public class DemandeCongeService {
      * @param login the login of the user.
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public Page<DemandeCongeDTO> findByUser(String login, Pageable pageable) {
         log.debug("Request to get DemandeConge by user : {}", login);
         return demandeCongeRepository.findByUserLoginOrderByDateDebutDesc(login, pageable).map(DemandeCongeDTO::new);
@@ -175,6 +182,7 @@ public class DemandeCongeService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public Page<SoldeCongeDTO> getSoldeCongeByUser(String login, Pageable pageable) {
         log.debug("Request to get SoldeConge by user : {}", login);
         return soldeCongeRepository.findByUserLogin(login, pageable).map(SoldeCongeDTO::new);
@@ -186,6 +194,7 @@ public class DemandeCongeService {
      * @param demandeCongeDTO the entity to update partially.
      * @return the persisted entity.
      */
+    @Transactional
     public Optional<DemandeCongeDTO> partialUpdate(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to partially update DemandeConge : {}", demandeCongeDTO);
 
@@ -211,6 +220,7 @@ public class DemandeCongeService {
      * @param demandeCongeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public DemandeCongeDTO saveDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to save DemandeConge : {}", demandeCongeDTO);
 
@@ -253,6 +263,7 @@ public class DemandeCongeService {
      * @param demandeCongeDTO the entity to save.
      * @return the persisted entity.
      */
+    @Transactional
     public DemandeCongeDTO updateDemandeConge(DemandeCongeDTO demandeCongeDTO) {
         log.debug("Request to update DemandeConge : {}", demandeCongeDTO);
         if (demandeCongeRepository.findById(demandeCongeDTO.getId()).get().getVld() != 0) {
@@ -270,6 +281,7 @@ public class DemandeCongeService {
      * @param id  the id of the entity.
      * @param vld the validation state.
      */
+    @Transactional
     public void validateDemandeConge(Long id, int vld) {
         log.debug("Request to validate DemandeConge : {}", id);
         DemandeConge demandeConge = demandeCongeRepository.findById(id).orElse(null);
@@ -302,6 +314,7 @@ public class DemandeCongeService {
      *
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     public List<DemandeCongeDTO> getDemandeCongeByCurrentValidator() {
         log.debug("Request to get DemandeConge by current validator");
         return notificationService.getAllNotification().stream()

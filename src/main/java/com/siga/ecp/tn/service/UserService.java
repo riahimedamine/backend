@@ -26,10 +26,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Service class for managing users.
+ * Service class for managing {@link User}.
  */
 @Service
-//@Transactional
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -110,6 +109,7 @@ public class UserService {
 
     @Transactional
     public User createUser(AdminUserDTO userDTO) {
+        checkUserExistence(userDTO.getLogin());
         User user = new User();
         if (!userDTO.getValidator().isBlank() && userDTO.getValidator() != null) {
             user.setValidator(userRepository.findOneByLogin(userDTO.getValidator()).get());
@@ -173,24 +173,24 @@ public class UserService {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
+    @Transactional(readOnly = true)
+    public void checkUserExistence(String login) {
+        userRepository
+            .findOneByLogin(login)
+            .ifPresent(user -> {
+                throw new UsernameAlreadyUsedException();
+            });
+        userRepository
+            .findOneByEmailIgnoreCase(login)
+            .ifPresent(user -> {
+                throw new EmailAlreadyUsedException();
+            });
+    }
+
     @Transactional
     public User registerUser(AdminUserDTO userDTO, String password) {
-        userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new UsernameAlreadyUsedException();
-                }
-            });
-        userRepository
-            .findOneByEmailIgnoreCase(userDTO.getEmail())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new EmailAlreadyUsedException();
-                }
-            });
+        checkUserExistence(userDTO.getLogin());
+
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(userDTO.getLogin().toLowerCase());
@@ -203,9 +203,7 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
         newUser.setActivated(false);
-        // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
@@ -216,22 +214,13 @@ public class UserService {
         return newUser;
     }
 
-    private boolean removeNonActivatedUser(User existingUser) {
-        if (existingUser.isActivated()) {
-            return false;
-        }
-        userRepository.delete(existingUser);
-        userRepository.flush();
-        this.clearUserCaches(existingUser);
-        return true;
-    }
-
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>
      * This is scheduled to get fired everyday, at 01:00 (am).
      */
     @Scheduled(cron = "0 0 1 * * ?")
+    @Transactional
     public void removeNotActivatedUsers() {
         userRepository
             .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))
@@ -319,8 +308,8 @@ public class UserService {
                 }
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
+                userRepository.save(user);
                 this.clearUserCaches(user);
-                log.debug("Changed Information for User: {}", user);
             });
     }
 

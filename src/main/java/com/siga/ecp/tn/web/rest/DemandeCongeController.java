@@ -10,6 +10,7 @@ import com.siga.ecp.tn.service.dto.DemandeCongeDTO;
 import com.siga.ecp.tn.service.dto.DemandeCongeError;
 import com.siga.ecp.tn.service.dto.SoldeCongeDTO;
 import com.siga.ecp.tn.service.workflow.NotificationService;
+import com.siga.ecp.tn.web.rest.vm.Demande;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -66,7 +66,8 @@ public class DemandeCongeController {
     @PostMapping("/check")
     public DemandeCongeError check(@RequestBody Demande demande) {
         log.debug("REST request to check solde");
-        return demandeCongeService.check(demande.getDateDebut(), demande.getDateFin());
+
+        return demandeCongeService.check(demande.dateDebut, demande.dateFin, demande.isUpdate);
     }
 
     /**
@@ -233,7 +234,7 @@ public class DemandeCongeController {
         }
         treatTask.setInitiator(SecurityUtils.getCurrentUserLogin().orElse(null));
         notificationService.completeTask(treatTask);
-        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "congeManagement.validated", null)).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "congeManagement.validated", "")).build();
     }
 
     /**
@@ -257,31 +258,5 @@ public class DemandeCongeController {
     public List<DemandeCongeDTO> getDemandeCongeRh() {
         log.debug("REST request to get DemandeConge by Rh");
         return demandeCongeService.findByRh();
-    }
-
-    public static class Demande {
-
-        private LocalDate dateDebut;
-        private LocalDate dateFin;
-
-        public Demande() {
-            // Empty constructor needed for Jackson.
-        }
-
-        public LocalDate getDateDebut() {
-            return dateDebut;
-        }
-
-        public void setDateDebut(LocalDate dateDebut) {
-            this.dateDebut = dateDebut;
-        }
-
-        public LocalDate getDateFin() {
-            return dateFin;
-        }
-
-        public void setDateFin(LocalDate dateFin) {
-            this.dateFin = dateFin;
-        }
     }
 }

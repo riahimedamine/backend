@@ -42,7 +42,7 @@ public class SoldeCongeMapper {
 
     private SoldeConge getSoldeConge(SoldeCongeDTO soldeCongeDTO, SoldeConge soldeConge) {
         soldeConge.setSolde(soldeCongeDTO.getSolde());
-        soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()));
+        soldeConge.setYear(yearRepository.findByYear(soldeCongeDTO.getYear()).get());
         Optional<User> user = userRepository.findOneByLogin(soldeCongeDTO.getUser());
         if (user.isEmpty()) {
             throw new UserNotFoundException();

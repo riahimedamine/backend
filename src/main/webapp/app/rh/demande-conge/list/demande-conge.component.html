@@ -21,7 +21,7 @@
       No active demandes
     </div>
     <div *ngIf="activeDemandes.length > 0" class="table-responsive">
-      <table aria-describedby="conge-Management-page-heading" class="table table-striped">
+      <table aria-describedby="conge-Management-page-heading" class="table table-hover">
         <thead>
         <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
           <th jhiSortBy="id" scope="col">
@@ -95,7 +95,7 @@
   <h2 jhiTranslate="congeManagement.all">All demandes</h2>
 
   <div *ngIf="demandes" class="table-responsive">
-    <table aria-describedby="conge-Management-page-heading" class="table table-striped">
+    <table aria-describedby="conge-Management-page-heading" class="table table-hover">
       <thead>
       <tr (sortChange)="transition()" [(ascending)]="ascending" [(predicate)]="predicate" jhiSort>
         <th jhiSortBy="id" scope="col">

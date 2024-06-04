@@ -17,8 +17,8 @@ public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long
 
     DemandeConge findByProcessInstanceId(String processInstanceId);
 
-    @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name}")
-    Page<DemandeConge> findByUserIsCurrentUserOrderByDateDebutDesc(Pageable pageable);
+    @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name} order by demandeConge.createdDate desc")
+    Page<DemandeConge> findByUserIsCurrentUser(Pageable pageable);
 
     Page<DemandeConge> findByUserLoginOrderByDateDebutDesc(String login, Pageable pageable);
 }

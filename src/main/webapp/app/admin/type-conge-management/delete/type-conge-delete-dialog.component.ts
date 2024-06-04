@@ -1,14 +1,14 @@
-import {Component} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {TypeConge} from '../type-conge-management.model';
-import {TypeManagementService} from '../service/type-conges-management.service';
+import { TypeConge } from '../type-conge-management.model';
+import { TypeManagementService } from '../service/type-conges-management.service';
 
 @Component({
   selector: 'jhi-type-conge-mgmt-delete-dialog',
-  templateUrl: './type-conges-management-delete-dialog.component.html',
+  templateUrl: './type-conge-delete-dialog.component.html'
 })
-export class TypeCongesManagementDeleteDialogComponent {
+export class TypeCongeDeleteDialogComponent {
   typeConge?: TypeConge;
 
   constructor(private typeService: TypeManagementService, private activeModal: NgbActiveModal) {}

@@ -13,6 +13,14 @@ public class DemandeCongeError {
         this.solde = solde;
     }
 
+    @Override
+    public String toString() {
+        return "DemandeCongeError{" +
+            "hasOne=" + hasOne +
+            ", solde=" + solde +
+            '}';
+    }
+
     public Boolean getHasOne() {
         return hasOne;
     }

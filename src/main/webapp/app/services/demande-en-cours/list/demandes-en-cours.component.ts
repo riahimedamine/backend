@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {combineLatest} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 
-import {ITEMS_PER_PAGE} from 'app/config/pagination.constants';
-import {ASC, DESC, SORT} from 'app/config/navigation.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/auth/account.model';
-import {DemandesEnCoursService} from '../service/demandes-en-cours.service';
-import {DemandeCongeValidateDialogComponent} from '../validate/demande-conge-validate-dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {IDemandeConge} from "../demande-conge.model";
+import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ASC, DESC, SORT } from 'app/config/navigation.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { DemandesEnCoursService } from '../service/demandes-en-cours.service';
+import { DemandeCongeValidateDialogComponent } from '../validate/demande-conge-validate-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IDemandeConge } from '../demande-conge.model';
 
 @Component({
   selector: 'jhi-conge-mgmt',
@@ -74,7 +74,7 @@ export class DemandesEnCoursComponent implements OnInit {
     modalRef.componentInstance.demande = demande;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
-      if (reason === 'validated') {
+      if (reason === 'validated' || reason === 'refused') {
         this.loadAll();
       }
     });
