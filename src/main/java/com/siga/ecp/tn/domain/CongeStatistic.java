@@ -17,32 +17,35 @@ public class CongeStatistic {
     /**
      * The year of the analytic.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "year_id")
     private Year year;
 
     /**
      * The month of the analytic.
      */
-    @Column(name = "month")
+    @Column(name = "month", nullable = false)
     private Integer month;
-
-    private Integer acceptedCount;
 
     /**
      * The list of the top types of leave requests with their counts.
      */
-    @Transient
-    private List<TypesWithCounts> typesWithCounts;
+    @OneToMany(mappedBy = "congeStatistic", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TypeWithCount> typesWithCounts;
 
     public CongeStatistic() {
         // Empty constructor needed for Jackson.
     }
 
-    public CongeStatistic(Year year, Integer month, List<TypesWithCounts> typesWithCounts) {
+    public CongeStatistic(Year year, Integer month, List<TypeWithCount> typesWithCounts) {
         this.year = year;
         this.month = month;
         this.typesWithCounts = typesWithCounts;
+    }
+
+    public CongeStatistic(Year year, Integer month) {
+        this.year = year;
+        this.month = month;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class CongeStatistic {
             "id=" + id +
             ", year=" + year +
             ", month=" + month +
-            ", topTypesWithCounts=" + typesWithCounts +
+            ", typesWithCounts=" + typesWithCounts +
             '}';
     }
 
@@ -71,12 +74,12 @@ public class CongeStatistic {
         this.month = month;
     }
 
-    public List<TypesWithCounts> getTypesWithCounts() {
+    public List<TypeWithCount> getTypesWithCounts() {
         return typesWithCounts;
     }
 
-    public void setTypesWithCounts(List<TypesWithCounts> typesWithCounts) {
-        this.typesWithCounts = typesWithCounts;
+    public void setTypesWithCounts(List<TypeWithCount> typeWithCounts) {
+        this.typesWithCounts = typeWithCounts;
     }
 
     public Year getYear() {

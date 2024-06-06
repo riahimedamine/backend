@@ -1,7 +1,7 @@
 package com.siga.ecp.tn.service.mapper;
 
 import com.siga.ecp.tn.domain.CongeStatistic;
-import com.siga.ecp.tn.domain.TypesWithCounts;
+import com.siga.ecp.tn.domain.TypeWithCount;
 import com.siga.ecp.tn.service.dto.CongeStatisticDTO;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class CongeStatisticMapper {
             .collect(
                 Collectors.toMap(
                     (typesWithCounts -> typesWithCounts.getType().getLibFr()),
-                    TypesWithCounts::getCount
+                    TypeWithCount::getCount
                 )
             );
 

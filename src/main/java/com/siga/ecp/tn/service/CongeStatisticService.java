@@ -2,7 +2,7 @@ package com.siga.ecp.tn.service;
 
 import com.siga.ecp.tn.domain.CongeStatistic;
 import com.siga.ecp.tn.domain.TypeConge;
-import com.siga.ecp.tn.domain.TypesWithCounts;
+import com.siga.ecp.tn.domain.TypeWithCount;
 import com.siga.ecp.tn.domain.Year;
 import com.siga.ecp.tn.repository.CongeStatisticRepository;
 import com.siga.ecp.tn.repository.DemandeCongeRepository;
@@ -10,8 +10,11 @@ import com.siga.ecp.tn.repository.TypeCongeRepository;
 import com.siga.ecp.tn.repository.YearRepository;
 import com.siga.ecp.tn.service.dto.CongeStatisticDTO;
 import com.siga.ecp.tn.service.mapper.CongeStatisticMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class CongeStatisticService {
 
+    private static final Logger log = LoggerFactory.getLogger(CongeStatisticService.class);
     private final CongeStatisticRepository congeStatisticRepository;
     private final CongeStatisticMapper congeStatisticMapper;
     private final YearRepository yearRepository;
@@ -41,6 +45,7 @@ public class CongeStatisticService {
      * Generates the statistics for the next month.
      */
     @Scheduled(cron = "0 0 0 L * ?")
+    @Transactional
     public void autoGenerateMonthlyStatistics() {
         refreshStatistics();
 
@@ -51,18 +56,21 @@ public class CongeStatisticService {
         generateMonthlyStatistics(nextMonthYear, nextMonth);
     }
 
+    @Transactional(readOnly = true)
     public List<CongeStatisticDTO> findAll() {
         return congeStatisticRepository.findAll().stream()
             .map(congeStatisticMapper::toDto)
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<CongeStatisticDTO> findByYear(int year) {
         return congeStatisticRepository.findByYearYearOrderByMonthAsc(year).stream()
             .map(congeStatisticMapper::toDto)
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<CongeStatisticDTO> findByYearAndMonth(int year, int month) {
         return congeStatisticRepository.findByYearYearAndMonth(year, month).stream()
             .map(congeStatisticMapper::toDto)
@@ -75,15 +83,21 @@ public class CongeStatisticService {
             return yearRepository.save(newYear);
         });
 
-        CongeStatistic congeStatistic = new CongeStatistic(year, month, getTypesWithCounts(monthYear, month));
+        CongeStatistic congeStatistic = congeStatisticRepository.save(new CongeStatistic(year, month));
+
+        congeStatistic.setTypesWithCounts(getTypesWithCounts(congeStatistic));
+
         congeStatisticRepository.save(congeStatistic);
     }
 
-    private List<TypesWithCounts> getTypesWithCounts(Integer year, Integer month) {
+    private List<TypeWithCount> getTypesWithCounts(CongeStatistic congeStatistic) {
 
         List<TypeConge> types = typeCongeRepository.findAll();
 
         Calendar calendar = Calendar.getInstance();
+
+        Integer year = congeStatistic.getYear().getYear();
+        Integer month = congeStatistic.getMonth();
 
         calendar.set(year, month - 1, 1);
         Date startDate = calendar.getTime();
@@ -91,14 +105,14 @@ public class CongeStatisticService {
         calendar.set(year, month - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         Date endDate = calendar.getTime();
 
-        List<TypesWithCounts> typesWithCounts = new ArrayList<>();
+        List<TypeWithCount> typeWithCounts = new ArrayList<>();
 
         types.forEach(type -> {
             Integer count = demandeCongeRepository.countByTypeAndDateDebutBetween(type, startDate, endDate);
-            typesWithCounts.add(new TypesWithCounts(type, count));
+            typeWithCounts.add(new TypeWithCount(type, count, congeStatistic));
         });
 
-        return typesWithCounts;
+        return typeWithCounts;
 
     }
 
@@ -110,7 +124,7 @@ public class CongeStatisticService {
         int monthYear = startOfMonth.getYear();
         int month = startOfMonth.getMonthValue();
 
-        congeStatisticRepository.deleteByYearYearAndMonth(monthYear, month);
+        congeStatisticRepository.findByYearYearAndMonth(monthYear, month).ifPresent(congeStatisticRepository::delete);
 
         generateMonthlyStatistics(monthYear, month);
     }
