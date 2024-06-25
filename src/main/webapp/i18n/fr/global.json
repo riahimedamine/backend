@@ -13,7 +13,8 @@
         "main": "Ressources Humaines",
         "demandeConge": "Demande de congés",
         "soldeManagement": "Soldes des congés",
-        "yearManagement": "Années"
+        "yearManagement": "Années",
+        "statistics": "Statistiques"
       },
       "account": {
         "main": "Compte",

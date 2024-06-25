@@ -82,7 +82,7 @@ public class DemandeCongeController {
     public ResponseEntity<DemandeCongeDTO> createDemandeConge(@RequestBody DemandeCongeDTO demandeCongeDTO) throws URISyntaxException {
         log.debug("REST request to save DemandeConge : {}", demandeCongeDTO);
         if (demandeCongeDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(applicationName, true, "congeManagement", "idexists", "A new demandeConge cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(applicationName, true, "congeManagement", "idexists", "A new demande Conge cannot already have an ID")).body(null);
         }
         DemandeCongeDTO demande = demandeCongeService.saveDemandeConge(demandeCongeDTO);
         return ResponseEntity

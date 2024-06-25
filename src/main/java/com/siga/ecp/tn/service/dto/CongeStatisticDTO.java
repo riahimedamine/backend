@@ -6,6 +6,9 @@ public class CongeStatisticDTO {
     private Long id;
     private Integer year;
     private int month;
+    private int totalDemandes;
+    private int totalAcceptedDemandes;
+    private int totalRefusedDemandes;
     private Map<String, Integer> typesWithCounts;
 
     public CongeStatisticDTO() {
@@ -36,6 +39,30 @@ public class CongeStatisticDTO {
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    public int getTotalAcceptedDemandes() {
+        return totalAcceptedDemandes;
+    }
+
+    public void setTotalAcceptedDemandes(int totalAcceptedDemandes) {
+        this.totalAcceptedDemandes = totalAcceptedDemandes;
+    }
+
+    public int getTotalDemandes() {
+        return totalDemandes;
+    }
+
+    public void setTotalDemandes(int totalDemandes) {
+        this.totalDemandes = totalDemandes;
+    }
+
+    public int getTotalRefusedDemandes() {
+        return totalRefusedDemandes;
+    }
+
+    public void setTotalRefusedDemandes(int totalRefusedDemandes) {
+        this.totalRefusedDemandes = totalRefusedDemandes;
     }
 
     public Map<String, Integer> getTypesWithCounts() {

@@ -77,14 +77,14 @@
             <li>
               <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/demande-conge"
                  routerLinkActive="active">
-                <fa-icon [fixedWidth]="true" icon="users"></fa-icon>
+                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
                 <span jhiTranslate="global.menu.rh.demandeConge">Gestion des utilisateurs</span>
               </a>
             </li>
             <li>
               <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/year-management"
                  routerLinkActive="active">
-                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
+                <fa-icon [fixedWidth]="true" icon="calendar-alt"></fa-icon>
                 <span jhiTranslate="global.menu.rh.yearManagement">year</span>
               </a>
             </li>
@@ -95,6 +95,12 @@
                 <span jhiTranslate="global.menu.rh.soldeManagement">solde</span>
               </a>
             </li>
+            <li>
+              <a (click)="collapseNavbar()" class="dropdown-item" routerLink="rh/statistics"
+                 routerLinkActive="active">
+                <fa-icon [fixedWidth]="true" icon="book"></fa-icon>
+                <span jhiTranslate="global.menu.rh.statistics">Statistiques</span>
+              </a>
           </ul>
         </li>
         <li

@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
@@ -28,6 +28,13 @@ import {RouterModule} from '@angular/router';
           pageTitle: 'yearManagement.home.title',
         },
       },
+      {
+        path: 'statistics',
+        loadChildren: () => import('./statistic/statistic.module').then(m => m.StatisticModule),
+        data: {
+          pageTitle: 'statistic.home.title'
+        }
+      }
 
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),

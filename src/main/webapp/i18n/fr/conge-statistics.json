@@ -1,0 +1,9 @@
+{
+  "congeStatistics": {
+    "home": {
+      "title": "Statistiques des congés",
+      "refreshListLabel": "Rafraîchir la liste",
+      "currentYearAndMonth": "Année et mois actuels"
+    }
+  }
+}

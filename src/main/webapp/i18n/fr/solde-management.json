@@ -1,10 +1,10 @@
 {
   "soldeManagement": {
     "home": {
-      "title": "Soldes Congés",
+      "title": "Soldes de congé",
       "refreshListLabel": "Actualiser la liste",
       "createLabel": "Ajouter un solde",
-      "createOrEditLabel": "Ajouter ou éditer une Solde"
+      "createOrEditLabel": "Ajouter ou éditer un Solde"
     },
     "created": "Le solde pour {{ param }} a été créé.",
     "updated": "La solde pour {{ param }} a été mis à jour.",

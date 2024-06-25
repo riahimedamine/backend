@@ -16,6 +16,9 @@ public class CongeStatisticMapper {
         dto.setId(statistic.getId());
         dto.setYear(statistic.getYear().getYear());
         dto.setMonth(statistic.getMonth());
+        dto.setTotalDemandes(statistic.getTotalDemandes());
+        dto.setTotalAcceptedDemandes(statistic.getTotalAcceptedDemandes());
+        dto.setTotalRefusedDemandes(statistic.getTotalRefusedDemandes());
 
         Map<String, Integer> typesWithCountsMap = statistic.getTypesWithCounts().stream()
             .collect(

@@ -16,14 +16,24 @@ import java.util.Date;
 @Repository
 public interface DemandeCongeRepository extends JpaRepository<DemandeConge, Long> {
 
-    Boolean existsByUserLoginAndVld(String login, Integer state);
+    Integer countByDateDebutBetween(Date startDate, Date endDate);
 
-    DemandeConge findByProcessInstanceId(String processInstanceId);
+    /**
+     * Count the number of requests between two dates and with a specific state.
+     *
+     * @param startDate
+     * @param endDate
+     * @param state
+     * @return the number of requests
+     */
+    Integer countByDateDebutBetweenAndVld(Date startDate, Date endDate, Integer state);
+
+    Integer countByTypeAndDateDebutBetween(TypeConge type, Date startDate, Date endDate);
+
+    Boolean existsByUserLoginAndVld(String login, Integer state);
 
     @Query("select demandeConge from DemandeConge demandeConge where demandeConge.user.login = ?#{authentication.name} order by demandeConge.createdDate desc")
     Page<DemandeConge> findByUserIsCurrentUser(Pageable pageable);
 
     Page<DemandeConge> findByUserLoginOrderByDateDebutDesc(String login, Pageable pageable);
-
-    Integer countByTypeAndDateDebutBetween(TypeConge type, Date startDate, Date endDate);
 }

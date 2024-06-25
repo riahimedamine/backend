@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CongeStatisticComponent } from './conge-statistic/conge-statistic.component';
+import { SharedModule } from '../../shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { StatisticRoute } from './statistic.route';
 
 
 @NgModule({
@@ -11,7 +13,8 @@ import { CongeStatisticComponent } from './conge-statistic/conge-statistic.compo
     CongeStatisticComponent
   ],
   imports: [
-    CommonModule
+    SharedModule,
+    RouterModule.forChild(StatisticRoute)
   ]
 })
 export class StatisticModule {

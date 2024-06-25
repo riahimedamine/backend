@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface CongeStatisticRepository extends JpaRepository<CongeStatistic, Long> {
 
-    void deleteByYearYearAndMonth(int year, int month);
-
     Optional<CongeStatistic> findByYearYearAndMonth(int year, int month);
 
     List<CongeStatistic> findByYearYearOrderByMonthAsc(int year);

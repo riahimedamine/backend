@@ -18,7 +18,6 @@ public class TypeWithCount {
     private Integer count;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    // delete
     @JoinColumn(name = "conge_statistic_id")
     private CongeStatistic congeStatistic;
 

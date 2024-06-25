@@ -12,6 +12,7 @@ import com.siga.ecp.tn.service.dto.CongeStatisticDTO;
 import com.siga.ecp.tn.service.mapper.CongeStatisticMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class CongeStatisticService {
 
     private static final Logger log = LoggerFactory.getLogger(CongeStatisticService.class);
+
     private final CongeStatisticRepository congeStatisticRepository;
     private final CongeStatisticMapper congeStatisticMapper;
     private final YearRepository yearRepository;
@@ -83,7 +85,19 @@ public class CongeStatisticService {
             return yearRepository.save(newYear);
         });
 
-        CongeStatistic congeStatistic = congeStatisticRepository.save(new CongeStatistic(year, month));
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(year.getYear(), month - 1, 1);
+        Date startDate = calendar.getTime();
+
+        calendar.set(year.getYear(), month - 1, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = calendar.getTime();
+
+        int totalDemandes = demandeCongeRepository.countByDateDebutBetween(startDate, endDate);
+        int totalAcceptedDemandes = demandeCongeRepository.countByDateDebutBetweenAndVld(startDate, endDate, 1);
+        int totalRefusedDemandes = demandeCongeRepository.countByDateDebutBetweenAndVld(startDate, endDate, -1);
+
+        CongeStatistic congeStatistic = congeStatisticRepository.save(new CongeStatistic(year, month, totalDemandes, totalAcceptedDemandes, totalRefusedDemandes));
 
         congeStatistic.setTypesWithCounts(getTypesWithCounts(congeStatistic));
 
@@ -92,7 +106,7 @@ public class CongeStatisticService {
 
     private List<TypeWithCount> getTypesWithCounts(CongeStatistic congeStatistic) {
 
-        List<TypeConge> types = typeCongeRepository.findAll();
+        List<TypeConge> types = typeCongeRepository.findAllByisDeletedFalse(Pageable.unpaged()).toList();
 
         Calendar calendar = Calendar.getInstance();
 

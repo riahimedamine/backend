@@ -28,6 +28,24 @@ public class CongeStatistic {
     private Integer month;
 
     /**
+     * The total number of leave requests.
+     */
+    @Column(name = "total_demandes", nullable = false)
+    private Integer totalDemandes;
+
+    /**
+     * The total number of accepted leave requests.
+     */
+    @Column(name = "total_accepted_demandes", nullable = false)
+    private Integer totalAcceptedDemandes;
+
+    /**
+     * The total number of refused leave requests.
+     */
+    @Column(name = "total_refused_demandes", nullable = false)
+    private Integer totalRefusedDemandes;
+
+    /**
      * The list of the top types of leave requests with their counts.
      */
     @OneToMany(mappedBy = "congeStatistic", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -37,15 +55,12 @@ public class CongeStatistic {
         // Empty constructor needed for Jackson.
     }
 
-    public CongeStatistic(Year year, Integer month, List<TypeWithCount> typesWithCounts) {
+    public CongeStatistic(Year year, Integer month, Integer totalDemandes, Integer totalAcceptedDemandes, Integer totalRefusedDemandes) {
         this.year = year;
         this.month = month;
-        this.typesWithCounts = typesWithCounts;
-    }
-
-    public CongeStatistic(Year year, Integer month) {
-        this.year = year;
-        this.month = month;
+        this.totalDemandes = totalDemandes;
+        this.totalAcceptedDemandes = totalAcceptedDemandes;
+        this.totalRefusedDemandes = totalRefusedDemandes;
     }
 
     @Override
@@ -54,6 +69,9 @@ public class CongeStatistic {
             "id=" + id +
             ", year=" + year +
             ", month=" + month +
+            ", totalDemandes=" + totalDemandes +
+            ", totalAcceptedDemandes=" + totalAcceptedDemandes +
+            ", totalRefusedDemandes=" + totalRefusedDemandes +
             ", typesWithCounts=" + typesWithCounts +
             '}';
     }
@@ -72,6 +90,30 @@ public class CongeStatistic {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Integer getTotalAcceptedDemandes() {
+        return totalAcceptedDemandes;
+    }
+
+    public void setTotalAcceptedDemandes(Integer totalAcceptedDemandes) {
+        this.totalAcceptedDemandes = totalAcceptedDemandes;
+    }
+
+    public Integer getTotalDemandes() {
+        return totalDemandes;
+    }
+
+    public void setTotalDemandes(Integer totalDemandes) {
+        this.totalDemandes = totalDemandes;
+    }
+
+    public Integer getTotalRefusedDemandes() {
+        return totalRefusedDemandes;
+    }
+
+    public void setTotalRefusedDemandes(Integer totalRefusedDemandes) {
+        this.totalRefusedDemandes = totalRefusedDemandes;
     }
 
     public List<TypeWithCount> getTypesWithCounts() {

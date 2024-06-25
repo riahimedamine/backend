@@ -1,7 +1,7 @@
 {
   "typeManagement": {
     "home": {
-      "title": "Types Congés",
+      "title": "Types de congés",
       "refreshListLabel": "Actualiser la liste",
       "createLabel": "Créer un nouveau type",
       "createOrEditLabel": "Créer ou éditer un type"

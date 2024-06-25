@@ -1,3 +1,57 @@
-<div style="width: 600px; height: 400px;">
-  <canvas id="chart"></canvas>
+<div>
+  <h2>
+    <span data-cy="congeStatisticsPageHeading" id="conge-statistics-page-heading"
+          jhiTranslate="congeStatistics.home.title"
+    >Statistiques des demandes congés</span
+    >
+
+    <div class="d-flex justify-content-end">
+      <button (click)="refresh()" [disabled]="isLoading" class="btn btn-info me-2">
+        <fa-icon [spin]="isLoading" icon="sync"></fa-icon>
+        <span jhiTranslate="congeStatistics.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div *ngIf="currentStatistics" class="row">
+    <h3>
+      <span data-cy="congeStatisticsPageSubheading" id="conge-statistics-page-heading-current"
+            jhiTranslate="congeStatistics.home.currentYearAndMonth"> This Month</span>
+    </h3>
+
+    <div class="col-lg-4 justify-center ">
+      <canvas id="statuses-current"></canvas>
+    </div>
+
+    <div class="col-lg-8 justify-center">
+      <canvas id="types-current"></canvas>
+    </div>
+  </div>
+
+  <!--  rest of statistics by month-->
+  <!--  <div *ngIf="statistics" class="row">-->
+  <!--    <div *ngFor="let statistic of statistics">-->
+  <!--      <h3>-->
+  <!--        <span data-cy="congeStatisticsPageSubheading"-->
+  <!--              [id]="'conge-statistics-page-heading-' + statistic.year + '-' + statistic.month"-->
+  <!--              jhiTranslate="congeStatistics.home.yearAndMonth"-->
+  <!--              [translateValues]="{year: statistic.year, month: statistic.month}"-->
+  <!--        > Year and month </span>-->
+  <!--      </h3>-->
+
+  <!--      <div class="col-lg-4 justify-center">-->
+  <!--        <canvas [id]="'statuses-'+ statistic.year + '-' + statistic.month"></canvas>-->
+  <!--      </div>-->
+
+  <!--      <div class="col-lg-8 justify-center">-->
+  <!--        <canvas [id]="'types-' + statistic.year + '-' + statistic.month"></canvas>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+
 </div>
