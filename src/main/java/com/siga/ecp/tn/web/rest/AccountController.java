@@ -1,6 +1,7 @@
 package com.siga.ecp.tn.web.rest;
 
 import com.siga.ecp.tn.domain.User;
+import com.siga.ecp.tn.exception.UserNotFoundException;
 import com.siga.ecp.tn.repository.UserRepository;
 import com.siga.ecp.tn.security.SecurityUtils;
 import com.siga.ecp.tn.service.MailService;
@@ -138,12 +139,8 @@ public class AccountController {
         if (user.isPresent()) {
             mailService.sendPasswordResetMail(user.get());
         } else {
-            // todo : fix this
-
-            // Pretend the request has been successful to prevent checking which emails really exist
-            // but log that an invalid attempt has been made
             log.warn("Password reset requested for non existing email");
-            throw new RuntimeException("there is no such user");
+            throw new UserNotFoundException();
         }
     }
 

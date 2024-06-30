@@ -1,7 +1,9 @@
 package com.siga.ecp.tn.web.rest.errors;
 
+import com.siga.ecp.tn.exception.SoldeAlreadyExistsException;
 import com.siga.ecp.tn.exception.SoldeNotFoundException;
 import com.siga.ecp.tn.exception.UserNotFoundException;
+import com.siga.ecp.tn.service.UsernameAlreadyUsedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -50,7 +52,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         this.env = env;
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({BadRequestAlertException.class})
     public ResponseEntity<Problem> handleBadRequestAlertException(BadRequestAlertException ex, NativeWebRequest request) {
         return create(
             ex,
@@ -59,13 +61,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({EmailAlreadyUsedException.class})
     public ResponseEntity<Problem> handleConcurrencyFailure(ConcurrencyFailureException ex, NativeWebRequest request) {
         Problem problem = Problem.builder().withStatus(Status.CONFLICT).with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE).build();
         return create(ex, problem, request);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({EmailAlreadyUsedException.class})
     public ResponseEntity<Problem> handleEmailAlreadyUsedException(
         com.siga.ecp.tn.service.EmailAlreadyUsedException ex,
         NativeWebRequest request
@@ -78,7 +80,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({InvalidPasswordException.class})
     public ResponseEntity<Problem> handleInvalidPasswordException(
         com.siga.ecp.tn.service.InvalidPasswordException ex,
         NativeWebRequest request
@@ -112,18 +114,18 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         return create(ex, problem, request);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({SoldeAlreadyExistsException.class})
     public ResponseEntity<Problem> handleSoldeAlreadyExistsException(
-        com.siga.ecp.tn.exception.SoldeAlreadyExistsException ex,
+        SoldeAlreadyExistsException ex,
         NativeWebRequest request) {
 
         Problem problem = Problem.builder().withStatus(Status.BAD_REQUEST).with(MESSAGE_KEY, ex.getMessage()).build();
         return create(ex, problem, request);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({SoldeNotFoundException.class})
     public ResponseEntity<Problem> handleSoldeNotFoundException(
-        com.siga.ecp.tn.exception.SoldeNotFoundException ex,
+        SoldeNotFoundException ex,
         NativeWebRequest request
     ) {
         SoldeNotFoundException problem = new SoldeNotFoundException();
@@ -134,7 +136,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<Problem> handleUserNotFoundException(
         com.siga.ecp.tn.exception.UserNotFoundException ex,
         NativeWebRequest request
@@ -147,7 +149,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         );
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({UsernameAlreadyUsedException.class})
     public ResponseEntity<Problem> handleUsernameAlreadyUsedException(
         com.siga.ecp.tn.service.UsernameAlreadyUsedException ex,
         NativeWebRequest request

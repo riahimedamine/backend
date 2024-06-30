@@ -16,7 +16,9 @@
       "livenessState": "Liveness state",
       "readinessState": "Readiness state",
       "ping": "Application",
-      "db": "Base de données"
+      "db": "Base de données",
+      "jobExecutor": "Executeur de tâches",
+      "processEngine": "Moteur de processus"
     },
     "table": {
       "service": "Nom du service",
